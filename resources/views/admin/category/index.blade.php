@@ -50,7 +50,6 @@
                                 <table class="table  datanew">
                                     <thead>
                                         <tr>
-
                                             <th>Category</th>
                                             <th>Category slug</th>
                                             <th>Created On</th>
@@ -85,4 +84,7 @@
             </div>
         </div>
     </div>
+
+    @include('admin.category.create')
+    @include('admin.category.edit')
 @endsection

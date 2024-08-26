@@ -10,7 +10,7 @@
                                     data-feather="grid"></i><span>Dashboard</span><span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="index.html"
+                                <li><a href="{{ route('dashboard') }}"
                                         class="active">Admin Dashboard</a></li>
                                 <li><a
                                         href="#">Sales
@@ -33,7 +33,7 @@
                         <li><a href=""><i
                                     data-feather="trending-down"></i><span>Low Stocks</span></a></li>
                         <li class=""><a
-                                href="category-list.html"><i
+                                href="{{ route('category.index') }}"><i
                                     data-feather="codepen"></i><span>Category</span></a></li>
                         <li><a
                                 href="sub-categories.html"><i

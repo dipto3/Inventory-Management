@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard',[DashboardController::class,'dashboard']);
+Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard');
+Route::resource('category',CategoryController::class);

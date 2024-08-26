@@ -9,11 +9,19 @@
     <link rel="stylesheet" href="admin/assets/css/animate.css">
 
     <link rel="stylesheet"
-        href="admin/assets/plugins/select2/css/select2.min.css">
+        href="{{ asset('admin/assets/plugins/select2/css/select2.min.css') }}">
+
+        <link rel="stylesheet"
+        href="admin/assets/css/dataTables.bootstrap5.min.css">
 
     <link rel="stylesheet"
         href="admin/assets/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet"
         href="admin/assets/plugins/fontawesome/css/all.min.css">
 
-    <link rel="stylesheet" href="admin/assets/css/style.css">
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/dataTables.bootstrap5.min.css') }}">
+
+    <script
+    src="admin/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
+    data-cf-settings="2bbd58bb513c72193d549e5f-|49" defer></script>

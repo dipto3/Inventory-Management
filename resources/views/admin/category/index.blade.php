@@ -51,30 +51,40 @@
                                     <thead>
                                         <tr>
                                             <th>Category</th>
-                                            <th>Category slug</th>
+                                            <th>Description</th>
                                             <th>Created On</th>
                                             <th>Status</th>
                                             <th class="no-sort">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Laptop</td>
-                                            <td>laptop</td>
-                                            <td>25 May 2023</td>
-                                            <td><span class="badge badge-linesuccess">Active</span></td>
-                                            <td class="action-table-data">
-                                                <div class="edit-delete-action">
-                                                    <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#edit-category">
-                                                        <i data-feather="edit" class="feather-edit"></i>
-                                                    </a>
-                                                    <a class="confirm-text p-2" href="javascript:void(0);">
-                                                        <i data-feather="trash-2" class="feather-trash-2"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        @foreach ($categories as $category)
+                                            <tr>
+                                                <td>{{ $category->name }}</td>
+                                                <td>{{ $category->description }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($category->created_at)->format('Y-m-d') }}</td>
+                                                <td>
+                                                    @if ($category->status == 1)
+                                                        <span class="badge badge-linesuccess">Active</span>
+                                                    @elseif ($category->status == 0)
+                                                        <span class="badge badge-linedanger">Inactive</span>
+                                                    @endif
+
+                                                </td>
+                                                <td class="action-table-data">
+                                                    <div class="edit-delete-action">
+                                                        <button class="me-2 p-2" value="{{ $category->id }}" data-bs-toggle="modal"
+                                                            data-bs-target="#edit-category{{ $category->id }}">
+                                                            <i data-feather="edit" class="feather-edit"></i>
+                                                        </button>
+                                                        
+                                                        <a class="confirm-text p-2" href="javascript:void(0);">
+                                                            <i data-feather="trash-2" class="feather-trash-2"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

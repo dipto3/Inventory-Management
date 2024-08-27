@@ -12,26 +12,30 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body">
-                        <form action="">
+                        <form action="{{ route('category.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="form_name" value="create">
                             <div class="mb-3">
                                 <label class="form-label">Category</label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
+                                @error('name')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Category Slug</label>
-                                <input type="text" class="form-control">
+                                <label class="form-label">Description</label>
+                                <input type="text" class="form-control" name="description" value="{{ old('description') }}">
                             </div>
-                            <div class="mb-0">
-                                <div
-                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                    <span class="status-label">Status</span>
-                                    <input type="checkbox" id="user2" class="check" checked>
-                                    <label for="user2" class="checktoggle"></label>
-                                </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="select" name="status" required>
+                                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                                </select>
                             </div>
+
                             <div class="modal-footer-btn">
-                                <button type="button" class="btn btn-cancel me-2"
-                                    data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-submit">Create Category</button>
                             </div>
                         </form>

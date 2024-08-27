@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Redirect,Response;
 
 class CategoryController extends Controller
 {
@@ -12,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index');
+        $categories = Category::all();
+        return view('admin.category.index',compact('categories'));
     }
 
     /**
@@ -26,9 +30,18 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        // dd( $request->all());
+        $request->validated();
+
+        $category = Category::create([
+            'name' => $request->name,
+            'status' => $request->status,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->back();
     }
 
     /**
@@ -36,15 +49,18 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $category = Category::where('id',$id)->first();
+		return response()->json($category);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Category $category)
     {
-        //
+        return response()->json([
+            'category' => $category
+        ]);
     }
 
     /**

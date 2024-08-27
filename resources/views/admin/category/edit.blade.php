@@ -1,4 +1,4 @@
-<div class="modal fade" id="edit-category">
+<div class="modal fade" id="edit-category{{ $category->id }}">
     <div class="modal-dialog modal-dialog-centered custom-modal-two">
         <div class="modal-content">
             <div class="page-wrapper-new p-0">
@@ -15,11 +15,11 @@
                         <form action="">
                             <div class="mb-3">
                                 <label class="form-label">Category</label>
-                                <input type="text" class="form-control" value="Laptop">
+                                <input type="text" class="form-control" value="{{ $category->name }}">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Category Slug</label>
-                                <input type="text" class="form-control" value="laptop">
+                                <label class="form-label">Description</label>
+                                <input type="text" class="form-control" value="{{ $category->description }}">
                             </div>
                             <div class="mb-0">
                                 <div

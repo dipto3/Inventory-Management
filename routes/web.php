@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login',[AuthController::class,'loginPage'])->name('login');
+Route::post('/authenticate',[AuthController::class,'authenticate'])->name('authenticate');
+Route::post('/logout',[AuthController::class,'logout'])->name('logout');
 
-Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard');
-Route::resource('category',CategoryController::class);
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard');
+    Route::resource('category',CategoryController::class);
+});

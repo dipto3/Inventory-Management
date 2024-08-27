@@ -31,8 +31,8 @@
                     <i class="fa fa-search"></i>
                 </a>
                 <form action="#" class="dropdown">
-                    <div class="searchinputs dropdown-toggle" id="dropdownMenuClickable"
-                        data-bs-toggle="dropdown" data-bs-auto-close="false">
+                    <div class="searchinputs dropdown-toggle" id="dropdownMenuClickable" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false">
                         <input type="text" placeholder="Search">
                         <div class="search-addon">
                             <span><i data-feather="x-circle" class="feather-14"></i></span>
@@ -80,8 +80,7 @@
 
 
         <li class="nav-item dropdown has-arrow main-drop select-store-dropdown">
-            <a href="javascript:void(0);" class="dropdown-toggle nav-link select-store"
-                data-bs-toggle="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle nav-link select-store" data-bs-toggle="dropdown">
                 <span class="user-info">
                     <span class="user-letter">
                         <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/store/store-01.png"
@@ -114,27 +113,26 @@
 
 
         <li class="nav-item dropdown has-arrow flag-nav nav-item-box">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);"
-                role="button">
-                <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/us.png"
-                    alt="Language" class="img-fluid">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="javascript:void(0);" role="button">
+                <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/us.png" alt="Language"
+                    class="img-fluid">
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="javascript:void(0);" class="dropdown-item active">
-                    <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/us.png"
-                        alt height="16"> English
+                    <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/us.png" alt
+                        height="16"> English
                 </a>
                 <a href="javascript:void(0);" class="dropdown-item">
-                    <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/fr.png"
-                        alt height="16"> French
+                    <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/fr.png" alt
+                        height="16"> French
                 </a>
                 <a href="javascript:void(0);" class="dropdown-item">
-                    <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/es.png"
-                        alt height="16"> Spanish
+                    <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/es.png" alt
+                        height="16"> Spanish
                 </a>
                 <a href="javascript:void(0);" class="dropdown-item">
-                    <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/de.png"
-                        alt height="16"> German
+                    <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/flags/de.png" alt
+                        height="16"> German
                 </a>
             </div>
         </li>
@@ -201,8 +199,7 @@
                             <a href="">
                                 <div class="media d-flex">
                                     <span class="avatar flex-shrink-0">
-                                        <img alt
-                                            src="">
+                                        <img alt src="">
                                     </span>
                                     <div class="media-body flex-grow-1">
                                         <p class="noti-details"><span class="noti-title">Misty Tison</span>
@@ -261,8 +258,7 @@
         </li>
 
         <li class="nav-item nav-item-box">
-            <a href=""><i
-                    data-feather="settings"></i></a>
+            <a href=""><i data-feather="settings"></i></a>
         </li>
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
@@ -290,17 +286,17 @@
                         </div>
                     </div>
                     <hr class="m-0">
-                    <a class="dropdown-item"
-                        href=""> <i
-                            class="me-2" data-feather="user"></i> My Profile</a>
-                    <a class="dropdown-item"
-                        href=""><i
-                            class="me-2" data-feather="settings"></i>Settings</a>
+                    <a class="dropdown-item" href=""> <i class="me-2" data-feather="user"></i> My
+                        Profile</a>
+                    <a class="dropdown-item" href=""><i class="me-2"
+                            data-feather="settings"></i>Settings</a>
                     <hr class="m-0">
-                    <a class="dropdown-item logout pb-0"
-                        href=""><img
-                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/icons/log-out.svg"
-                            class="me-2" alt="img">Logout</a>
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button class="dropdown-item logout pb-0" href=""><img
+                                src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/icons/log-out.svg"
+                                class="me-2" alt="img">Log-out</button>
+                    </form>
                 </div>
             </div>
         </li>
@@ -311,12 +307,9 @@
         <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
             aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item"
-                href="">My Profile</a>
-            <a class="dropdown-item"
-                href="">Settings</a>
-            <a class="dropdown-item"
-                href="">Logout</a>
+            <a class="dropdown-item" href="">My Profile</a>
+            <a class="dropdown-item" href="">Settings</a>
+            <a class="dropdown-item" href="">Logout</a>
         </div>
     </div>
 

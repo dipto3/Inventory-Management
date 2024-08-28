@@ -36,7 +36,7 @@
                                 href="{{ route('category.index') }}"><i
                                     data-feather="codepen"></i><span>Category</span></a></li>
                         <li><a
-                                href="sub-categories.html"><i
+                                href="{{ route('subcategory.index') }}"><i
                                     data-feather="speaker"></i><span>Sub Category</span></a></li>
                         <li><a href="brand-list.html"><i
                                     data-feather="tag"></i><span>Brands</span></a></li>

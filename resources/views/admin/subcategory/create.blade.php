@@ -12,34 +12,35 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body">
-                        <form action="https://dreamspos.dreamstechnologies.com/html/template/sub-categories.html">
+                        <form action="{{ route('subcategory.store') }}" method="POST">
+                            @csrf
                             <div class="mb-3">
                                 <label class="form-label">Parent Category</label>
-                                <select class="select">
+                                <select class="select" name="category_id">
                                     <option>Choose Category</option>
-                                    <option>Category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Category Name</label>
-                                <input type="text" class="form-control">
+                                <label class="form-label">Subcategory Name</label>
+                                <input type="text" name="name" class="form-control">
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Category Code</label>
-                                <input type="text" class="form-control">
-                            </div>
+
                             <div class="mb-3 input-blocks">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control"></textarea>
+                                <textarea class="form-control" name="description"></textarea>
                             </div>
-                            <div class="mb-0">
-                                <div
-                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                    <span class="status-label">Status</span>
-                                    <input type="checkbox" id="user2" class="check" checked>
-                                    <label for="user2" class="checktoggle"></label>
-                                </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="select" name="status" required>
+                                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive
+                                    </option>
+                                </select>
                             </div>
+
                             <div class="modal-footer-btn">
                                 <button type="button" class="btn btn-cancel me-2"
                                     data-bs-dismiss="modal">Cancel</button>

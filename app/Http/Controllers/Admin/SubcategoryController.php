@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubcategoryFormRequest;
+use App\Models\Category;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
 class SubcategoryController extends Controller
@@ -12,7 +15,8 @@ class SubcategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.subcategory.index');
+        $categories = Category::where('status',1)->get();
+        return view('admin.subcategory.index',compact('categories'));
     }
 
     /**
@@ -20,15 +24,24 @@ class SubcategoryController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubcategoryFormRequest $request)
     {
-        //
+        $request->validated();
+
+        Subcategory::create([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'status' => $request->status,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->back();
     }
 
     /**

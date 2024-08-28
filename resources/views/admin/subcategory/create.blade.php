@@ -21,11 +21,17 @@
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
+                                    @error('category_id')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Subcategory Name</label>
                                 <input type="text" name="name" class="form-control">
+                                @error('name')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3 input-blocks">
@@ -38,6 +44,9 @@
                                     <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
                                     <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive
                                     </option>
+                                    @error('status')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </select>
                             </div>
 

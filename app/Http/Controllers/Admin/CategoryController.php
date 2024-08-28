@@ -68,14 +68,27 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+            'status' => 'required|boolean'
+        ]);
+        $category_id = $request->category_id;
+        $category = Category::findOrFail($category_id);
+    
+        $category->name = $validatedData['name'];
+        $category->description = $validatedData['description'];
+        $category->status = $validatedData['status'];
+        $category->save();
+        return redirect()->route('category.index')->with('success', 'Category updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->back();
     }
 }

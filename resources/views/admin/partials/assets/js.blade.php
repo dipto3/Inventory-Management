@@ -24,12 +24,12 @@
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
 <script src="{{ asset('admin/assets/plugins/apexchart/chart-data.js') }}"
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
-
+{{-- 
 <script
         src="{{ asset('admin/assets/plugins/sweetalert/sweetalert2.all.min.js') }}"
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
 <script src="{{ asset('admin/assets/plugins/sweetalert/sweetalerts.min.js') }}"
-        type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
+        type="2c8d1b9e5f6705bf4267f265-text/javascript"></script> --}}
 
 <script src="{{ asset('admin/assets/js/theme-script.js') }}"
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
@@ -42,3 +42,37 @@
     data-cf-settings="2c8d1b9e5f6705bf4267f265-|49" defer></script> -->
 <script src="{{ asset('admin/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}"
     data-cf-settings="2c8d1b9e5f6705bf4267f265-|49" defer></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+                $(document).on('click', '.editbtn', function(){
+                        var category_id = $(this).val();
+                        // alert(category_id);
+                        $('#editCategory').modal('show');
+                        $.ajax({
+                                type:"GET",
+                                url: "category/" + category_id + "/edit",
+                                success: function(response) {
+                                    console.log(response);
+                                    $('#name').val(response.category.name);
+                                    $('#description').val(response.category.description);
+                                    $('#category_id').val(response.category.id);
+                                //     $('#status').val(response.category.status);
+                                  // Set the selected option for status
+                    $('#status option[value="' + response.category.status + '"]').prop('selected', true);
+                                 // Set the status dropdown value
+                //     $('#editCategory').find('#status').val(response.category.status);
+                
+                                        
+                                }
+                        })
+    
+                });
+        });
+    </script>
+
+    
+
+</script>
+@yield('scripts')

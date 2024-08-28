@@ -73,14 +73,20 @@
                                                 </td>
                                                 <td class="action-table-data">
                                                     <div class="edit-delete-action">
-                                                        <button class="me-2 p-2" value="{{ $category->id }}" data-bs-toggle="modal"
-                                                            data-bs-target="#edit-category{{ $category->id }}">
+                                                        <button type="button" class="btn btn-primary me-2 p-2 editbtn" value="{{ $category->id }}" 
+                                                           >
                                                             <i data-feather="edit" class="feather-edit"></i>
                                                         </button>
                                                         
-                                                        <a class="confirm-text p-2" href="javascript:void(0);">
+                                                        {{-- <a class="confirm-text p-2" href="javascript:void(0);">
                                                             <i data-feather="trash-2" class="feather-trash-2"></i>
-                                                        </a>
+                                                        </a> --}}
+                                                        <form action="{{ route('category.destroy', $category->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-xs btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>Delete</button>
+                                                            
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -94,7 +100,35 @@
             </div>
         </div>
     </div>
-
+   
     @include('admin.category.create')
     @include('admin.category.edit')
+ 
+@endsection
+
+
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+<script type="text/javascript">
+ 
+     $('.show_confirm').click(function(event) {
+          var form =  $(this).closest("form");
+          var name = $(this).data("name");
+          event.preventDefault();
+          swal({
+              title: `Are you sure you want to delete this record?`,
+              text: "If you delete this, it will be gone forever.",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              form.submit();
+            }
+          });
+      });
+  
+</script>
 @endsection

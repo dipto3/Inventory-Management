@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\AuthController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SubcategoryController;
@@ -28,4 +29,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard');
     Route::resource('category',CategoryController::class);
     Route::resource('subcategory',SubcategoryController::class);
+    Route::resource('brand',BrandController::class);
 });

@@ -12,10 +12,11 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body new-employee-field">
-                        <form action="https://dreamspos.dreamstechnologies.com/html/template/brand-list.html">
+                        <form action="{{ route('brand.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="mb-3">
                                 <label class="form-label">Brand</label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="name">
                             </div>
                             <label class="form-label">Logo</label>
                             <div class="profile-pic-upload mb-3">
@@ -23,7 +24,7 @@
                                     <span><i data-feather="plus-circle" class="plus-down-add"></i> Add Image</span>
                                 </div>
                                 <div class="image-upload mb-0">
-                                    <input type="file">
+                                    <input type="file" name="logo">
                                     <div class="image-uploads">
                                         <h4>Change Image</h4>
                                     </div>
@@ -33,13 +34,12 @@
                                 <label class="form-label">Description</label>
                                 <textarea class="form-control" name="description"></textarea>
                             </div>
-                            <div class="mb-0">
-                                <div
-                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                    <span class="status-label">Status</span>
-                                    <input type="checkbox" id="user2" class="check" checked>
-                                    <label for="user2" class="checktoggle"></label>
-                                </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="select" name="status" required>
+                                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                                </select>
                             </div>
                             <div class="modal-footer-btn">
                                 <button type="button" class="btn btn-cancel me-2"

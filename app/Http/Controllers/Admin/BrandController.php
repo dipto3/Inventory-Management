@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BrandFormRequest;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
@@ -26,9 +28,19 @@ class BrandController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BrandFormRequest $request)
     {
-        //
+        $request->validated();
+        $brand = Brand::create([
+            'name' => $request->name,
+            'status' => $request->status,
+            'description' => $request->description,
+        ]);
+        if ($request->hasFile('logo')) {
+            $brand->addMediaFromRequest('logo')->toMediaCollection();
+        }
+
+        return redirect()->back();
     }
 
     /**

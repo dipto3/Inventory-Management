@@ -388,5 +388,4 @@
 @include('admin.brand.create')
 @include('admin.brand.edit')
 
-
 @endsection

@@ -16,7 +16,8 @@ class SubcategoryController extends Controller
     public function index()
     {
         $categories = Category::where('status',1)->get();
-        return view('admin.subcategory.index',compact('categories'));
+        $subcategories = Subcategory::all();
+        return view('admin.subcategory.index',compact('categories','subcategories'));
     }
 
     /**
@@ -71,8 +72,9 @@ class SubcategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Subcategory $subcategory)
     {
-        //
+        $subcategory->delete();
+        return redirect()->back();
     }
 }

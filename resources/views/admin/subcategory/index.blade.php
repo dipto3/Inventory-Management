@@ -114,532 +114,53 @@
                     <table class="table  datanew">
                         <thead>
                             <tr>
-                                <th class="no-sort">
-                                    <label class="checkboxs">
-                                        <input type="checkbox" id="select-all">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </th>
-                                <th>Image</th>
+                                <th>Subcategory</th>
                                 <th>Category</th>
-                                <th>Parent category</th>
-                                <th>Category Code</th>
                                 <th>Description</th>
-                                <th>Created By</th>
+                                <th>Created On</th>
+                                <th>Status</th>
                                 <th class="no-sort">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product1.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Computers</td>
-                                <td>Computers</td>
-                                <td>CT001</td>
-                                <td>Computers Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product2.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Fruits</td>
-                                <td>Fruits</td>
-                                <td>CT002</td>
-                                <td>Fruits Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product3.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Fruits</td>
-                                <td>Fruits</td>
-                                <td>CT003</td>
-                                <td>Fruits Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product4.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Fruits</td>
-                                <td>Fruits</td>
-                                <td>CT004</td>
-                                <td>Fruits Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product5.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Accessories</td>
-                                <td>Accessories</td>
-                                <td>CT005</td>
-                                <td>Accessories Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product6.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Shoes</td>
-                                <td>Shoes</td>
-                                <td>CT006</td>
-                                <td>Shoes Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product7.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Fruits</td>
-                                <td>Fruits</td>
-                                <td>CT007</td>
-                                <td>Fruits Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product8.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Fruits</td>
-                                <td>Fruits</td>
-                                <td>CT008</td>
-                                <td>Fruits Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product9.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Computers</td>
-                                <td>Computers</td>
-                                <td>CT009</td>
-                                <td>Computers Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product10.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Health Care </td>
-                                <td>Health Care </td>
-                                <td>CT0010</td>
-                                <td>Health Care Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product4.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Fruits</td>
-                                <td>Fruits</td>
-                                <td>CT004</td>
-                                <td>Fruits Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product5.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Accessories</td>
-                                <td>Accessories</td>
-                                <td>CT005</td>
-                                <td>Accessories Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product6.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Shoes</td>
-                                <td>Shoes</td>
-                                <td>CT006</td>
-                                <td>Shoes Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product7.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Fruits</td>
-                                <td>Fruits</td>
-                                <td>CT007</td>
-                                <td>Fruits Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product8.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Fruits</td>
-                                <td>Fruits</td>
-                                <td>CT008</td>
-                                <td>Fruits Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product9.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Computers</td>
-                                <td>Computers</td>
-                                <td>CT009</td>
-                                <td>Computers Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="product-img">
-                                        <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/product10.jpg"
-                                            alt="product">
-                                    </a>
-                                </td>
-                                <td>Health Care </td>
-                                <td>Health Care </td>
-                                <td>CT0010</td>
-                                <td>Health Care Description</td>
-                                <td>Admin</td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-category">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                            @foreach ($subcategories as $subcategory)
+                                <tr>
+                                    <td>{{ $subcategory->name }}</td>
+                                    <td>{{ $subcategory->category?->name }}</td>
+                                    <td>{{ $subcategory->description }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($subcategory->created_at)->format('Y-m-d') }}</td>
+                                    <td>
+                                        @if ($subcategory->status == 1)
+                                            <span class="badge badge-linesuccess">Active</span>
+                                        @elseif ($subcategory->status == 0)
+                                            <span class="badge badge-linedanger">Inactive</span>
+                                        @endif
+
+                                    </td>
+                                    <td class="action-table-data">
+                                        <div class="edit-delete-action">
+                                            <button type="button" class="btn btn-primary me-2 p-2 editbtn"
+                                                value="{{ $subcategory->id }}">
+                                                <i data-feather="edit" class="feather-edit"></i>
+                                            </button>
+
+                                            {{-- <a class="confirm-text p-2" href="javascript:void(0);">
+                                                <i data-feather="trash-2" class="feather-trash-2"></i>
+                                            </a> --}}
+                                            <form action="{{ route('subcategory.destroy', $subcategory->id) }}"
+                                                method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn btn-xs btn-danger btn-flat show_confirm"
+                                                    data-toggle="tooltip" title='Delete'><i
+                                                        data-feather="trash-2"
+                                                        class="feather-trash-2"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -652,4 +173,26 @@
 @include('admin.subcategory.create')
 @include('admin.subcategory.edit')
 
+@endsection
+@section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $('.show_confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`,
+                    text: "If you delete this, it will be gone forever.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    </script>
 @endsection

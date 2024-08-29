@@ -139,7 +139,7 @@
                                     </td>
                                     <td class="action-table-data">
                                         <div class="edit-delete-action">
-                                            <button type="button" class="btn btn-primary me-2 p-2 editbtn"
+                                            <button type="button" class="btn btn-primary me-2 p-2 editsubcatbtn"
                                                 value="{{ $subcategory->id }}">
                                                 <i data-feather="edit" class="feather-edit"></i>
                                             </button>

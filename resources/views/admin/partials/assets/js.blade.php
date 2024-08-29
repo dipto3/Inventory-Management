@@ -71,6 +71,34 @@
                 });
         });
     </script>
+    <script>
+        $(document).ready(function () {
+                $(document).on('click', '.editsubcatbtn', function(){
+                        var subcategory_id = $(this).val();
+                        // alert(subcategory_id);
+                        $('#editSubcategory').modal('show');
+                        $.ajax({
+                                type:"GET",
+                                url: "subcategory/" + subcategory_id + "/edit",
+                                success: function(response) {
+                                    console.log(response);
+                                    $('#name').val(response.subcategory.name);
+                                    $('#description').val(response.subcategory.description);
+                                    $('#subcategory_id').val(response.subcategory.id);
+                                    $('#status').val(response.subcategory.status);
+                                    $('#category_id').val(response.subcategory.category_id);
+                                  // Set the selected option for status
+                //     $('#status option[value="' + response.category.status + '"]').prop('selected', true);
+                                 // Set the status dropdown value
+                //     $('#editCategory').find('#status').val(response.category.status);
+                
+                                        
+                                }
+                        })
+    
+                });
+        });
+    </script>
 
     
 

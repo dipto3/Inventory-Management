@@ -56,9 +56,11 @@ class SubcategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Subcategory $subcategory)
     {
-        //
+        return response()->json([
+            'subcategory' => $subcategory
+        ]);
     }
 
     /**

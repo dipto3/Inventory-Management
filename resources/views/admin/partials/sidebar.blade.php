@@ -27,8 +27,7 @@
                                     data-feather="box"></i><span>Products</span></a></li>
                         <li><a href="add-product.html"><i
                                     data-feather="plus-square"></i><span>Create Product</span></a></li>
-                        <li><a
-                                href=""><i
+                        <li><a href=""><i
                                     data-feather="codesandbox"></i><span>Expired Products</span></a></li>
                         <li><a href=""><i
                                     data-feather="trending-down"></i><span>Low Stocks</span></a></li>
@@ -42,8 +41,7 @@
                                     data-feather="tag"></i><span>Brands</span></a></li>
                         <li><a href=""><i
                                     data-feather="speaker"></i><span>Units</span></a></li>
-                        <li><a
-                                href="varriant-attributes.html"><i
+                        <li><a href="varriant-attributes.html"><i
                                     data-feather="layers"></i><span>Variant Attributes</span></a></li>
                         <li><a href="warranty.html"><i
                                     data-feather="bookmark"></i><span>Warranties</span></a></li>

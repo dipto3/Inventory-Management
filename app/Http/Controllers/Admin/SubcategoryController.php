@@ -66,9 +66,23 @@ class SubcategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,  $id)
     {
-        //
+        $validatedData = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+            'status' => 'required|boolean'
+        ]);
+        $subcategory_id = $request->subcategory_id;
+        $subcategory = Subcategory::findOrFail($subcategory_id);
+        $subcategory->update([
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'status' => $validatedData['status'],
+            'category_id' => $validatedData['category_id']
+        ]);
+        return redirect()->route('subcategory.index')->with('success', 'Subcategory updated successfully!');
     }
 
     /**

@@ -12,7 +12,7 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body">
-                        <form action="{{ route('category.update', ':id') }}" method="POST">
+                        <form action="{{ route('category.update', $category->id ??'') }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="category_id" id="category_id" class="form-control">

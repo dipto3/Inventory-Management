@@ -12,7 +12,7 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body">
-                        <form action="{{ route('subcategory.update', ':id') }}" method="POST">
+                        <form action="{{ route('subcategory.update',$subcategory->id ?? '') }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="subcategory_id" id="subcategory_id" class="form-control">
@@ -22,7 +22,7 @@
                                     <option>Choose Category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" 
-                                            {{ $subcategory->category_id == $category->id ? 'selected' : '' }}>
+                                            {{ ($subcategory->category_id ?? '') == $category->id ? 'selected' : '' }}>
                                             {{ $category->name }}
                                         </option>
                                     @endforeach

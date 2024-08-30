@@ -100,6 +100,34 @@
         });
     </script>
 
+<script>
+        $(document).ready(function () {
+                $(document).on('click', '.editbrandbtn', function(){
+                        var brand_id = $(this).val();
+                        // alert(category_id);
+                        $('#editBrand').modal('show');
+                        $.ajax({
+                                type:"GET",
+                                url: "brand/" + brand_id + "/edit",
+                                success: function(response) {
+                                    console.log(response);
+                                    $('#name').val(response.brand.name);
+                                    $('#description').val(response.brand.description);
+                                    $('#brand_id').val(response.brand.id);
+                                    $('#status').val(response.brand.status);
+                                  // Set the selected option for status
+                //     $('#status option[value="' + response.category.status + '"]').prop('selected', true);
+                                 // Set the status dropdown value
+                //     $('#editCategory').find('#status').val(response.category.status);
+                
+                                        
+                                }
+                        })
+    
+                });
+        });
+    </script>
+
     
 
 </script>

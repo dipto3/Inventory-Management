@@ -1,4 +1,4 @@
-<div class="modal fade" id="edit-brand">
+<div class="modal fade" id="editBrand">
     <div class="modal-dialog modal-dialog-centered custom-modal-two">
         <div class="modal-content">
             <div class="page-wrapper-new p-0">
@@ -12,34 +12,33 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body new-employee-field">
-                        <form action="https://dreamspos.dreamstechnologies.com/html/template/brand-list.html">
+                        <form action="{{ route('brand.update', $brand->id ??'') }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="brand_id" id="brand_id" class="form-control">
                             <div class="mb-3">
                                 <label class="form-label">Brand</label>
-                                <input type="text" class="form-control" value="Boat">
+                                <input type="text" name="name" id="name" class="form-control">
                             </div>
-                            <label class="form-label">Logo</label>
-                            <div class="profile-pic-upload mb-3">
-                                <div class="profile-pic brand-pic">
-                                    <span><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-02.png"
-                                            alt></span>
-                                    <a href="javascript:void(0);" class="remove-photo"><i data-feather="x"
-                                            class="x-square-add"></i></a>
-                                </div>
-                                <div class="image-upload mb-0">
-                                    <input type="file">
-                                    <div class="image-uploads">
-                                        <h4>Change Image</h4>
-                                    </div>
-                                </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <input type="text" id="description" name="description" class="form-control">
                             </div>
-                            <div class="mb-0">
-                                <div
-                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                    <span class="status-label">Status</span>
-                                    <input type="checkbox" id="user4" class="check" checked>
-                                    <label for="user4" class="checktoggle"></label>
-                                </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select selected class="select" id="status" name="status" required>
+
+                                    <option value="1" @if (old('status') == '1') selected @endif>Active
+                                    </option>
+                                    <option value="0" @if (old('status') == '0') selected @endif>Inactive
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Logo</label>
+                                <img src="{{$brand->getFirstMediaUrl()}}"
+                                class="" alt="" />
+                                <input type="file" id="logo" name="logo" class="form-control">
                             </div>
                             <div class="modal-footer-btn">
                                 <button type="button" class="btn btn-cancel me-2"

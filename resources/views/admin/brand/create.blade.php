@@ -19,16 +19,11 @@
                                 <input type="text" class="form-control" name="name">
                             </div>
                             <label class="form-label">Logo</label>
+                           
                             <div class="profile-pic-upload mb-3">
-                                <div class="profile-pic brand-pic">
-                                    <span><i data-feather="plus-circle" class="plus-down-add"></i> Add Image</span>
-                                </div>
-                                <div class="image-upload mb-0">
-                                    <input type="file" name="logo">
-                                    <div class="image-uploads">
-                                        <h4>Change Image</h4>
-                                    </div>
-                                </div>
+                       
+                                <input type="file" class="form-control" name="logo">
+                               
                             </div>
                             <div class="mb-3 input-blocks">
                                 <label class="form-label">Description</label>

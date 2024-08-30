@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\VariantFormRequest;
 use App\Models\Variant;
 use App\Models\VariantValue;
 use Illuminate\Http\Request;
@@ -29,8 +30,9 @@ class VariantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(VariantFormRequest $request)
     {
+        $request->validated();
         $variant = Variant::create([
             'name' => $request->name,
             'status' => $request->status

@@ -140,9 +140,7 @@
                                                     value="{{ $brand->id }}">
                                                     <i data-feather="edit" class="feather-edit"></i>
                                                 </button>
-                                                {{-- <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a> --}}
+                                                
                                                 <form action="{{ route('brand.destroy', $brand->id) }}" method="POST"
                                                     style="display:inline;">
                                                     @csrf

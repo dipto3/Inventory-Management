@@ -14,7 +14,8 @@ class VariantController extends Controller
      */
     public function index()
     {
-        return view('admin.variant.index');
+        $variants = Variant::with('variantValues')->get();
+        return view('admin.variant.index', compact('variants'));
     }
 
     /**
@@ -37,7 +38,6 @@ class VariantController extends Controller
 
         $valuesArray = array_map('trim', explode(',', $request->input('values')));
 
-        // Store each value in the variant_values table
         foreach ($valuesArray as $value) {
             if (!empty($value)) {
                 VariantValue::create([

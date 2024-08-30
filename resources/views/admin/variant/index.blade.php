@@ -112,12 +112,7 @@
                     <table class="table  datanew">
                         <thead>
                             <tr>
-                                <th class="no-sort">
-                                    <label class="checkboxs">
-                                        <input type="checkbox" id="select-all">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </th>
+                                
                                 <th>variant</th>
                                 <th>Values</th>
                                 <th>Created On</th>
@@ -126,121 +121,44 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($variants as $variant)
                             <tr>
+                                
+                                <td>{{ $variant->name }} </td>
+                                <td>{{ $variant->variantValues->pluck('value')->implode(',') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($variant->created_at)->format('Y-m-d') }}</td>
                                 <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
+                                    @if ($variant->status == 1)
+                                        <span class="badge badge-linesuccess">Active</span>
+                                    @elseif ($variant->status == 0)
+                                        <span class="badge badge-linedanger">Inactive</span>
+                                    @endif
+
                                 </td>
-                                <td>Size (T-shirts) </td>
-                                <td>S,M,L,XL</td>
-                                <td>25 May 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
                                 <td class="action-table-data">
                                     <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-units">
+                                        <button type="button" class="btn btn-primary me-2 p-2 editbtn"
+                                            value="{{ $variant->id }}">
                                             <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
+                                        </button>
+
+                                        {{-- <a class="confirm-text p-2" href="javascript:void(0);">
                                             <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
+                                        </a> --}}
+                                        <form action="{{ route('variant.destroy', $variant->id) }}"
+                                            method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn btn-xs btn-danger btn-flat show_confirm"
+                                                data-toggle="tooltip" title='Delete'><i
+                                                    data-feather="trash-2"
+                                                    class="feather-trash-2"></i></button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Size (Shoes)</td>
-                                <td>5,6,7,8,9</td>
-                                <td>24 Jun 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-units">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Color</td>
-                                <td>Red, Blue, Green</td>
-                                <td>23 Jul 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-units">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Memory</td>
-                                <td>64 GB, 128 GB, 512 GB</td>
-                                <td>22 Aug 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-units">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Storage</td>
-                                <td>250GB, 1TB</td>
-                                <td>21 Sep 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-units">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                           @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Variant;
+use App\Models\VariantValue;
 use Illuminate\Http\Request;
 
 class VariantController extends Controller
@@ -28,7 +30,24 @@ class VariantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $variant = Variant::create([
+            'name' => $request->name,
+            'status' => $request->status
+        ]);
+
+        $valuesArray = array_map('trim', explode(',', $request->input('values')));
+
+        // Store each value in the variant_values table
+        foreach ($valuesArray as $value) {
+            if (!empty($value)) {
+                VariantValue::create([
+                    'variant_id' => $variant->id,
+                    'value' => $value,
+                ]);
+            }
+        }
+
+        return redirect()->back();
     }
 
     /**

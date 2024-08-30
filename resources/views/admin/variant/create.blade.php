@@ -13,24 +13,27 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body">
-                        <form
-                            action="https://dreamspos.dreamstechnologies.com/html/template/varriant-attributes.html">
+                        <form action="{{ route('variant.store') }}" method="POST">
+                            @csrf
                             <div class="mb-3">
                                 <label class="form-label">Name</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="name" class="form-control">
                             </div>
                             <div class="input-blocks">
                                 <label class="form-label">Variant</label>
-                                <input class type="text" data-role="tagsinput" name="specialist" value="S,M,XL">
+                                <input class type="text" data-role="tagsinput" name="values" value="">
                                 <span class="tag-text">Enter value separated by comma</span>
                             </div>
-                            <div class="mb-0">
-                                <div
-                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                    <span class="status-label">Status</span>
-                                    <input type="checkbox" id="user2" class="check" checked>
-                                    <label for="user2" class="checktoggle"></label>
-                                </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="select" name="status" required>
+                                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive
+                                    </option>
+                                    @error('status')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                </select>
                             </div>
                             <div class="modal-footer-btn">
                                 <button type="button" class="btn btn-cancel me-2"
@@ -44,3 +47,4 @@
         </div>
     </div>
 </div>
+

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('variant_values', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('variant_id')->constrained('variants')->cascadeOnDelete();
+            $table->string('value');
             $table->timestamps();
         });
     }

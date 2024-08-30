@@ -11,7 +11,7 @@ class UnitFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UnitFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-        ];
+            'name' => 'required',
+            'status' => 'required',
+            'short_name' => 'required',
+        ]; 
     }
 }

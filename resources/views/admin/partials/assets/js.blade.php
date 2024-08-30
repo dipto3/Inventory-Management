@@ -128,6 +128,34 @@
         });
     </script>
 
+<script>
+        $(document).ready(function () {
+                $(document).on('click', '.editunitbtn', function(){
+                        var unit_id = $(this).val();
+                        // alert(category_id);
+                        $('#editUnit').modal('show');
+                        $.ajax({
+                                type:"GET",
+                                url: "unit/" + unit_id + "/edit",
+                                success: function(response) {
+                                    console.log(response);
+                                    $('#name').val(response.unit.name);
+                                    $('#short_name').val(response.unit.short_name);
+                                    $('#unit_id').val(response.unit.id);
+                                    $('#status').val(response.unit.status);
+                                  // Set the selected option for status
+                //     $('#status option[value="' + response.category.status + '"]').prop('selected', true);
+                                 // Set the status dropdown value
+                //     $('#editCategory').find('#status').val(response.category.status);
+                
+                                        
+                                }
+                        })
+    
+                });
+        });
+    </script>
+
     
 
 </script>

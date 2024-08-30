@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UnitFormRequest;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class UnitController extends Controller
@@ -12,7 +14,8 @@ class UnitController extends Controller
      */
     public function index()
     {
-        //
+        $units = Unit::all();
+        return view('admin.unit.index',compact('units'));
     }
 
     /**
@@ -26,9 +29,17 @@ class UnitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UnitFormRequest $request)
     {
-        //
+        $request->validated();
+
+        $unit = Unit::create([
+            'name' => $request->name,
+            'status' => $request->status,
+            'short_name' => $request->short_name,
+        ]);
+
+        return redirect()->back();
     }
 
     /**
@@ -42,9 +53,11 @@ class UnitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Unit $unit)
     {
-        //
+        return response()->json([
+            'unit' => $unit
+        ]);
     }
 
     /**
@@ -52,14 +65,28 @@ class UnitController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'status' => 'required',
+            'short_name' => 'required'
+        ]);
+        $unit_id = $request->unit_id;
+        $unit = Unit::findOrFail($unit_id);
+    
+        $unit->update([
+            'name' => $validatedData['name'],
+            'short_name' => $validatedData['short_name'],
+            'status' => $validatedData['status'],
+        ]);
+        return redirect()->route('unit.index')->with('success', 'Unit updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Unit $unit)
     {
-        //
+        $unit->delete();
+        return redirect()->back();
     }
 }

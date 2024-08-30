@@ -12,7 +12,7 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body new-employee-field">
-                        <form action="{{ route('brand.update', $brand->id ??'') }}" method="POST">
+                        <form action="{{ route('brand.update', $brand->id ??'') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="brand_id" id="brand_id" class="form-control">

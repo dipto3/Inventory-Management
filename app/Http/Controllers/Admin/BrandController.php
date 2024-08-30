@@ -67,11 +67,12 @@ class BrandController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $validatedData = $request->validate([
            'name' => 'required',
             'status' => 'required',
             'description' => 'required',
-            'logo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+         
         ]);
         $brand_id = $request->brand_id;
         $brand = Brand::findOrFail($brand_id);

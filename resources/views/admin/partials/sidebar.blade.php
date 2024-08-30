@@ -41,7 +41,7 @@
                                     data-feather="tag"></i><span>Brands</span></a></li>
                         <li><a href="{{ route('unit.index') }}"><i
                                     data-feather="speaker"></i><span>Units</span></a></li>
-                        <li><a href="varriant-attributes.html"><i
+                        <li><a href="{{ route('variant.index') }}"><i
                                     data-feather="layers"></i><span>Variant Attributes</span></a></li>
                         <li><a href="warranty.html"><i
                                     data-feather="bookmark"></i><span>Warranties</span></a></li>

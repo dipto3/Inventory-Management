@@ -35,7 +35,9 @@
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
 <script src="{{ ('admin/assets/js/script.js') }}"
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
-
+<script
+        src="{{ asset('admin/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') }}"
+        type="ad4963607922a273fda414b4-text/javascript"></script>
 <script src="{{ asset('admin/assets/plugins/select2/js/select2.min.js') }}"
         type="2bbd58bb513c72193d549e5f-text/javascript"></script>
 <!-- <script src="https://dreamspos.dreamstechnologies.com/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
@@ -104,7 +106,6 @@
         $(document).ready(function () {
                 $(document).on('click', '.editbrandbtn', function(){
                         var brand_id = $(this).val();
-                        // alert(category_id);
                         $('#editBrand').modal('show');
                         $.ajax({
                                 type:"GET",
@@ -115,12 +116,6 @@
                                     $('#description').val(response.brand.description);
                                     $('#brand_id').val(response.brand.id);
                                     $('#status').val(response.brand.status);
-                                  // Set the selected option for status
-                //     $('#status option[value="' + response.category.status + '"]').prop('selected', true);
-                                 // Set the status dropdown value
-                //     $('#editCategory').find('#status').val(response.category.status);
-                
-                                        
                                 }
                         })
     
@@ -132,7 +127,6 @@
         $(document).ready(function () {
                 $(document).on('click', '.editunitbtn', function(){
                         var unit_id = $(this).val();
-                        // alert(category_id);
                         $('#editUnit').modal('show');
                         $.ajax({
                                 type:"GET",
@@ -142,13 +136,7 @@
                                     $('#name').val(response.unit.name);
                                     $('#short_name').val(response.unit.short_name);
                                     $('#unit_id').val(response.unit.id);
-                                    $('#status').val(response.unit.status);
-                                  // Set the selected option for status
-                //     $('#status option[value="' + response.category.status + '"]').prop('selected', true);
-                                 // Set the status dropdown value
-                //     $('#editCategory').find('#status').val(response.category.status);
-                
-                                        
+                                    $('#status').val(response.unit.status);         
                                 }
                         })
     

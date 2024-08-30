@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\VariantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,4 +33,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('subcategory',SubcategoryController::class);
     Route::resource('brand',BrandController::class);
     Route::resource('unit',UnitController::class);
+    Route::resource('variant',VariantController::class);
 });

@@ -125,7 +125,7 @@
                             <tr>
                                 
                                 <td>{{ $variant->name }} </td>
-                                <td>{{ $variant->variantValues->pluck('value')->implode(',') }}</td>
+                                <td>{{ $variant->variantValues->pluck('value')->implode(', ') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($variant->created_at)->format('Y-m-d') }}</td>
                                 <td>
                                     @if ($variant->status == 1)

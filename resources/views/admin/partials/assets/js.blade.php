@@ -24,13 +24,6 @@
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
 <script src="{{ asset('admin/assets/plugins/apexchart/chart-data.js') }}"
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
-{{-- 
-<script
-        src="{{ asset('admin/assets/plugins/sweetalert/sweetalert2.all.min.js') }}"
-        type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
-<script src="{{ asset('admin/assets/plugins/sweetalert/sweetalerts.min.js') }}"
-        type="2c8d1b9e5f6705bf4267f265-text/javascript"></script> --}}
-
 <script src="{{ asset('admin/assets/js/theme-script.js') }}"
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
 <script src="{{ ('admin/assets/js/script.js') }}"
@@ -45,7 +38,7 @@
 <script src="{{ asset('admin/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}"
     data-cf-settings="2c8d1b9e5f6705bf4267f265-|49" defer></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
     <script>
         $(document).ready(function () {
                 $(document).on('click', '.editbtn', function(){
@@ -148,3 +141,8 @@
 
 </script>
 @yield('scripts')
+
+
+<script
+src="{{ asset('admin/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}"
+data-cf-settings="ad4963607922a273fda414b4-|49" defer></script>

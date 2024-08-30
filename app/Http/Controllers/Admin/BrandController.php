@@ -55,9 +55,11 @@ class BrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Brand $brand)
     {
-        //
+        return response()->json([
+            'brand' => $brand
+        ]);
     }
 
     /**
@@ -65,14 +67,34 @@ class BrandController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+           'name' => 'required',
+            'status' => 'required',
+            'description' => 'required',
+            'logo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        $brand_id = $request->brand_id;
+        $brand = Brand::findOrFail($brand_id);
+        $brand->update([
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'status' => $validatedData['status'],
+           
+        ]);
+
+         if ($request->hasFile('logo')) {
+            $brand->clearMediaCollection();
+            $brand->addMediaFromRequest('logo')->toMediaCollection();
+        }
+        return redirect()->route('brand.index')->with('success', 'Brand updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Brand $brand)
     {
-        //
+        $brand->delete();
+        return redirect()->back();
     }
 }

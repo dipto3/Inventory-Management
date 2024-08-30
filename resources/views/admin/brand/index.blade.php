@@ -112,12 +112,7 @@
                     <table class="table  datanew">
                         <thead>
                             <tr>
-                                <th class="no-sort">
-                                    <label class="checkboxs">
-                                        <input type="checkbox" id="select-all">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </th>
+                               
                                 <th>Brand</th>
                                 <th>Logo</th>
                                 <th>Created On</th>
@@ -126,44 +121,23 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($brands as $brand)
+                                
+                          
                             <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Lenevo</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-01.png"
+                                <td>{{ $brand->name }}</td>
+                                <td><span class="d-flex"><img style="height: 50px;width:50px;"
+                                            src="{{$brand->getFirstMediaUrl()}}"
                                             alt></span></td>
                                 <td>25 May 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
+                                    @if ($brand->status == 1)
+                                        <span class="badge badge-linesuccess">Active</span>
+                                    @elseif ($brand->status == 0)
+                                        <span class="badge badge-linedanger">Inactive</span>
+                                    @endif
+
                                 </td>
-                                <td>Boat</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-02.png"
-                                            alt></span></td>
-                                <td>24 Jun 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
                                 <td class="action-table-data">
                                     <div class="edit-delete-action">
                                         <a class="me-2 p-2" href="#" data-bs-toggle="modal"
@@ -176,206 +150,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Nike</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-03.png"
-                                            alt></span></td>
-                                <td>23 Jul 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Apple</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-04.png"
-                                            alt></span></td>
-                                <td>22 Aug 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Amazon</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-05.png"
-                                            alt></span></td>
-                                <td>21 Sep 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Woodmart</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-06.png"
-                                            alt></span></td>
-                                <td>20 Sep 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Versace</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-07.png"
-                                            alt></span></td>
-                                <td>20 Sep 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Lava</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-08.png"
-                                            alt></span></td>
-                                <td>20 Sep 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Bently</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-09.png"
-                                            alt></span></td>
-                                <td>20 Sep 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>Nilkamal</td>
-                                <td><span class="d-flex"><img
-                                            src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/brand/brand-icon-10.png"
-                                            alt></span></td>
-                                <td>20 Sep 2023</td>
-                                <td><span class="badge badge-linesuccess">Active</span></td>
-                                <td class="action-table-data">
-                                    <div class="edit-delete-action">
-                                        <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-brand">
-                                            <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

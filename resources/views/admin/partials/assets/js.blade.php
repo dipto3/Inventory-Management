@@ -139,6 +139,36 @@
     });
 </script>
 
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.editvariantbtn', function() {
+            var variant_id = $(this).val();
+            $('#editVariant').modal('show');
+            $.ajax({
+                type: "GET",
+                url: "variant/" + variant_id + "/edit",
+                success: function(response) {
+                    // console.log(response);
+                    $('#variant_id').val(response.variant.id); 
+                $('#name').val(response.variant.name);
+                    $('#status').val(response.variant.status);
+                    var values = response.variant.variant_values.map(function(value) {
+                    return value.value;
+                }).join(', ');
+                // console.log(values);
+                // $('#variant_values').val(values); 
+                var $variantValues = $('#variant_values');
+                $variantValues.tagsinput('removeAll'); // Clear current values if any
+                $variantValues.tagsinput('add', values); 
+                
+
+                }
+            })
+
+        });
+    });
+</script>
+
 
 
 </script>

@@ -1,4 +1,4 @@
-<div class="modal fade" id="edit-units">
+<div class="modal fade" id="editVariant">
     <div class="modal-dialog modal-dialog-centered custom-modal-two">
         <div class="modal-content">
             <div class="page-wrapper-new p-0">
@@ -12,30 +12,33 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body">
-                        <form
-                            action="https://dreamspos.dreamstechnologies.com/html/template/varriant-attributes.html">
+                        <form action="{{ route('variant.update',$variant->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="variant_id" id="variant_id" class="form-control">
                             <div class="mb-3">
                                 <label class="form-label">Name</label>
-                                <input type="text" class="form-control" value="Piece">
+                                <input type="text" name="name" id="name" class="form-control">
                             </div>
                             <div class="input-blocks">
-                                <label class="form-label">Variant</label>
-                                <input class="input-tags form-control" type="text" data-role="tagsinput"
-                                    name="specialist" value="S,M,XL">
+                                <label class="form-label">Variant Values</label>
+                                <input type="text" name="values" id="variant_values" class="form-control" data-role="tagsinput">
                                 <span class="tag-text">Enter value separated by comma</span>
                             </div>
-                            <div class="mb-0">
-                                <div
-                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                    <span class="status-label">Status</span>
-                                    <input type="checkbox" id="user3" class="check" checked>
-                                    <label for="user3" class="checktoggle"></label>
-                                </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select selected class="select" id="status" name="status" required>
+
+                                    <option value="1" @if (old('status') == '1') selected @endif>Active
+                                    </option>
+                                    <option value="0" @if (old('status') == '0') selected @endif>Inactive
+                                    </option>
+                                </select>
                             </div>
                             <div class="modal-footer-btn">
                                 <button type="button" class="btn btn-cancel me-2"
                                     data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-submit">Save Changes</button>
+                                <button type="submit" class="btn btn-submit">Create Attributes</button>
                             </div>
                         </form>
                     </div>

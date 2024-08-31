@@ -63,11 +63,11 @@ class VariantController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $variant = Variant::with('variantValues')->findOrFail($id);
+        return response()->json(['variant' => $variant]);
     }
-
     /**
      * Update the specified resource in storage.
      */

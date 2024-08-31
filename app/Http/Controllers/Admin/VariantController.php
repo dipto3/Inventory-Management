@@ -73,7 +73,27 @@ class VariantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $variant_id = $request->variant_id;
+        $variant = Variant::findOrFail($variant_id);
+        $variant->update([
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
+    
+        $valuesArray = array_map('trim', explode(',', $request->input('values')));
+       
+        $variant->variantValues()->delete();
+    
+        foreach ($valuesArray as $value) {
+            if (!empty($value)) {
+                VariantValue::create([
+                    'variant_id' => $variant->id,
+                    'value' => $value,
+                ]);
+            }
+        }
+        return redirect()->back();
+
     }
 
     /**

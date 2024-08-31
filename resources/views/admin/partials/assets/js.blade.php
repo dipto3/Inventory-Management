@@ -160,8 +160,6 @@
                 var $variantValues = $('#variant_values');
                 $variantValues.tagsinput('removeAll'); // Clear current values if any
                 $variantValues.tagsinput('add', values); 
-                
-
                 }
             })
 

@@ -23,10 +23,10 @@
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Inventory</h6>
                     <ul>
-                        <li><a href="product-list.html"><i
+                        <li><a href="{{ route('product.index') }}"><i
                                     data-feather="box"></i><span>Products</span></a></li>
-                        <li><a href="add-product.html"><i
-                                    data-feather="plus-square"></i><span>Create Product</span></a></li>
+                        {{-- <li><a href="add-product.html"><i
+                                    data-feather="plus-square"></i><span>Create Product</span></a></li> --}}
                         <li><a href=""><i
                                     data-feather="codesandbox"></i><span>Expired Products</span></a></li>
                         <li><a href=""><i

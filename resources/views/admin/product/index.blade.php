@@ -35,7 +35,7 @@
                 </li>
             </ul>
             <div class="page-btn">
-                <a href="https://dreamspos.dreamstechnologies.com/html/template/add-product.html"
+                <a href="{{ route('product.create') }}"
                     class="btn btn-added"><i data-feather="plus-circle" class="me-2"></i>Add New Product</a>
             </div>
             <div class="page-btn import">

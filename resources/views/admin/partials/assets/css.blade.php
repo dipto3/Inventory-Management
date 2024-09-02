@@ -7,7 +7,7 @@
         href="{{ asset('admin/assets/css/bootstrap-datetimepicker.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('admin/assets/css/animate.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('admin/assets/css/feather.css') }}">
     <link rel="stylesheet"
         href="{{ asset('admin/assets/plugins/select2/css/select2.min.css') }}">
 

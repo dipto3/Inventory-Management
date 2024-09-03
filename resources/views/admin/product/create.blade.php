@@ -376,9 +376,9 @@
                                                                     class="form-control variant-select select-option"
                                                                     id="colorSelect">
                                                                     <option>Choose</option>
-                                                                    <option>Color</option>
-                                                                    <option value="red">Red</option>
-                                                                    <option value="black">Black</option>
+                                                                   @foreach ($variants as $variant)
+                                                                   <option>{{ $variant->name }}</option>
+                                                                   @endforeach
                                                                 </select>
                                                             </div>
                                                             <div class="col-lg-2 col-sm-2 col-2 ps-0">

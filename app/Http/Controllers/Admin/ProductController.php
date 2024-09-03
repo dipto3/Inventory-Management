@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -20,7 +21,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.product.create');
+        $variants = Variant::with('variantValues')->get();
+
+        return view('admin.product.create',compact('variants'));
+    }
+
+    public function ed()
+    {
+        return view('admin.product.edit');
     }
 
     /**
@@ -44,7 +52,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admin.product.edit');
     }
 
     /**

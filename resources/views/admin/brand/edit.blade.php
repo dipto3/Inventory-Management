@@ -36,7 +36,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Logo</label>
-                                <img src="{{$brand->getFirstMediaUrl()}}"
+                                <img src="{{$brand->getFirstMediaUrl() }}"
                                 class="" alt="" />
                                 <input type="file" id="logo" name="logo" class="form-control">
                             </div>

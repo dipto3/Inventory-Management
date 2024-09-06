@@ -12,7 +12,8 @@
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body new-employee-field">
-                        <form action="{{ route('brand.update', $brand->id ??'') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('brand.update', $brand->id ?? '') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="brand_id" id="brand_id" class="form-control">
@@ -36,8 +37,9 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Logo</label>
-                                <img src="{{$brand->getFirstMediaUrl() }}"
-                                class="" alt="" />
+                                @isset($brand)
+                                    <img src="{{ $brand->getFirstMediaUrl() ?? '' }}" class="" alt="" />
+                                @endisset
                                 <input type="file" id="logo" name="logo" class="form-control">
                             </div>
                             <div class="modal-footer-btn">

@@ -34,7 +34,6 @@ class StoreController extends Controller
             $validated = $request->validate([
                 'code' => 'required|unique:stores,code',
                 'status' => 'required|in:1,0',
-                // Add other fields as necessary
             ]);
 
             Store::create($validated);

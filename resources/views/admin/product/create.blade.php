@@ -398,7 +398,7 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Variant Combination</th>
-                                                                    <th>SKU</th>
+                                                                    <th>Barcode</th>
                                                                     <th>Quantity</th>
                                                                     <th>Price</th>
                                                                     <th>Image</th>
@@ -649,13 +649,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const combinationText = combination.map(v => `${v.name}: ${v.value}`).join(', ');
             row.innerHTML = `
                 <td>
-                    <input type="hidden" name="products[${index}][combination]" value="${combinationText}">
+                    <input type="hidden" name="child_products[${index}][combination]" value="${combinationText}">
                     ${combinationText}
                 </td>
-                <td><input type="text" class="form-control" name="products[${index}][sku]" placeholder="SKU"></td>
-                <td><input type="number" class="form-control" name="products[${index}][quantity]" placeholder="Quantity"></td>
-                <td><input type="number" class="form-control" name="products[${index}][price]" placeholder="Price"></td>
-                <td><input type="file" class="form-control" name="products[${index}][image]" accept="image/*"></td>
+                <td><input type="text" class="form-control" name="child_products[${index}][barcode]" placeholder="Barcode"></td>
+                <td><input type="number" class="form-control" name="child_products[${index}][quantity]" placeholder="Quantity"></td>
+                <td><input type="number" class="form-control" name="child_products[${index}][price]" placeholder="Price"></td>
+                <td><input type="file" class="form-control" name="child_products[${index}][image]" accept="image/*"></td>
             `;
             variantTableBody.appendChild(row);
         });

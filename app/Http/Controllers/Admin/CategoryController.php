@@ -41,7 +41,7 @@ class CategoryController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Category created successfully.');
     }
 
     /**
@@ -89,6 +89,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->back();
+        return redirect()->back()->with('error', 'Category Deleted successfully.');
     }
 }

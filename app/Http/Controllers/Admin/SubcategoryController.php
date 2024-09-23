@@ -42,7 +42,7 @@ class SubcategoryController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Subcategory created successfully.');
     }
 
     /**
@@ -91,6 +91,6 @@ class SubcategoryController extends Controller
     public function destroy(Subcategory $subcategory)
     {
         $subcategory->delete();
-        return redirect()->back();
+        return redirect()->back()->with('error', 'Subcategory Deleted successfully.');
     }
 }

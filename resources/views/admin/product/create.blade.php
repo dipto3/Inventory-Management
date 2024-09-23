@@ -24,7 +24,8 @@
                 </ul>
             </div>
 
-            <form action="">
+            <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
                 <div class="card">
                     <div class="card-body add-product pb-0">
                         <div class="accordion-card-one accordion" id="accordionExample">
@@ -47,7 +48,7 @@
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Store</label>
-                                                    <select class="select">
+                                                    <select class="select" name="store">
                                                         <option>Choose</option>
                                                         <option>Thomas</option>
                                                         <option>Rasmussen</option>
@@ -58,7 +59,7 @@
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Warehouse</label>
-                                                    <select class="select">
+                                                    <select class="select" name="warehouse">
                                                         <option>Choose</option>
                                                         <option>Legendary</option>
                                                         <option>Determined</option>
@@ -71,22 +72,20 @@
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Product Name</label>
-                                                    <input type="text" class="form-control">
+                                                    <input type="text" name="name" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Slug</label>
-                                                    <input type="text" class="form-control">
+                                                    <input type="text" name="slug" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="input-blocks add-product list">
                                                     <label>SKU</label>
-                                                    <input type="text" class="form-control list" placeholder="Enter SKU">
-                                                    <button type="submit" class="btn btn-primaryadd">
-                                                        Generate Code
-                                                    </button>
+                                                    <input type="text" name="sku" class="form-control list" placeholder="Enter SKU">
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -96,30 +95,35 @@
                                                     <div class="mb-3 add-product">
                                                         <div class="add-newplus">
                                                             <label class="form-label">Category</label>
-                                                            <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                            {{-- <a href="javascript:void(0);" data-bs-toggle="modal"
                                                                 data-bs-target="#add-units-category"><i
                                                                     data-feather="plus-circle"
                                                                     class="plus-down-add"></i><span>Add
-                                                                    New</span></a>
+                                                                    New</span></a> --}}
                                                         </div>
-                                                        <select class="select">
+                                                        <select class="select" name="category_id">
                                                             <option>Choose</option>
-                                                            <option>Lenovo</option>
-                                                            <option>Electronics</option>
+                                                            @foreach ($categories as $category)
+                                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                            @endforeach
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4 col-sm-6 col-12">
                                                     <div class="mb-3 add-product">
                                                         <label class="form-label">Sub Category</label>
-                                                        <select class="select">
+                                                        <select class="select" name="subcategory_id">
                                                             <option>Choose</option>
+                                                            @foreach ($subcategories as $subcategory)
+                                                                <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                                            @endforeach
                                                             <option>Lenovo</option>
                                                             <option>Electronics</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4 col-sm-6 col-12">
+                                                {{-- <div class="col-lg-4 col-sm-6 col-12">
                                                     <div class="mb-3 add-product">
                                                         <label class="form-label">Sub Sub Category</label>
                                                         <select class="select">
@@ -129,7 +133,7 @@
                                                             <option>Shoes</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                         <div class="add-product-new">
@@ -144,7 +148,7 @@
                                                                     class="plus-down-add"></i><span>Add
                                                                     New</span></a>
                                                         </div>
-                                                        <select class="select">
+                                                        <select class="select" name="brand">
                                                             <option>Choose</option>
                                                             <option>Nike</option>
                                                             <option>Bolt</option>
@@ -160,7 +164,7 @@
                                                                     class="plus-down-add"></i><span>Add
                                                                     New</span></a>
                                                         </div>
-                                                        <select class="select">
+                                                        <select class="select" name="unit">
                                                             <option>Choose</option>
                                                             <option>Kg</option>
                                                             <option>Pc</option>
@@ -170,7 +174,7 @@
                                                 <div class="col-lg-4 col-sm-6 col-12">
                                                     <div class="mb-3 add-product">
                                                         <label class="form-label">Selling Type</label>
-                                                        <select class="select">
+                                                        <select class="select" name="selling_type">
                                                             <option>Choose</option>
                                                             <option>Transactional selling</option>
                                                             <option>Solution selling</option>
@@ -196,9 +200,7 @@
                                                     <label>Item Code</label>
                                                     <input type="text" class="form-control list"
                                                         placeholder="Please Enter Item Code">
-                                                    <button type="submit" class="btn btn-primaryadd">
-                                                        Generate Code
-                                                    </button>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -206,7 +208,7 @@
                                         <div class="col-lg-12">
                                             <div class="input-blocks summer-description-box transfer mb-3">
                                                 <label>Description</label>
-                                                <textarea class="form-control h-100" rows="5"></textarea>
+                                                <textarea class="form-control h-100" rows="5" name="description"></textarea>
                                                 <p class="mt-1">Maximum 60 Characters</p>
                                             </div>
                                         </div>
@@ -235,47 +237,32 @@
                                     <div class="accordion-body">
                                         <div class="input-blocks add-products">
                                             <label class="d-block">Product Type</label>
-                                            <div class="single-pill-product">
-                                                <ul class="nav nav-pills" id="pills-tab1" role="tablist">
-                                                    <li class="nav-item" role="presentation">
-                                                        <span class="custom_radio me-4 mb-0 active" id="pills-home-tab"
-                                                            data-bs-toggle="pill" data-bs-target="#pills-home"
-                                                            role="tab" aria-controls="pills-home"
-                                                            aria-selected="true">
-                                                            <input type="radio" class="form-control" name="payment">
-                                                            <span class="checkmark"></span> Single Product</span>
-                                                    </li>
-                                                    <li class="nav-item" role="presentation">
-                                                        <span class="custom_radio me-2 mb-0" id="pills-profile-tab"
-                                                            data-bs-toggle="pill" data-bs-target="#pills-profile"
-                                                            role="tab" aria-controls="pills-profile"
-                                                            aria-selected="false">
-                                                            <input type="radio" class="form-control" name="sign">
-                                                            <span class="checkmark"></span> Variable Product</span>
-                                                    </li>
-                                                </ul>
+                                            <div class="mb-3">
+                                                <select class="form-control" name="product_type" id="productType">
+                                                    <option value="single">Single Product</option>
+                                                    <option value="variable">Variable Product</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="tab-content" id="pills-tabContent">
-                                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
-                                                aria-labelledby="pills-home-tab">
+                                        <div class="tab-content" id="productTypeContent">
+                                            <div class="tab-pane fade show active" id="singleProduct" role="tabpanel">
                                                 <div class="row">
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Quantity</label>
-                                                            <input type="text" class="form-control">
+                                                            <input type="text" class="form-control" name="quantity">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Price</label>
-                                                            <input type="text" class="form-control">
+                                                            <input type="text" class="form-control" name="price">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Tax Type</label>
-                                                            <select class="select">
+                                                            <select class="select" name="tax_type">
                                                                 <option>Exclusive</option>
                                                                 <option>Sales Tax</option>
                                                             </select>
@@ -286,7 +273,7 @@
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Discount Type</label>
-                                                            <select class="select">
+                                                            <select class="select" name="discount_type">
                                                                 <option>Choose</option>
                                                                 <option>Percentage</option>
                                                                 <option>Cash</option>
@@ -296,80 +283,25 @@
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Discount Value</label>
-                                                            <input type="text" placeholder="Choose">
+                                                            <input type="text" placeholder="Choose" name="discount_value">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Quantity Alert</label>
-                                                            <input type="text" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="accordion-card-one accordion" id="accordionExample3">
-                                                    <div class="accordion-item">
-                                                        <div class="accordion-header" id="headingThree">
-                                                            <div class="accordion-button" data-bs-toggle="collapse"
-                                                                data-bs-target="#collapseThree"
-                                                                aria-controls="collapseThree">
-                                                                <div class="addproduct-icon list">
-                                                                    <h5><i data-feather="image"
-                                                                            class="add-info"></i><span>Images</span>
-                                                                    </h5>
-                                                                    <a href="javascript:void(0);"><i
-                                                                            data-feather="chevron-down"
-                                                                            class="chevron-down-add"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div id="collapseThree" class="accordion-collapse collapse show"
-                                                            aria-labelledby="headingThree"
-                                                            data-bs-parent="#accordionExample3">
-                                                            <div class="accordion-body">
-                                                                <div class="text-editor add-list add">
-                                                                    <div class="col-lg-12">
-                                                                        <div class="add-choosen">
-                                                                            <div class="input-blocks">
-                                                                                <div class="image-upload">
-                                                                                    <input type="file">
-                                                                                    <div class="image-uploads">
-                                                                                        <i data-feather="plus-circle"
-                                                                                            class="plus-down-add me-0"></i>
-                                                                                        <h4>Add Images</h4>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="phone-img">
-                                                                                <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/phone-add-2.png"
-                                                                                    alt="image">
-                                                                                <a href="javascript:void(0);"><i
-                                                                                        data-feather="x"
-                                                                                        class="x-square-add remove-product"></i></a>
-                                                                            </div>
-                                                                            <div class="phone-img">
-                                                                                <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/phone-add-1.png"
-                                                                                    alt="image">
-                                                                                <a href="javascript:void(0);"><i
-                                                                                        data-feather="x"
-                                                                                        class="x-square-add remove-product"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <input type="text" class="form-control" name="quantity_alert">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane fade" id="pills-profile" role="tabpanel"
-                                                aria-labelledby="pills-profile-tab">
+                                            <div class="tab-pane fade" id="variableProduct" role="tabpanel">
                                                 <div class="row select-color-add">
                                                     <div class="col-lg-6 col-sm-6 col-12">
                                                         <div id="variant-attributes">
                                                             <label>Variant Attributes</label>
                                                             <div class="row">
                                                                 <div class="col-lg-10 col-sm-10 col-10">
-                                                                    <select class="form-control select2" id="variantSelect" multiple>
+                                                                    <select class="form-control select2" id="variantSelect" multiple name="variant_ids[]">
                                                                         <option value="">Choose</option>
                                                                         @foreach ($variants as $variant)
                                                                             <option value="{{ $variant->id }}"
@@ -490,6 +422,60 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="accordion-card-one accordion" id="accordionExample3">
+                                                    <div class="accordion-item">
+                                                        <div class="accordion-header" id="headingThree">
+                                                            <div class="accordion-button" data-bs-toggle="collapse"
+                                                                data-bs-target="#collapseThree"
+                                                                aria-controls="collapseThree">
+                                                                <div class="addproduct-icon list">
+                                                                    <h5><i data-feather="image"
+                                                                            class="add-info"></i><span>Images</span>
+                                                                    </h5>
+                                                                    <a href="javascript:void(0);"><i
+                                                                            data-feather="chevron-down"
+                                                                            class="chevron-down-add"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div id="collapseThree" class="accordion-collapse collapse show"
+                                                            aria-labelledby="headingThree"
+                                                            data-bs-parent="#accordionExample3">
+                                                            <div class="accordion-body">
+                                                                <div class="text-editor add-list add">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="add-choosen">
+                                                                            <div class="input-blocks">
+                                                                                <div class="image-upload">
+                                                                                    <input type="file" name="image[]" multiple>
+                                                                                    <div class="image-uploads">
+                                                                                        <i data-feather="plus-circle"
+                                                                                            class="plus-down-add me-0"></i>
+                                                                                        <h4>Add Images</h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="phone-img">
+                                                                                <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/phone-add-2.png"
+                                                                                    alt="image">
+                                                                                <a href="javascript:void(0);"><i
+                                                                                        data-feather="x"
+                                                                                        class="x-square-add remove-product"></i></a>
+                                                                            </div>
+                                                                            <div class="phone-img">
+                                                                                <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/phone-add-1.png"
+                                                                                    alt="image">
+                                                                                <a href="javascript:void(0);"><i
+                                                                                        data-feather="x"
+                                                                                        class="x-square-add remove-product"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -556,6 +542,9 @@ type="3e7d17d336227172fbef6778-text/javascript"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const productTypeSelect = document.getElementById('productType');
+    const singleProductPane = document.getElementById('singleProduct');
+    const variableProductPane = document.getElementById('variableProduct');
     const variantSelect = $('#variantSelect');
     const generateVariantsBtn = document.getElementById('generateVariants');
     const variantValuesContainer = document.getElementById('variant-values-container');
@@ -579,6 +568,16 @@ document.addEventListener('DOMContentLoaded', function() {
     generateVariantsBtn.addEventListener('click', function(event) {
         event.preventDefault();
         generateVariantCombinations();
+    });
+
+    productTypeSelect.addEventListener('change', function() {
+        if (this.value === 'single') {
+            singleProductPane.classList.add('show', 'active');
+            variableProductPane.classList.remove('show', 'active');
+        } else {
+            singleProductPane.classList.remove('show', 'active');
+            variableProductPane.classList.add('show', 'active');
+        }
     });
 
     function updateSelectedVariants() {
@@ -647,9 +646,11 @@ document.addEventListener('DOMContentLoaded', function() {
         combinations.forEach((combination, index) => {
             const row = document.createElement('tr');
             const combinationText = combination.map(v => `${v.name}: ${v.value}`).join(', ');
+            const variantIds = Object.keys(selectedVariants).join(',');
             row.innerHTML = `
                 <td>
                     <input type="hidden" name="child_products[${index}][combination]" value="${combinationText}">
+                    <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
                     ${combinationText}
                 </td>
                 <td><input type="text" class="form-control" name="child_products[${index}][barcode]" placeholder="Barcode"></td>

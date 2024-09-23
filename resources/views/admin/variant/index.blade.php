@@ -48,14 +48,7 @@
                                     class="feather-search"></i></a>
                         </div>
                     </div>
-                    <div class="search-path">
-                        <a class="btn btn-filter" id="filter_search">
-                            <i data-feather="filter" class="filter-icon"></i>
-                            <span><img
-                                    src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/icons/closes.svg"
-                                    alt="img"></span>
-                        </a>
-                    </div>
+                    
                     <div class="form-sort">
                         <i data-feather="sliders" class="info-img"></i>
                         <select class="select">
@@ -63,48 +56,6 @@
                             <option>Newest</option>
                             <option>Oldest</option>
                         </select>
-                    </div>
-                </div>
-
-                <div class="card" id="filter_inputs">
-                    <div class="card-body pb-0">
-                        <div class="row">
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="input-blocks">
-                                    <i data-feather="zap" class="info-img"></i>
-                                    <select class="select">
-                                        <option>Choose Variant</option>
-                                        <option>Size (T-shirts)</option>
-                                        <option>Size (Shoes)</option>
-                                        <option>Color</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="input-blocks">
-                                    <i data-feather="calendar" class="info-img"></i>
-                                    <div class="input-groupicon">
-                                        <input type="text" class="datetimepicker" placeholder="Choose Date">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12">
-                                <div class="input-blocks">
-                                    <i data-feather="stop-circle" class="info-img"></i>
-                                    <select class="select">
-                                        <option>Choose Status</option>
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 col-12 ms-auto">
-                                <div class="input-blocks">
-                                    <a class="btn btn-filters ms-auto"> <i data-feather="search"
-                                            class="feather-search"></i> Search </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

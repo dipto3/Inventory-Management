@@ -407,7 +407,7 @@
                                                         <label>Manufactured Date</label>
                                                         <div class="input-groupicon calender-input">
                                                             <i data-feather="calendar" class="info-img"></i>
-                                                            <input type="text" class="datetimepicker"
+                                                            <input type="text" class="datetimepicker" name="manufactured_date"
                                                                 placeholder="Choose Date">
                                                         </div>
                                                     </div>
@@ -417,7 +417,7 @@
                                                         <label>Expiry On</label>
                                                         <div class="input-groupicon calender-input">
                                                             <i data-feather="calendar" class="info-img"></i>
-                                                            <input type="text" class="datetimepicker"
+                                                            <input type="text" class="datetimepicker" name="expired_date"
                                                                 placeholder="Choose Date">
                                                         </div>
                                                     </div>

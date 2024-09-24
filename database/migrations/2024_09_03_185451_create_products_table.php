@@ -21,8 +21,11 @@ return new class extends Migration
             $table->string('unit');
             $table->string('brand');
             $table->string('selling_type');
+            $table->string('item_code')->nullable();
             $table->text('description')->nullable();
-            $table->tinyInteger('status')->default(1); 
+            $table->tinyInteger('status')->default(1);
+            $table->date('manufactured_date')->nullable();
+            $table->date('expired_date')->nullable();
             $table->timestamps();
         });
     }

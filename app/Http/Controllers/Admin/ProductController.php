@@ -60,6 +60,8 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'subcategory_id' => 'nullable|exists:subcategories,id',
             'product_type' => 'required|in:single,variable',
+            'manufactured_date' => 'nullable|date',
+            'expired_date' => 'nullable|date',
             // Add other fields as needed
         ]);
 
@@ -70,6 +72,9 @@ class ProductController extends Controller
             'warehouse' => $validatedData['warehouse'],
             'sku' => $validatedData['sku'] ?? Str::random(10),
             'slug' => $validatedData['slug'] ?? Str::slug($validatedData['name']),
+            'item_code' => $validatedData['item_code'],
+            'manufactured_date' => $validatedData['manufactured_date'],
+            'expired_date' => $validatedData['expired_date'],
             'unit' => $validatedData['unit'],
             'brand' => $validatedData['brand'],
             'selling_type' => $validatedData['selling_type'],

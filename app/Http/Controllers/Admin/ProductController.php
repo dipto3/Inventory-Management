@@ -21,7 +21,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('admin.product.index');
+        $products = Product::with('variants', 'prices')->get();
+        return view('admin.product.index', compact('products'));
     }
 
     /**
@@ -62,6 +63,7 @@ class ProductController extends Controller
             'product_type' => 'required|in:single,variable',
             'manufactured_date' => 'nullable|date',
             'expired_date' => 'nullable|date',
+            'item_code' => 'nullable',
             // Add other fields as needed
         ]);
 
@@ -83,7 +85,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
-                $product->addMedia($image)->toMediaCollection('product');
+                $product->addMedia($image)->toMediaCollection();
             }
         }
 
@@ -147,6 +149,7 @@ class ProductController extends Controller
                 'quantity' => $childProduct['quantity'],
                 'barcode' => $childProduct['barcode'] ?? Str::random(13),
                 'variant_value_name' => $childProduct['combination'],
+                'variant_value_price' => $childProduct['price'],
             ]);
 
             // Create product price

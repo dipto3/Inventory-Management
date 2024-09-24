@@ -198,7 +198,7 @@
                                             <div class="col-lg-6 col-sm-6 col-12">
                                                 <div class="input-blocks add-product list">
                                                     <label>Item Code</label>
-                                                    <input type="text" class="form-control list"
+                                                    <input type="text" class="form-control list" name="item_code"
                                                         placeholder="Please Enter Item Code">
                                                     
                                                 </div>

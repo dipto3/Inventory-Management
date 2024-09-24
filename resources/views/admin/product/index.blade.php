@@ -148,57 +148,68 @@
                                 <th>SKU</th>
                                 <th>Category</th>
                                 <th>Brand</th>
-                                <th>Price</th>
+                                {{-- <th>Price</th> --}}
                                 <th>Unit</th>
-                                <th>Qty</th>
-                                <th>Created by</th>
+                              
+                                <th>Variant</th>
                                 <th class="no-sort">Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($products as $product)
                             <tr>
                                 
                                 <td>
                                     <div class="productimgname">
                                         <a href="javascript:void(0);" class="product-img stock-img">
-                                            <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/products/stock-img-01.png"
+                                            <img src="{{ $product->getFirstMediaUrl() }}"
                                                 alt="product">
                                         </a>
-                                        <a href="javascript:void(0);">Lenovo 3rd Generation </a>
+                                        <a href="javascript:void(0);">{{ $product->name }} </a>
                                     </div>
                                 </td>
-                                <td>PT001 </td>
-                                <td>Laptop</td>
-                                <td>Lenovo</td>
-                                <td>$12500.00</td>
-                                <td>Pc</td>
-                                <td>100</td>
+                                <td>{{ $product->sku }} </td>
+                                <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>
+                                <td>{{ $product->brand}}</td>
+                                {{-- <td></td> --}}
+                                <td>{{ $product->unit}}</td>
+                              
                                 <td>
-                                    <div class="userimgname">
-                                        <a href="javascript:void(0);" class="product-img">
-                                            <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/users/user-30.jpg"
-                                                alt="product">
-                                        </a>
-                                        <a href="javascript:void(0);">Arroon</a>
+                                    <div class="row">
+                                        @foreach ($product->variants as $variant)
+                                        <div class="col-md-4 mb-2">
+                                            <div class="card" style="padding: 0.5rem; margin: 0.5rem;">
+                                                <div class="card-body p-1">
+                                                    <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ $variant->variant_value_name }}</h6>
+                                                    <p class="card-text mb-0" style="font-size: 0.8rem;">
+                                                        Qty: {{ $variant->quantity }} | Price: &#2547; {{ $variant->variant_value_price }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
                                     </div>
                                 </td>
-                                <td class="action-table-data">
+                                <td class="">
                                     <div class="edit-delete-action">
-                                        <a class="me-2 edit-icon  p-2"
-                                            href="https://dreamspos.dreamstechnologies.com/html/template/product-details.html">
-                                            <i data-feather="eye" class="feather-eye"></i>
-                                        </a>
-                                        <a class="me-2 p-2"
-                                            href="https://dreamspos.dreamstechnologies.com/html/template/edit-product.html">
+                                        <button type="button" class="btn btn-primary me-2 p-2 editbrandbtn"
+                                            value="{{ $product->id }}">
                                             <i data-feather="edit" class="feather-edit"></i>
-                                        </a>
-                                        <a class="confirm-text p-2" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-trash-2"></i>
-                                        </a>
+                                        </button>
+                                        
+                                        <form action="{{ route('product.destroy', $product->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn btn-xs btn-danger btn-flat show_confirm"
+                                                data-toggle="tooltip" title='Delete'><i data-feather="trash-2"
+                                                    class="feather-trash-2"></i></button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
-                            
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

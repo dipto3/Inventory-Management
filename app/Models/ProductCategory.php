@@ -9,4 +9,19 @@ class ProductCategory extends Model
 {
     use HasFactory;
     protected $guarded =[''];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
 }

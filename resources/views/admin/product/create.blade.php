@@ -50,10 +50,13 @@
                                                     <label class="form-label">Store</label>
                                                     <select class="select" name="store">
                                                         <option>Choose</option>
-                                                        <option>Thomas</option>
-                                                        <option>Rasmussen</option>
-                                                        <option>Fred john</option>
+                                                        <option value="Thomas" {{ old('store') == 'Thomas' ? 'selected' : '' }}>Thomas</option>
+                                                        <option value="Rasmussen" {{ old('store') == 'Rasmussen' ? 'selected' : '' }}>Rasmussen</option>
+                                                        <option value="Fred john" {{ old('store') == 'Fred john' ? 'selected' : '' }}>Fred john</option>
                                                     </select>
+                                                    @error('store')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-sm-6 col-12">
@@ -61,10 +64,13 @@
                                                     <label class="form-label">Warehouse</label>
                                                     <select class="select" name="warehouse">
                                                         <option>Choose</option>
-                                                        <option>Legendary</option>
-                                                        <option>Determined</option>
-                                                        <option>Sincere</option>
+                                                        <option value="Legendary" {{ old('warehouse') == 'Legendary' ? 'selected' : '' }}>Legendary</option>
+                                                        <option value="Determined" {{ old('warehouse') == 'Determined' ? 'selected' : '' }}>Determined</option>
+                                                        <option value="Sincere" {{ old('warehouse') == 'Sincere' ? 'selected' : '' }}>Sincere</option>
                                                     </select>
+                                                    @error('warehouse')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -72,20 +78,28 @@
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Product Name</label>
-                                                    <input type="text" name="name" class="form-control">
+                                                    <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+                                                    @error('name')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Slug</label>
-                                                    <input type="text" name="slug" class="form-control">
+                                                    <input type="text" name="slug" class="form-control" value="{{ old('slug') }}">
+                                                    @error('slug')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="input-blocks add-product list">
                                                     <label>SKU</label>
-                                                    <input type="text" name="sku" class="form-control list" placeholder="Enter SKU">
-                                                    
+                                                    <input type="text" name="sku" class="form-control list" placeholder="Enter SKU" value="{{ old('sku') }}">
+                                                    @error('sku')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -250,7 +264,8 @@
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Quantity</label>
-                                                            <input type="text" class="form-control" name="quantity">
+                                                            <input type="text" class="form-control" name="quantity" value="{{ old('quantity') }}">
+                                                            
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-sm-6 col-12">
@@ -289,7 +304,8 @@
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Quantity Alert</label>
-                                                            <input type="text" class="form-control" name="quantity_alert">
+                                                            <input type="text" class="form-control" name="quantity_alert" value="{{ old('quantity_alert') }}">
+                                                           
                                                         </div>
                                                     </div>
                                                 </div>
@@ -396,12 +412,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-4 col-sm-6 col-12">
-                                                    <div class="input-blocks add-product">
-                                                        <label>Quantity Alert</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="col-lg-4 col-sm-6 col-12">
                                                     <div class="input-blocks">
                                                         <label>Manufactured Date</label>

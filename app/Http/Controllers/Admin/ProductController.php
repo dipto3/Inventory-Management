@@ -67,6 +67,8 @@ class ProductController extends Controller
             'manufactured_date' => 'nullable|date',
             'expired_date' => 'nullable|date',
             'item_code' => 'nullable',
+            'quantity' => 'required|integer|min:0',
+            'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
         ]);
 
         // Create the product

@@ -198,7 +198,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-lg-6 col-sm-6 col-12">
+                                            {{-- <div class="col-lg-6 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Barcode Symbology</label>
                                                     <select class="select">
@@ -208,7 +208,7 @@
                                                         <option>Code36</option>
                                                     </select>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-lg-6 col-sm-6 col-12">
                                                 <div class="input-blocks add-product list">
                                                     <label>Item Code</label>
@@ -346,7 +346,7 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>Variant Combination</th>
-                                                                    <th>Barcode</th>
+                                                                    
                                                                     <th>Quantity</th>
                                                                     <th>Price</th>
                                                                     <th>Quantity Alert</th>
@@ -664,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
                     ${combinationText}
                 </td>
-                <td><input type="text" class="form-control" name="child_products[${index}][barcode]" placeholder="Barcode"></td>
+               
                 <td><input type="number" class="form-control" name="child_products[${index}][quantity]" placeholder="Quantity"></td>
                 <td><input type="number" class="form-control" name="child_products[${index}][price]" placeholder="Price"></td>
                

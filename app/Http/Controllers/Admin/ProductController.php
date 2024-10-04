@@ -124,7 +124,7 @@ class ProductController extends Controller
         $variant = ProductVariant::create([
             'product_id' => $product->id,
             'quantity' => $validatedData['quantity'],
-            'barcode' => $request->input('barcode') ?? Str::random(13),
+            'barcode' =>  Str::random(13),
             'quantity_alert' => $validatedData['quantity_alert'],
             // 'variant_value_price' => $validatedData['variant_value_price'],
            
@@ -156,7 +156,7 @@ class ProductController extends Controller
             $variant = ProductVariant::create([
                 'product_id' => $product->id,
                 'quantity' => $childProduct['quantity'],
-                'barcode' => $childProduct['barcode'] ?? Str::random(13),
+                'barcode' =>  Str::random(13),
                 'variant_value_name' => $childProduct['combination'],
                 // 'variant_value_price' => $childProduct['price'],
                  'quantity_alert' => $childProduct['quantity_alert'],

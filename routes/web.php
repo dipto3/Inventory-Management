@@ -40,5 +40,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('unit', UnitController::class);
     Route::resource('variant', VariantController::class);
     Route::resource('product', ProductController::class);
-    // Route::get('/product-ed',[ProductController::class,'ed'])->name('ed');
+    Route::get('/product-details/{productID}/{variantID}',[ProductController::class,'viewDetails'])->name('view.details');
 });

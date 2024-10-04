@@ -1,5 +1,7 @@
-<script src="{{ asset('admin/assets/js/jquery-3.7.1.min.js') }}"
-        type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
+<script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
 
 <script src="{{ asset('admin/assets/js/feather.min.js') }}"
         type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
@@ -12,8 +14,9 @@
 <script src="{{ asset('admin/assets/js/jquery.dataTables.min.js') }}"
         type="2bbd58bb513c72193d549e5f-text/javascript"></script>
 
-<script src="{{ asset('admin/assets/js/bootstrap.bundle.min.js') }}"
-        type="2c8d1b9e5f6705bf4267f265-text/javascript"></script>
+{{-- <script src="{{ asset('admin/assets/js/bootstrap.bundle.min.js') }}"
+        type="2c8d1b9e5f6705bf4267f265-text/javascript"></script> --}}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="{{ asset('admin/assets/js/moment.min.js') }}"
         type="2bbd58bb513c72193d549e5f-text/javascript"></script>
 
@@ -31,6 +34,7 @@
 <script
         src="{{ asset('admin/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') }}"
         type="ad4963607922a273fda414b4-text/javascript"></script>
+        
 <script src="{{ asset('admin/assets/plugins/select2/js/select2.min.js') }}"
         type="2bbd58bb513c72193d549e5f-text/javascript"></script>
 <script src="{{ asset('admin/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}"

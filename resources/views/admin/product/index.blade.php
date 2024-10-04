@@ -177,7 +177,7 @@
                                     <div class="row">
                                         @foreach ($product->variants as $variant)
                                         <div class="col-md-4 mb-2">
-                                            <a href="" class="card-link" title="view">
+                                            <a href="{{ route('view.details',[$product->id,$variant->id]) }}" class="card-link" title="view">
                                             <div class="card" style="padding: 0.5rem; margin: 0.5rem;">
                                                 <div class="card-body p-1">
                                                     <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ $variant->variant_value_name }}</h6>

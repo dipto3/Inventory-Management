@@ -199,10 +199,15 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id) {}
+
+    public function viewDetails(string $productID, $variantID)
     {
-        //
+        $product = Product::with('variants', 'prices')->findOrFail($productID);
+        $variant = ProductVariant::findOrFail($variantID);
+        return view('admin.product.view-details', compact('variant', 'product'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

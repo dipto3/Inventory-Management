@@ -8,7 +8,7 @@
             <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/logo-white.png" alt>
         </a>
         <a href="" class="logo-small">
-            <img src="https://dreamspos.dreamstechnologies.com/html/template/assets/img/logo-small.png" alt>
+            <img src="" alt>
         </a>
         <a id="toggle_btn" href="javascript:void(0);">
             <i data-feather="chevrons-left" class="feather-16"></i>

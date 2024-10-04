@@ -11,6 +11,7 @@ use App\Models\ProductCategory;
 use App\Models\ProductPrice;
 use App\Models\Subcategory;
 use App\Models\VariantValue;
+use App\Rules\QuantityAlertRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -24,6 +25,8 @@ class ProductController extends Controller
         $products = Product::with('variants', 'prices')->get();
         return view('admin.product.index', compact('products'));
     }
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -113,6 +116,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'quantity' => 'required|integer|min:0',
             'price' => 'required|numeric|min:0',
+            'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
         ]);
 
         // Create product variant
@@ -120,6 +124,7 @@ class ProductController extends Controller
             'product_id' => $product->id,
             'quantity' => $validatedData['quantity'],
             'barcode' => $request->input('barcode') ?? Str::random(13),
+            'quantity_alert' => $validatedData['quantity_alert'],
             // 'variant_value_price' => $validatedData['variant_value_price'],
            
         ]);
@@ -142,6 +147,7 @@ class ProductController extends Controller
             'child_products.*.barcode' => 'nullable|string',
             'child_products.*.quantity' => 'required|integer|min:0',
             'child_products.*.price' => 'required|numeric|min:0',
+            'child_products.*.quantity_alert' =>['required', 'numeric', new QuantityAlertRule()],
         ]);
 
         foreach ($validatedData['child_products'] as $childProduct) {
@@ -151,7 +157,8 @@ class ProductController extends Controller
                 'quantity' => $childProduct['quantity'],
                 'barcode' => $childProduct['barcode'] ?? Str::random(13),
                 'variant_value_name' => $childProduct['combination'],
-                'variant_value_price' => $childProduct['price'],
+                // 'variant_value_price' => $childProduct['price'],
+                 'quantity_alert' => $childProduct['quantity_alert'],
             ]);
 
             // Create product price
@@ -159,6 +166,7 @@ class ProductController extends Controller
                 'product_id' => $product->id,
                 'product_variant_id' => $variant->id,
                 'price' => $childProduct['price'],
+                
             ]);
 
             // Handle variant combinations

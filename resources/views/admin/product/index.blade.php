@@ -171,7 +171,6 @@
                                 <td>{{ $product->sku }} </td>
                                 <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>
                                 <td>{{ $product->brand}}</td>
-                               
                                 <td>{{ $product->unit}}</td>
                               
                                 <td>

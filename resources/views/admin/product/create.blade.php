@@ -142,11 +142,11 @@
                                                     <div class="mb-3 add-product">
                                                         <div class="add-newplus">
                                                             <label class="form-label">Brand</label>
-                                                            <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                            {{-- <a href="javascript:void(0);" data-bs-toggle="modal"
                                                                 data-bs-target="#add-units-brand"><i
                                                                     data-feather="plus-circle"
                                                                     class="plus-down-add"></i><span>Add
-                                                                    New</span></a>
+                                                                    New</span></a> --}}
                                                         </div>
                                                         <select class="select" name="brand">
                                                             <option>Choose</option>
@@ -159,10 +159,10 @@
                                                     <div class="mb-3 add-product">
                                                         <div class="add-newplus">
                                                             <label class="form-label">Unit</label>
-                                                            <a href="javascript:void(0);" data-bs-toggle="modal"
+                                                            {{-- <a href="javascript:void(0);" data-bs-toggle="modal"
                                                                 data-bs-target="#add-unit"><i data-feather="plus-circle"
                                                                     class="plus-down-add"></i><span>Add
-                                                                    New</span></a>
+                                                                    New</span></a> --}}
                                                         </div>
                                                         <select class="select" name="unit">
                                                             <option>Choose</option>
@@ -333,7 +333,7 @@
                                                                     <th>Barcode</th>
                                                                     <th>Quantity</th>
                                                                     <th>Price</th>
-                                                                    <th>Image</th>
+                                                                    <th>Quantity Alert</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="variant-table-body">
@@ -656,8 +656,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td><input type="text" class="form-control" name="child_products[${index}][barcode]" placeholder="Barcode"></td>
                 <td><input type="number" class="form-control" name="child_products[${index}][quantity]" placeholder="Quantity"></td>
                 <td><input type="number" class="form-control" name="child_products[${index}][price]" placeholder="Price"></td>
-                <td><input type="file" class="form-control" name="child_products[${index}][image]" accept="image/*"></td>
-            `;
+               
+                <td><input type="number" class="form-control" name="child_products[${index}][quantity_alert]" placeholder="Quantity Alert"></td>            `;
             variantTableBody.appendChild(row);
         });
         variantTable.style.display = 'block';

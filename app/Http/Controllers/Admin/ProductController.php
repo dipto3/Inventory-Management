@@ -120,6 +120,8 @@ class ProductController extends Controller
             'product_id' => $product->id,
             'quantity' => $validatedData['quantity'],
             'barcode' => $request->input('barcode') ?? Str::random(13),
+            // 'variant_value_price' => $validatedData['variant_value_price'],
+           
         ]);
 
         // Create product price

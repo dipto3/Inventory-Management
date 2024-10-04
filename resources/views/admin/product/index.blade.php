@@ -178,14 +178,16 @@
                                     <div class="row">
                                         @foreach ($product->variants as $variant)
                                         <div class="col-md-4 mb-2">
+                                            <a href="" class="card-link" title="view">
                                             <div class="card" style="padding: 0.5rem; margin: 0.5rem;">
                                                 <div class="card-body p-1">
                                                     <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ $variant->variant_value_name }}</h6>
-                                                    <p class="card-text mb-0" style="font-size: 0.8rem;">
-                                                        Qty: {{ $variant->quantity }} | Price: &#2547; {{ $variant->variant_value_price }}
+                                                    <p class="card-text mb-0" style="font-size: 0.9rem;">
+                                                        Qty: {{ $variant->quantity }} | Price: &#2547; {{ $variant->prices?->first()->price }}
                                                     </p>
                                                 </div>
                                             </div>
+                                            </a>
                                         </div>
                                         @endforeach
                                     </div>
@@ -218,5 +220,12 @@
 
     </div>
 </div>
+
+<style>
+    .card-link:hover .card {
+        background-color: #cecbcb;
+        transition: background-color 0.3s ease;
+    }
+</style>
 
 @endsection

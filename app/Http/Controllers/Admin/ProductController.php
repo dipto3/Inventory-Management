@@ -26,7 +26,7 @@ class ProductController extends Controller
         return view('admin.product.index', compact('products'));
     }
 
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -37,7 +37,7 @@ class ProductController extends Controller
         $subcategories = Subcategory::all();
         $variants = Variant::with('variantValues')->get();
 
-        return view('admin.product.create',compact('variants','categories','subcategories'));
+        return view('admin.product.create', compact('variants', 'categories', 'subcategories'));
     }
 
     public function ed()
@@ -50,7 +50,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-      
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'store' => 'nullable|string|max:255',
@@ -69,6 +69,7 @@ class ProductController extends Controller
             'item_code' => 'nullable',
             'quantity' => 'required|integer|min:0',
             'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
+            'discount_type' => 'required'
         ]);
 
         // Create the product
@@ -85,6 +86,7 @@ class ProductController extends Controller
             'brand' => $validatedData['brand'],
             'selling_type' => $validatedData['selling_type'],
             'description' => $validatedData['description'],
+            'discount_type' => $validatedData['discount_type'],
         ]);
 
         if ($request->hasFile('image')) {
@@ -93,7 +95,7 @@ class ProductController extends Controller
             }
         }
 
-       
+
         ProductCategory::create([
             'product_id' => $product->id,
             'category_id' => $validatedData['category_id'],
@@ -127,7 +129,7 @@ class ProductController extends Controller
             'barcode' =>  Str::random(13),
             'quantity_alert' => $validatedData['quantity_alert'],
             // 'variant_value_price' => $validatedData['variant_value_price'],
-           
+
         ]);
 
         // Create product price
@@ -148,7 +150,7 @@ class ProductController extends Controller
             'child_products.*.barcode' => 'nullable|string',
             'child_products.*.quantity' => 'required|integer|min:0',
             'child_products.*.price' => 'required|numeric|min:0',
-            'child_products.*.quantity_alert' =>['required', 'numeric', new QuantityAlertRule()],
+            'child_products.*.quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
         ]);
 
         foreach ($validatedData['child_products'] as $childProduct) {
@@ -159,7 +161,7 @@ class ProductController extends Controller
                 'barcode' =>  Str::random(13),
                 'variant_value_name' => $childProduct['combination'],
                 // 'variant_value_price' => $childProduct['price'],
-                 'quantity_alert' => $childProduct['quantity_alert'],
+                'quantity_alert' => $childProduct['quantity_alert'],
             ]);
 
             // Create product price
@@ -167,21 +169,21 @@ class ProductController extends Controller
                 'product_id' => $product->id,
                 'product_variant_id' => $variant->id,
                 'price' => $childProduct['price'],
-                
+
             ]);
 
             // Handle variant combinations
             $variantIds = explode(',', $childProduct['variant_ids']);
             $combinations = explode(', ', $childProduct['combination']);
-            
+
             foreach ($combinations as $index => $combination) {
                 list($variantName, $variantValue) = explode(': ', $combination);
-                
+
                 // Find the variant and variant value
                 $variantModel = Variant::find($variantIds[$index]);
                 $variantValueModel = VariantValue::where('value', $variantValue)
-                                                 ->where('variant_id', $variantModel->id)
-                                                 ->first();
+                    ->where('variant_id', $variantModel->id)
+                    ->first();
 
                 if ($variantModel && $variantValueModel) {
                     // Create a new entry in product_variant_values table

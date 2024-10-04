@@ -26,6 +26,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1);
             $table->date('manufactured_date')->nullable();
             $table->date('expired_date')->nullable();
+            $table->string('discount_type')->nullable();
             $table->timestamps();
         });
     }

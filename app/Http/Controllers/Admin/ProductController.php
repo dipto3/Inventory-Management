@@ -50,7 +50,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
+      
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'store' => 'nullable|string|max:255',
@@ -67,7 +67,6 @@ class ProductController extends Controller
             'manufactured_date' => 'nullable|date',
             'expired_date' => 'nullable|date',
             'item_code' => 'nullable',
-            // Add other fields as needed
         ]);
 
         // Create the product
@@ -92,7 +91,7 @@ class ProductController extends Controller
             }
         }
 
-        // Create product category
+       
         ProductCategory::create([
             'product_id' => $product->id,
             'category_id' => $validatedData['category_id'],

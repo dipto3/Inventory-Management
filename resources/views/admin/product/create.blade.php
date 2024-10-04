@@ -350,7 +350,7 @@
                         </div>
                         <div class="accordion-card-one accordion" id="accordionExample4">
                             <div class="accordion-item">
-                                <div class="accordion-header" id="headingFour">
+                                {{-- <div class="accordion-header" id="headingFour">
                                     <div class="accordion-button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseFour" aria-controls="collapseFour">
                                         <div class="text-editor add-list">
@@ -362,12 +362,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div id="collapseFour" class="accordion-collapse collapse show"
                                     aria-labelledby="headingFour" data-bs-parent="#accordionExample4">
                                     <div class="accordion-body">
                                         <div class="text-editor add-list add">
-                                            <div class="custom-filed">
+                                            {{-- <div class="custom-filed">
                                                 <div class="input-block add-lists">
                                                     <label class="checkboxs">
                                                         <input type="checkbox">
@@ -382,7 +382,7 @@
                                                         <span class="checkmarks"></span>Expiry
                                                     </label>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-6 col-12">
                                                     <div class="input-blocks add-product">

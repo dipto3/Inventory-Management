@@ -14,8 +14,8 @@ class QuantityAlertRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // Assuming 'quantity' is passed in the validation context
-        $quantity = request()->input('quantity'); // Adjust this line based on your actual data source
+        
+        $quantity = request()->input('quantity');
 
         if ($value > $quantity) {
             $fail("Quantity Alert must not be greater than quantity.");

@@ -26,7 +26,15 @@ class ProductController extends Controller
         return view('admin.product.index', compact('products'));
     }
 
+    // public function lowStocks()
+    // {
 
+    //     $lowQuantityProducts = Product::with(['variants' => function ($query) {
+    //         $query->whereColumn('quantity', '<', 'quantity_alert');
+    //     }])->has('variants')->get(); // Ensure only products with low quantity variants are retrieved
+
+    //     dd($lowQuantityProducts);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -67,8 +75,8 @@ class ProductController extends Controller
             'manufactured_date' => 'nullable|date',
             'expired_date' => 'nullable|date',
             'item_code' => 'nullable',
-            'quantity' => 'required|integer|min:0',
-            'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
+            // 'quantity' => 'required|integer|min:0',
+            // 'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
             'discount_type' => 'required'
         ]);
 
@@ -150,7 +158,8 @@ class ProductController extends Controller
             'child_products.*.barcode' => 'nullable|string',
             'child_products.*.quantity' => 'required|integer|min:0',
             'child_products.*.price' => 'required|numeric|min:0',
-            'child_products.*.quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
+            // 'child_products.*.quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
+            'child_products.*.quantity_alert' =>  'required|integer|min:0',
         ]);
 
         foreach ($validatedData['child_products'] as $childProduct) {

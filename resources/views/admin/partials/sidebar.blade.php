@@ -31,7 +31,7 @@
                         <li><a href="{{ route('subcategory.index') }}"><i data-feather="speaker"></i><span>Sub
                                     Category</span></a></li>
                         <li><a href="{{ route('brand.index') }}"><i data-feather="tag"></i><span>Brands</span></a></li>
-                        <li><a href="{{ route('admin.store.index') }}"><i data-feather="tag"></i><span>Stores</span></a></li>
+                        <li><a href=""><i data-feather="tag"></i><span>Stores</span></a></li>
                         <li><a href="{{ route('unit.index') }}"><i data-feather="speaker"></i><span>Units</span></a>
                         </li>
                         <li><a href="{{ route('variant.index') }}"><i data-feather="layers"></i><span>Variant

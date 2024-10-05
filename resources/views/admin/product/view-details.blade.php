@@ -79,7 +79,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <img src="/placeholder.svg" alt="Macbook Pro" class="product-image img-fluid">
+                        <img src="{{ $product->getFirstMediaUrl() }}" alt="Macbook Pro" class="product-image img-fluid">
                         <p class="text-center mt-2">macbookpro.jpg<br>581kb</p>
                     </div>
                 </div>

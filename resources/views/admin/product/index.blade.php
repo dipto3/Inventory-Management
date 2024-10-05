@@ -71,73 +71,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-0" id="filter_inputs">
-                    <div class="card-body pb-0">
-                        <div class="row">
-                            <div class="col-lg-12 col-sm-12">
-                                <div class="row">
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <i data-feather="box" class="info-img"></i>
-                                            <select class="select">
-                                                <option>Choose Product</option>
-                                                <option>
-                                                    Lenovo 3rd Generation</option>
-                                                <option>Nike Jordan</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <i data-feather="stop-circle" class="info-img"></i>
-                                            <select class="select">
-                                                <option>Choose Categroy</option>
-                                                <option>Laptop</option>
-                                                <option>Shoe</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <i data-feather="git-merge" class="info-img"></i>
-                                            <select class="select">
-                                                <option>Choose Sub Category</option>
-                                                <option>Computers</option>
-                                                <option>Fruits</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <i data-feather="stop-circle" class="info-img"></i>
-                                            <select class="select">
-                                                <option>All Brand</option>
-                                                <option>Lenovo</option>
-                                                <option>Nike</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <i class="fas fa-money-bill info-img"></i>
-                                            <select class="select">
-                                                <option>Price</option>
-                                                <option>$12500.00</option>
-                                                <option>$12500.00</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <a class="btn btn-filters ms-auto"> <i data-feather="search"
-                                                    class="feather-search"></i> Search </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
 
                 <div class="table-responsive product-list">
                     <table class="table datanew">
@@ -176,16 +110,17 @@
                                 <td>
                                     <div class="row">
                                         @foreach ($product->variants as $variant)
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2">
                                             <a href="{{ route('view.details',[$product->id,$variant->id]) }}" class="card-link" title="view">
-                                            <div class="card" style="padding: 0.5rem; margin: 0.5rem;">
-                                                <div class="card-body p-1">
-                                                    <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ $variant->variant_value_name }}</h6>
-                                                    <p class="card-text mb-0" style="font-size: 0.9rem;">
-                                                        Qty: {{ $variant->quantity }} | Price: &#2547; {{ $variant->prices?->first()->price }}
-                                                    </p>
+                                                <div class="card" style="padding: 0.5rem; margin: 0.5rem;">
+                                                    <div class="card-body p-1">
+                                                        <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ $variant->variant_value_name }}</h6>
+                                                        <p class="card-text mb-0" style="font-size: 0.9rem; line-height: 1.2;">
+                                                            <span>Qty: {{ $variant->quantity }}</span><br> <!-- Added <br> for new line -->
+                                                            <span>Price: &#2547; {{ $variant->prices?->first()->price }}</span>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </a>
                                         </div>
                                         @endforeach

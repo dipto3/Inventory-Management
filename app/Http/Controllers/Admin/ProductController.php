@@ -34,7 +34,7 @@ class ProductController extends Controller
         // dd(now()->toDateString());
         $products = Product::where('expired_date','<', now()->toDateString())->with('variants', 'prices')->get();
         // dd($products );
-        return view('admin.product.index', compact('products'));
+        return view('admin.product.expired-products', compact('products'));
     }
 
     /**

@@ -36,10 +36,10 @@
                         </li>
                         <li><a href="{{ route('variant.index') }}"><i data-feather="layers"></i><span>Variant
                                     Attributes</span></a></li>
-                        <li><a href="warranty.html"><i data-feather="bookmark"></i><span>Warranties</span></a></li>
+                        {{-- <li><a href="warranty.html"><i data-feather="bookmark"></i><span>Warranties</span></a></li>
                         <li><a href="barcode.html"><i data-feather="align-justify"></i><span>Print Barcode</span></a>
                         </li>
-                        <li><a href="qrcode.html"><i data-feather="maximize"></i><span>Print QR Code</span></a></li>
+                        <li><a href="qrcode.html"><i data-feather="maximize"></i><span>Print QR Code</span></a></li> --}}
                     </ul>
                 </li>
                 <li class="submenu-open">

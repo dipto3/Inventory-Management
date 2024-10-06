@@ -80,7 +80,7 @@
                                     <th>Product</th>
                                     <th>SKU</th>
                                     <th>Category</th>
-                                    <th>Expired at</th>
+                                    <th>Brand</th>
 
                                     <th>Unit</th>
 
@@ -102,7 +102,7 @@
                                         </td>
                                         <td>{{ $product->sku }} </td>
                                         <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($product->expired_date)->format('d F Y') }}</td>
+                                        <td>{{ $product->brand }}</td>
                                         <td>{{ $product->unit }}</td>
                                         <td>
                                             <div class="row">

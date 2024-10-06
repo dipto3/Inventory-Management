@@ -81,7 +81,9 @@ class ProductController extends Controller
             'item_code' => 'nullable',
             // 'quantity' => 'required|integer|min:0',
             // 'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
-            'discount_type' => 'required'
+            'discount_type' => 'nullable',
+            'discount_value' => 'nullable',
+            'tax_type' => 'nullable'
         ]);
 
         // Create the product
@@ -99,6 +101,8 @@ class ProductController extends Controller
             'selling_type' => $validatedData['selling_type'],
             'description' => $validatedData['description'],
             'discount_type' => $validatedData['discount_type'],
+            'discount_value' =>$validatedData['discount_value'],
+            'tax_type' =>$validatedData['tax_type']
         ]);
 
         if ($request->hasFile('image')) {

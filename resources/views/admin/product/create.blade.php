@@ -276,41 +276,16 @@
                                                             <input type="text" class="form-control" name="price">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4 col-sm-6 col-12">
-                                                        <div class="input-blocks add-product">
-                                                            <label>Tax Type</label>
-                                                            <select class="select" name="tax_type">
-                                                                <option>Exclusive</option>
-                                                                <option>Sales Tax</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-4 col-sm-6 col-12">
-                                                        <div class="input-blocks add-product">
-                                                            <label>Discount Type</label>
-                                                            <select class="select" name="discount_type">
-                                                                <option>Choose</option>
-                                                                <option>Percentage</option>
-                                                                <option>Cash</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4 col-sm-6 col-12">
-                                                        <div class="input-blocks add-product">
-                                                            <label>Discount Value</label>
-                                                            <input type="text" placeholder="Choose" name="discount_value">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4 col-sm-6 col-12">
+                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Quantity Alert</label>
                                                             <input type="text" class="form-control" name="quantity_alert" value="{{ old('quantity_alert') }}">
                                                            
                                                         </div>
                                                     </div>
+                                                    
                                                 </div>
+                                               
                                             </div>
                                             <div class="tab-pane fade" id="variableProduct" role="tabpanel">
                                                 <div class="row select-color-add">
@@ -411,6 +386,19 @@
                                                             <option>Cash</option>
                                                         </select>
                                                     </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6 col-12">
+                                                    <div class="input-blocks add-product">
+                                                        <label>Discount Value</label>
+                                                        <input type="text" placeholder="Choose" name="discount_value">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-6 col-12">
+                                                    <label>Tax Type</label>
+                                                    <select class="select" name="tax_type">
+                                                        <option>Exclusive</option>
+                                                        <option>Sales Tax</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="row">

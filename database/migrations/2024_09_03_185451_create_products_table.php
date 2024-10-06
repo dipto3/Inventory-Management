@@ -27,6 +27,8 @@ return new class extends Migration
             $table->date('manufactured_date')->nullable();
             $table->date('expired_date')->nullable();
             $table->string('discount_type')->nullable();
+            $table->integer('discount_value')->nullable();
+            $table->string('tax_type')->nullable();
             $table->timestamps();
         });
     }

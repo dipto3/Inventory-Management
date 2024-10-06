@@ -61,6 +61,14 @@
                                     <td>{{ $product->discount_type }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Discount Value</th>
+                                    <td>{{ $product->discount_value }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tax Type</th>
+                                    <td>{{ $product->tax_type }}</td>
+                                </tr>
+                                <tr>
                                     <th>Price</th>
                                     <td>{{ $product->prices?->first()->price }}</td>
                                 </tr>

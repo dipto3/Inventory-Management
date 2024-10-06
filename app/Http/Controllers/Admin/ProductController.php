@@ -33,7 +33,7 @@ class ProductController extends Controller
     public function expiredProducts()
     {
         // dd(now()->toDateString());
-        $products = Product::where('expired_date','<', now()->toDateString())->with('variants', 'prices')->get();
+        $products = Product::where('expired_date', '<', now()->toDateString())->with('variants', 'prices')->get();
         // dd($products );
         return view('admin.product.expired-products', compact('products'));
     }
@@ -45,11 +45,11 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $subcategories = Subcategory::all();
-        $brands = Brand::where('status',1)->get();
-        $units = Unit::where('status',1)->get();
+        $brands = Brand::where('status', 1)->get();
+        $units = Unit::where('status', 1)->get();
         $variants = Variant::with('variantValues')->get();
 
-        return view('admin.product.create', compact('variants', 'categories', 'subcategories','brands','units'));
+        return view('admin.product.create', compact('variants', 'categories', 'subcategories', 'brands', 'units'));
     }
 
     public function ed()
@@ -92,8 +92,8 @@ class ProductController extends Controller
             'sku' => $validatedData['sku'] ?? Str::random(10),
             'slug' => $validatedData['slug'] ?? Str::slug($validatedData['name']),
             'item_code' => $validatedData['item_code'],
-            'manufactured_date' => Carbon::parse($validatedData['manufactured_date']), 
-            'expired_date' => Carbon::parse($validatedData['expired_date']), 
+            'manufactured_date' => Carbon::parse($validatedData['manufactured_date']),
+            'expired_date' => Carbon::parse($validatedData['expired_date']),
             'unit' => $validatedData['unit'],
             'brand' => $validatedData['brand'],
             'selling_type' => $validatedData['selling_type'],
@@ -219,9 +219,9 @@ class ProductController extends Controller
         $product = Product::with('variants', 'prices')->findOrFail($productID);
         $variant = ProductVariant::findOrFail($variantID);
         $generator = new BarcodeGeneratorPNG();
-    
-    // Generate the barcode image
-    $barcodeImage = base64_encode($generator->getBarcode($variant->barcode, $generator::TYPE_CODE_128));
+
+        // Generate the barcode image
+        $barcodeImage = base64_encode($generator->getBarcode($variant->barcode, $generator::TYPE_CODE_128));
         return view('admin.product.view-details', compact('variant', 'product', 'barcodeImage'));
     }
 

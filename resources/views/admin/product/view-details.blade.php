@@ -46,11 +46,11 @@
                                 </tr>
                                 <tr>
                                     <th>Minimum Qty</th>
-                                    <td>5</td>
+                                    <td>{{ $variant->quantity_alert }}</td>
                                 </tr>
                                 <tr>
                                     <th>Quantity</th>
-                                    <td>50</td>
+                                    <td>{{ $variant->quantity }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tax</th>

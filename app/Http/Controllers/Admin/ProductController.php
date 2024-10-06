@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Variant;
 use App\Models\Product;
@@ -10,6 +11,7 @@ use App\Models\ProductVariant;
 use App\Models\ProductCategory;
 use App\Models\ProductPrice;
 use App\Models\Subcategory;
+use App\Models\Unit;
 use App\Models\VariantValue;
 use App\Rules\QuantityAlertRule;
 use Carbon\Carbon;
@@ -42,9 +44,11 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $subcategories = Subcategory::all();
+        $brands = Brand::where('status',1)->get();
+        $units = Unit::where('status',1)->get();
         $variants = Variant::with('variantValues')->get();
 
-        return view('admin.product.create', compact('variants', 'categories', 'subcategories'));
+        return view('admin.product.create', compact('variants', 'categories', 'subcategories','brands','units'));
     }
 
     public function ed()

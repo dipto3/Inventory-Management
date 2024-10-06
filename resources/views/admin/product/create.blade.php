@@ -164,8 +164,9 @@
                                                         </div>
                                                         <select class="select" name="brand">
                                                             <option>Choose</option>
-                                                            <option>Nike</option>
-                                                            <option>Bolt</option>
+                                                            @foreach ($brands as $brand)
+                                                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -180,8 +181,9 @@
                                                         </div>
                                                         <select class="select" name="unit">
                                                             <option>Choose</option>
-                                                            <option>Kg</option>
-                                                            <option>Pc</option>
+                                                            @foreach ($units as $unit)
+                                                            <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>

@@ -24,8 +24,9 @@
                         </li>
                         {{-- <li><a href="add-product.html"><i
                                     data-feather="plus-square"></i><span>Create Product</span></a></li> --}}
-                        <li><a href="{{ route('expired.products') }}"><i data-feather="codesandbox"></i><span>Expired Products</span></a></li>
-                       
+                        <li><a href="{{ route('expired.products') }}"><i data-feather="codesandbox"></i><span>Expired
+                                    Products</span></a></li>
+
                         <li class=""><a href="{{ route('category.index') }}"><i
                                     data-feather="codepen"></i><span>Category</span></a></li>
                         <li><a href="{{ route('subcategory.index') }}"><i data-feather="speaker"></i><span>Sub

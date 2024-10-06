@@ -12,6 +12,7 @@ use App\Models\ProductPrice;
 use App\Models\Subcategory;
 use App\Models\VariantValue;
 use App\Rules\QuantityAlertRule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,14 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('variants', 'prices')->get();
+        return view('admin.product.index', compact('products'));
+    }
+
+    public function expiredProducts()
+    {
+        // dd(now()->toDateString());
+        $products = Product::where('expired_date','<', now()->toDateString())->with('variants', 'prices')->get();
+        // dd($products );
         return view('admin.product.index', compact('products'));
     }
 
@@ -78,8 +87,8 @@ class ProductController extends Controller
             'sku' => $validatedData['sku'] ?? Str::random(10),
             'slug' => $validatedData['slug'] ?? Str::slug($validatedData['name']),
             'item_code' => $validatedData['item_code'],
-            'manufactured_date' => $validatedData['manufactured_date'],
-            'expired_date' => $validatedData['expired_date'],
+            'manufactured_date' => Carbon::parse($validatedData['manufactured_date']), 
+            'expired_date' => Carbon::parse($validatedData['expired_date']), 
             'unit' => $validatedData['unit'],
             'brand' => $validatedData['brand'],
             'selling_type' => $validatedData['selling_type'],

@@ -26,16 +26,6 @@ class ProductController extends Controller
         return view('admin.product.index', compact('products'));
     }
 
-    // public function lowStocks()
-    // {
-
-    //     $lowQuantityProducts = Product::with(['variants' => function ($query) {
-    //         $query->whereColumn('quantity', '<', 'quantity_alert');
-    //     }])->has('variants')->get(); // Ensure only products with low quantity variants are retrieved
-
-    //     dd($lowQuantityProducts);
-    // }
-
     /**
      * Show the form for creating a new resource.
      */

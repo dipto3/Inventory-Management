@@ -17,6 +17,7 @@ use App\Rules\QuantityAlertRule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class ProductController extends Controller
 {
@@ -137,7 +138,7 @@ class ProductController extends Controller
         $variant = ProductVariant::create([
             'product_id' => $product->id,
             'quantity' => $validatedData['quantity'],
-            'barcode' =>  Str::random(13),
+            'barcode' => str_pad(random_int(0, 999999999), 9, '0', STR_PAD_LEFT),
             'quantity_alert' => $validatedData['quantity_alert'],
             // 'variant_value_price' => $validatedData['variant_value_price'],
 
@@ -170,7 +171,7 @@ class ProductController extends Controller
             $variant = ProductVariant::create([
                 'product_id' => $product->id,
                 'quantity' => $childProduct['quantity'],
-                'barcode' =>  Str::random(13),
+                'barcode' => str_pad(random_int(0, 999999999), 9, '0', STR_PAD_LEFT),
                 'variant_value_name' => $childProduct['combination'],
                 // 'variant_value_price' => $childProduct['price'],
                 'quantity_alert' => $childProduct['quantity_alert'],
@@ -217,7 +218,11 @@ class ProductController extends Controller
     {
         $product = Product::with('variants', 'prices')->findOrFail($productID);
         $variant = ProductVariant::findOrFail($variantID);
-        return view('admin.product.view-details', compact('variant', 'product'));
+        $generator = new BarcodeGeneratorPNG();
+    
+    // Generate the barcode image
+    $barcodeImage = base64_encode($generator->getBarcode($variant->barcode, $generator::TYPE_CODE_128));
+        return view('admin.product.view-details', compact('variant', 'product', 'barcodeImage'));
     }
 
 

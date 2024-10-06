@@ -25,9 +25,7 @@ use App\Http\Controllers\Admin\StoreController;
 Route::get('/', function () {
     return view('welcome');
 });
-// Route::prefix('admin')->name('admin.')->group(function () {
-//     Route::resource('store', StoreController::class);
-// });
+
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

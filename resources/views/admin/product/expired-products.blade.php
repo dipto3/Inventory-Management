@@ -6,7 +6,7 @@
                 <div class="add-item d-flex">
                     <div class="page-title">
                         <h4>Expired Product List</h4>
-                        <h6>Manage your products</h6>
+                      
                     </div>
                 </div>
                 <ul class="table-top-head">
@@ -33,14 +33,6 @@
                                 data-feather="chevron-up" class="feather-chevron-up"></i></a>
                     </li>
                 </ul>
-                <div class="page-btn">
-                    <a href="{{ route('product.create') }}" class="btn btn-added"><i data-feather="plus-circle"
-                            class="me-2"></i>Add New Product</a>
-                </div>
-                <div class="page-btn import">
-                    <a href="#" class="btn btn-added color" data-bs-toggle="modal" data-bs-target="#view-notes"><i
-                            data-feather="download" class="me-2"></i>Import Product</a>
-                </div>
             </div>
 
             <div class="card table-list-card">

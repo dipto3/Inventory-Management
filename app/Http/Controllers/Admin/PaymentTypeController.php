@@ -18,6 +18,7 @@ class PaymentTypeController extends Controller
     }
 
     public function store(Request $request){
+        // dd($request->all());
         $request->validate([
             'type' => 'required|unique:payment_types,type',
             'status' => 'required|in:1,0',
@@ -41,6 +42,7 @@ class PaymentTypeController extends Controller
     }
 
     public function update(Request $request, $id){
+        // dd($request->all());
         $request->validate([
             'type' => 'required|unique:payment_types,type,'.$id,
             'status' => 'required|in:1,0',
@@ -51,8 +53,8 @@ class PaymentTypeController extends Controller
         return redirect()->route('admin.payment_type.index');
     }
 
-    public function destroy(PaymentType $paymentTypes){
-        $category->delete();
+    public function destroy(PaymentType $paymentType){
+        $paymentType->delete();
         return redirect()->back()->with('error', 'Payment Type Deleted successfully.');
     }
 }

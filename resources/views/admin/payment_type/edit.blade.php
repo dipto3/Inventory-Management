@@ -14,7 +14,7 @@
                     <div class="modal-body custom-modal-body">
                         <form action="{{ route('payment_type.update', $paymentType->id ?? '') }}" method="POST">
                             @csrf
-                            @method('PUT')
+                            @method('POST')
                             <div class="mb-3">
                                 <label class="form-label">Type</label>
                                 <input type="text" name="type" id="edit-paymenttype-type" class="form-control" required>

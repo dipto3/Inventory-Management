@@ -102,6 +102,37 @@
 </script>
 
 <script>
+$(document).ready(function() {
+    $(document).on('click', '.editpaymenttypebtn', function() {
+        var payment_type_id = $(this).val(); 
+        $('#editPaymentType').modal('show');
+
+        $.ajax({
+            type: "GET",
+            url: "payment_type/" + payment_type_id + "/edit",
+            success: function(response) {
+                console.log(response); 
+
+                $('#edit-paymenttype-type').val(response.paymentType.type);
+                $('#edit-paymenttype-status').val(response.paymentType.status);
+                console.log(response.paymentType.has_transaction);
+                if(response.paymentType.has_transaction == 1) {
+                    $('#edit-paymenttype-has_transaction').prop('checked', true); 
+                } else {
+                    $('#edit-paymenttype-has_transaction').prop('checked', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error loading data:", error);
+            }
+        });
+    });
+});
+
+
+</script>
+
+<script>
     $(document).ready(function() {
         $(document).on('click', '.editbrandbtn', function() {
             var brand_id = $(this).val();

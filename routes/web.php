@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\Admin\Auth\AuthController;
-use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\SubcategoryController;
-use App\Http\Controllers\Admin\UnitController;
-use App\Http\Controllers\Admin\VariantController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\StoreController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\VariantController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\Auth\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PaymentTypeController;
+use App\Http\Controllers\Admin\SubcategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('unit', UnitController::class);
     Route::resource('variant', VariantController::class);
     Route::resource('product', ProductController::class);
+    Route::resource('payment_type', PaymentTypeController::class);
     Route::get('/product-details/{productID}/{variantID}',[ProductController::class,'viewDetails'])->name('view.details');
     Route::get('/expired-products',[ProductController::class,'expiredProducts'])->name('expired.products');
 });

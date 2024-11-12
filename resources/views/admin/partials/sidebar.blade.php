@@ -37,6 +37,7 @@
                         </li>
                         <li><a href="{{ route('variant.index') }}"><i data-feather="layers"></i><span>Variant
                                     Attributes</span></a></li>
+                                    <li><a href="{{ route('payment_type.index') }}"><i data-feather="layers"></i><span>Payment Types</span></a></li>
                         {{-- <li><a href="warranty.html"><i data-feather="bookmark"></i><span>Warranties</span></a></li>
                         <li><a href="barcode.html"><i data-feather="align-justify"></i><span>Print Barcode</span></a>
                         </li>

@@ -101,11 +101,17 @@
                                                                         data-bs-toggle="modal" value="{{ $category->id }}"
                                                                         data-bs-target="#editCategoryModal{{ $category->id }}">Edit</button>
                                                                 </div>
-                                                                <div class="remove">
-                                                                    <button class="btn btn-sm btn-danger remove-item-btn"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#deleteRecordModal">Remove</button>
-                                                                </div>
+                                                                <form action="{{ route('category.destroy', $category->id) }}"
+                                                                    method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <div class="remove">
+                                                                        <button
+                                                                            class="btn btn-sm btn-danger remove-item-btn"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#deleteRecordModal">Remove</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </td>
                                                     </tr>

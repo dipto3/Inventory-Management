@@ -93,7 +93,8 @@
                                 <a href="index.html" class="nav-link" data-key="t-ecommerce"> Low Stocks </a>
                             </li>
                             <li class="nav-item">
-                                <a href="index.html" class="nav-link" data-key="t-ecommerce"> Category </a>
+                                <a href="{{ route('category.index') }}" class="nav-link" data-key="t-ecommerce">
+                                    Category </a>
                             </li>
                             <li class="nav-item">
                                 <a href="index.html" class="nav-link" data-key="t-ecommerce">Sub Category </a>
@@ -130,7 +131,7 @@
                                 <a href="index.html" class="nav-link" data-key="t-ecommerce"> Low Stocks </a>
                             </li>
                             <li class="nav-item">
-                                <a href="index.html" class="nav-link" data-key="t-ecommerce"> Category </a>
+                                <a href="" class="nav-link" data-key="t-ecommerce"> Category </a>
                             </li>
                             <li class="nav-item">
                                 <a href="index.html" class="nav-link" data-key="t-ecommerce">Sub Category </a>

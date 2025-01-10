@@ -18,7 +18,7 @@
                             <input type="hidden" name="category_id" id="category_id" class="form-control">
                             <div class="mb-3">
                                 <label class="form-label">Category</label>
-                                <input type="text" name="name" id="name" class="form-control">
+                                <input type="text" name="name" id="name" value="{{ $category->name }}" class="form-control">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Description</label>

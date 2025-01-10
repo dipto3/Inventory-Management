@@ -68,6 +68,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',

@@ -104,7 +104,7 @@
                                 <a href="{{ route('brand.index') }}" class="nav-link">Brands</a>
                             </li>
                             <li class="nav-item">
-                                <a href="index.html" class="nav-link" data-key="t-ecommerce">Units</a>
+                                <a href="{{ route('unit.index') }}" class="nav-link">Units</a>
                             </li>
                             <li class="nav-item">
                                 <a href="index.html" class="nav-link" data-key="t-ecommerce">Variant Attributes</a>

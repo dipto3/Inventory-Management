@@ -86,7 +86,6 @@
                                         @elseif ($subcategory->status == 0)
                                             <span class="badge badge-linedanger">Inactive</span>
                                         @endif
-
                                     </td>
                                     <td class="action-table-data">
                                         <div class="edit-delete-action">

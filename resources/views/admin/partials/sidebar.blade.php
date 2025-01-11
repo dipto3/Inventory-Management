@@ -97,7 +97,8 @@
                                     Category </a>
                             </li>
                             <li class="nav-item">
-                                <a href="index.html" class="nav-link" data-key="t-ecommerce">Sub Category </a>
+                                <a href="{{ route('subcategory.index') }}" class="nav-link"
+                                    data-key="t-ecommerce">Sub Category </a>
                             </li>
                             <li class="nav-item">
                                 <a href="index.html" class="nav-link" data-key="t-ecommerce">Brands</a>

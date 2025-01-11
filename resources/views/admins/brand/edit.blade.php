@@ -38,7 +38,8 @@
                             <div class="mb-3">
                                 <label class="form-label">Logo</label>
                                 @isset($brand)
-                                    <img src="{{ $brand->getFirstMediaUrl() ?? '' }}" class="" alt="" />
+                                    <img src="{{ $brand->getFirstMediaUrl() ?? '' }}" class=""
+                                       alt="" />
                                 @endisset
                                 <input type="file" id="logo" name="logo" class="form-control">
                             </div>

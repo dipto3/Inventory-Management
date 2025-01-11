@@ -101,7 +101,7 @@
                                     data-key="t-ecommerce">Sub Category </a>
                             </li>
                             <li class="nav-item">
-                                <a href="index.html" class="nav-link" data-key="t-ecommerce">Brands</a>
+                                <a href="{{ route('brand.index') }}" class="nav-link">Brands</a>
                             </li>
                             <li class="nav-item">
                                 <a href="index.html" class="nav-link" data-key="t-ecommerce">Units</a>

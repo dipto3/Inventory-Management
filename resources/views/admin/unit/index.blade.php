@@ -64,7 +64,6 @@
                                                     <th class="sort" data-sort="title">Unit</th>
                                                     <th class="sort" data-sort="description">Short name</th>
                                                     <th class="sort" data-sort="phone">Created at</th>
-
                                                     <th class="sort" data-sort="status">Status</th>
                                                     <th class="sort" data-sort="action">Action</th>
                                                 </tr>

@@ -107,7 +107,8 @@
                                 <a href="{{ route('unit.index') }}" class="nav-link">Units</a>
                             </li>
                             <li class="nav-item">
-                                <a href="index.html" class="nav-link" data-key="t-ecommerce">Variant Attributes</a>
+                                <a href="{{ route('variant.index') }}" class="nav-link"
+                                    data-key="t-ecommerce">Variant Attributes</a>
                             </li>
 
                         </ul>

@@ -33,3 +33,11 @@
 
   <!-- Sweet Alerts js -->
   <script src="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+  <script>
+      $(document).ready(function() {
+          $('#tags').tagsinput();
+      });
+  </script>

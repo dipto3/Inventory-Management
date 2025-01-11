@@ -7,7 +7,6 @@
     data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
 
 <head>
-
     <meta charset="utf-8" />
     <title>Dashboard </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,26 +17,19 @@
 </head>
 
 <body>
-
     <!-- Begin page -->
     <div id="layout-wrapper">
-
         @include('admin.partials.header')
-
-
         <!-- ========== App Menu ========== -->
         @include('admin.partials.sidebar')
         <!-- Left Sidebar End -->
-        <!-- Vertical Overlay-->
+        <!-- Vertical Overlay -->
         <div class="vertical-overlay"></div>
-
         <!-- Start right Content here -->
         @yield('admin.content')
         <!-- end main content-->
-
     </div>
     <!-- END layout-wrapper -->
-
     <!--preloader-->
     <div id="preloader">
         <div id="status">
@@ -46,10 +38,6 @@
             </div>
         </div>
     </div>
-
-
-
-
     @include('admin.partials.assets.js')
 </body>
 

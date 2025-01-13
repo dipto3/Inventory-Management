@@ -109,7 +109,7 @@
                                                                 <div class="remove">
                                                                     <button class="btn btn-sm btn-danger remove-item-btn"
                                                                         data-bs-toggle="modal"
-                                                                        data-bs-target="#deleteRecordModal"><i
+                                                                        data-bs-target="#deleteRecordModal{{ $brand->id }}"><i
                                                                             class="ri-delete-bin-2-line"></i></button>
                                                                 </div>
 

@@ -99,10 +99,9 @@ class VariantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($variant)
+    public function destroy(Variant $variant)
     {
-        $variant = Variant::findOrFail($variant);
-       $variant->variantValues()->delete();
+
         $variant->delete();
         return redirect()->back();
     }

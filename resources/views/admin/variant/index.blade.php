@@ -82,7 +82,9 @@
                                                                 href="javascript:void(0);"
                                                                 class="fw-medium link-primary">#VZ2101</a></td>
                                                         <td class="customer_name">{{ $variant->name }}</td>
-                                                        <td class="email">{{ $variant->variantValues->pluck('value')->implode(', ') }}</td>
+                                                        <td class="email">
+                                                            {{ $variant->variantValues->pluck('value')->implode(', ') }}
+                                                        </td>
                                                         <td class="phone">
                                                             {{ \Carbon\Carbon::parse($variant->created_at)->format('Y-m-d') }}
                                                         </td>
@@ -106,9 +108,22 @@
                                                                 <div class="remove">
                                                                     <button class="btn btn-sm btn-danger remove-item-btn"
                                                                         data-bs-toggle="modal"
-                                                                        data-bs-target="#deleteRecordModal"><i
+                                                                        data-bs-target="#deleteRecordModal{{ $variant->id }}"><i
                                                                             class="ri-delete-bin-2-line"></i></button>
                                                                 </div>
+                                                                {{-- <div class="remove">
+                                                                    <form
+                                                                        action="{{ route('variant.destroy', $variant->id) }}"
+                                                                        method="POST"
+                                                                        onsubmit="return confirm('Are you sure you want to delete this variant?');">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-danger">
+                                                                            <i class="ri-delete-bin-2-line"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div> --}}
 
                                                             </div>
                                                         </td>

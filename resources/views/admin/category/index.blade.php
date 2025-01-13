@@ -1,6 +1,5 @@
 @extends('admin.layouts.master')
 @section('admin.content')
-
     <div class="main-content">
 
         <div class="page-content">
@@ -103,11 +102,14 @@
                                                                         data-bs-target="#editCategoryModal{{ $category->id }}"><i
                                                                             class="las la-edit"></i></button>
                                                                 </div>
-                                    
-                                                                    <div class="remove">
-                                                                        <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#deleteRecordModal"><i class="ri-delete-bin-2-line"></i></button>
-                                                                    </div>
-                                                              
+
+                                                                <div class="remove">
+                                                                    <button class="btn btn-sm btn-danger remove-item-btn"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#deleteRecordModal{{ $category->id }}"><i
+                                                                            class="ri-delete-bin-2-line"></i></button>
+                                                                </div>
+
                                                             </div>
                                                         </td>
                                                     </tr>

@@ -111,19 +111,6 @@
                                                                         data-bs-target="#deleteRecordModal{{ $variant->id }}"><i
                                                                             class="ri-delete-bin-2-line"></i></button>
                                                                 </div>
-                                                                {{-- <div class="remove">
-                                                                    <form
-                                                                        action="{{ route('variant.destroy', $variant->id) }}"
-                                                                        method="POST"
-                                                                        onsubmit="return confirm('Are you sure you want to delete this variant?');">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger">
-                                                                            <i class="ri-delete-bin-2-line"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </div> --}}
 
                                                             </div>
                                                         </td>

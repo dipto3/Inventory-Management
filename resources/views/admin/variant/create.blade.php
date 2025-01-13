@@ -22,7 +22,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="tags" class="form-label">Tags</label>
-                        <input type="text" id="tags" name="values" data-role="tagsinput" class="form-control" placeholder="Enter tags">
+                        <input type="text" id="tags" name="values" class="form-control" placeholder="Enter tags">
                     </div>
 
                     <div>
@@ -44,13 +44,13 @@
         </div>
     </div>
 </div>
-<style>
+{{-- <style>
     .bootstrap-tagsinput .tag [data-role="remove"] {
         margin-left: 8px;
         cursor: pointer;
         color: white;
         background-color: transparent;
-        border: none;
+        border: 5px solid #ccc;
         font-size: 1rem;
         font-weight: bold;
     }
@@ -62,5 +62,31 @@
         border-radius: 0.25rem;
         display: inline-flex;
         align-items: center;
+    }
+</style> --}}
+<style>
+    .bootstrap-tagsinput .tag [data-role="remove"] {
+        margin-left: 8px;
+        cursor: pointer;
+        color: rgb(255, 255, 255);
+        background-color: transparent;
+        border: none; /* Remove border */
+        font-size: 1rem;
+        font-weight: bold;
+    }
+    .bootstrap-tagsinput .tag {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+        background-color: #0ab39c;
+        color: #fff;
+        border-radius: 0.25rem;
+        display: inline-flex;
+        align-items: center;
+    }
+    .bootstrap-tagsinput .tag [data-role="remove"]:before {
+        content: "\f00d"; /* Font Awesome cross icon */
+        font-family: "Font Awesome 5 Free"; /* Ensure this matches your icon library */
+        font-weight: 900; /* Adjust based on your icon library */
+        margin-right: 5px; /* Space between icon and tag text */
     }
 </style>

@@ -19,8 +19,11 @@
                             value="{{ old('name', $variant->name) }}" required>
                     </div>
                     <div class="mb-3">
-                        <label>variant Description</label>
-                        <textarea class="form-control" name="description" required>{{ old('description', $variant->description) }}</textarea>
+                        <label for="tags" class="form-label">Tags</label>
+                        <input type="text" id="tags" name="values" class="form-control bootstrap-tagsinput"
+                            data-role="tagsinput"
+                            value="{{ old('values', implode(',', $variant->variantValues->pluck('value')->toArray())) }}"
+                            placeholder="Enter tags">
                     </div>
                     <div class="mb-3">
                         <label>Status</label>
@@ -40,3 +43,67 @@
         </div>
     </div>
 </div>
+<style>
+    .bootstrap-tagsinput {
+        display: block;
+        /* Ensure it behaves like a block element */
+        width: 100%;
+        /* Full width */
+        padding: 0.375rem 0.75rem;
+        /* Match form-control padding */
+        font-size: 1rem;
+        /* Match form-control font size */
+        line-height: 1;
+        /* Match form-control line height */
+        color: #495057;
+        /* Match form-control text color */
+        background-color: #fff;
+        /* Match form-control background */
+        background-clip: padding-box;
+        /* Match form-control clipping */
+        border: 1px solid #ced4da;
+        /* Match form-control border */
+        border-radius: 0.25rem;
+        /* Match form-control border radius */
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .bootstrap-tagsinput:focus {
+        border-color: #80bdff;
+        /* Match form-control focus border */
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        /* Match form-control focus shadow */
+    }
+
+    .bootstrap-tagsinput .tag {
+        margin: 0.2rem;
+        padding: 0.3rem 0.5rem;
+        background-color: #0ab39c;
+        color: #fff;
+        border-radius: 0.25rem;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .bootstrap-tagsinput .tag [data-role="remove"] {
+        margin-left: 8px;
+        cursor: pointer;
+        color: rgb(209, 14, 14);
+        background-color: transparent;
+        border: none;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .bootstrap-tagsinput .tag [data-role="remove"]:before {
+        content: "\f00d";
+        /* Font Awesome cross icon */
+        font-family: "Font Awesome 5 Free";
+        /* Ensure this matches your icon library */
+        font-weight: 900;
+        /* Adjust based on your icon library */
+        margin-right: 5px;
+        /* Space between icon and tag text */
+    }
+</style>

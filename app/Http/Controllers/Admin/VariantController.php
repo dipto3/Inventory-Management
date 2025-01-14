@@ -7,6 +7,7 @@ use App\Http\Requests\VariantFormRequest;
 use App\Models\Variant;
 use App\Models\VariantValue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VariantController extends Controller
 {
@@ -33,23 +34,29 @@ class VariantController extends Controller
     public function store(VariantFormRequest $request)
     {
         $request->validated();
-        $variant = Variant::create([
-            'name' => $request->name,
-            'status' => $request->status
-        ]);
-
-        $valuesArray = array_map('trim', explode(',', $request->input('values')));
-
-        foreach ($valuesArray as $value) {
-            if (!empty($value)) {
-                VariantValue::create([
-                    'variant_id' => $variant->id,
-                    'value' => $value,
+        try {
+            DB::transaction(function () use ($request) {
+                $variant = Variant::create([
+                    'name' => $request->name,
+                    'status' => $request->status
                 ]);
-            }
-        }
 
-        return redirect()->back();
+                $valuesArray = array_map('trim', explode(',', $request->input('values')));
+
+                foreach ($valuesArray as $value) {
+                    if (!empty($value)) {
+                        VariantValue::create([
+                            'variant_id' => $variant->id,
+                            'value' => $value,
+                        ]);
+                    }
+                }
+
+                return redirect()->back();
+            });
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong' . $e->getMessage());
+        }
     }
 
     /**
@@ -73,17 +80,18 @@ class VariantController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        
         $variant_id = $request->variant_id;
         $variant = Variant::findOrFail($variant_id);
         $variant->update([
             'name' => $request->name,
             'status' => $request->status,
         ]);
-    
+
         $valuesArray = array_map('trim', explode(',', $request->input('values')));
-       
+
         $variant->variantValues()->delete();
-    
+
         foreach ($valuesArray as $value) {
             if (!empty($value)) {
                 VariantValue::create([
@@ -93,7 +101,6 @@ class VariantController extends Controller
             }
         }
         return redirect()->back();
-
     }
 
     /**

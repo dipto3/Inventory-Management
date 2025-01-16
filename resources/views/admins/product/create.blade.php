@@ -611,10 +611,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    window.removeVariantValue = function(variantId, value) {
-        selectedVariants[variantId].values = selectedVariants[variantId].values.filter(v => v !== value);
-        updateVariantValuesList(variantId);
-    }
+        window.removeVariantValue = function(variantId, value) {
+            selectedVariants[variantId].values = selectedVariants[variantId].values.filter(v => v !== value);
+            updateVariantValuesList(variantId);
+        }
 
     function updateVariantValuesList(variantId) {
         const valuesList = document.querySelector(`.variant-values-list[data-variant-id="${variantId}"]`);

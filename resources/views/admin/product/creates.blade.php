@@ -11,7 +11,8 @@
         </div>
 
         <div class="container-fluid py-4">
-            <form id="productForm">
+            <form id="productForm" action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
                 <!-- Product Information -->
                 <div class="form-section">
                     <div class="form-section-title">
@@ -35,16 +36,26 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Product Name</label>
-                            <input type="text" class="form-control" />
+                            <input type="text" name="name" class="form-control" value="{{ old('name') }}" />
+                            @error('name')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Slug</label>
-                            <input type="text" class="form-control" />
+                            <input type="text" name="slug" class="form-control" value="{{ old('slug') }}" />
+                            @error('slug')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">SKU</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter SKU" />
+                                <input type="text" class="form-control" name="sku" placeholder="Enter SKU"
+                                    value="{{ old('sku') }}" />
+                                @error('sku')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                                 <button class="generate-btn" type="button">
                                     Generate Code
                                 </button>
@@ -54,8 +65,12 @@
                         <div class="col-md-4">
                             <label class="form-label">Category</label>
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select" name="category_id">
                                     <option>Choose</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+
                                 </select>
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
@@ -63,24 +78,31 @@
                         <div class="col-md-4">
                             <label class="form-label">Sub Category</label>
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select" name="subcategory_id">
                                     <option>Choose</option>
+                                    @foreach ($subcategories as $subcategory)
+                                        <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                    @endforeach
+
                                 </select>
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <label class="form-label">Sub Sub Category</label>
                             <select class="form-select">
                                 <option>Choose</option>
                             </select>
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-4">
                             <label class="form-label">Brand</label>
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select" name="brand">
                                     <option>Choose</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                                    @endforeach
                                 </select>
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
@@ -88,29 +110,35 @@
                         <div class="col-md-4">
                             <label class="form-label">Unit</label>
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select" name="unit">
                                     <option>Choose</option>
+                                    @foreach ($units as $unit)
+                                        <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
+                                    @endforeach
                                 </select>
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Selling Type</label>
-                            <select class="form-select">
+                            <select class="form-select" name="selling_type">
                                 <option>Choose</option>
+                                <option>Transactional selling</option>
+                                <option>Solution selling</option>
                             </select>
                         </div>
 
-                        <div class="col-md-8">
+                        {{-- <div class="col-md-8">
                             <label class="form-label">Barcode Symbology</label>
                             <select class="form-select">
                                 <option>Choose</option>
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="col-md-4">
                             <label class="form-label">Item Code</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Please Enter Item Code" />
+                                <input type="text" class="form-control"name="item_code"
+                                    placeholder="Please Enter Item Code" />
                                 <button class="generate-btn" type="button">
                                     Generate Code
                                 </button>
@@ -119,7 +147,7 @@
 
                         <div class="col-12">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" rows="4"></textarea>
+                            <textarea class="form-control" rows="4" name="description"></textarea>
                             <small class="text-muted">Maximum 60 Characters</small>
                         </div>
                     </div>
@@ -147,7 +175,8 @@
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label">Quantity</label>
-                                <input type="number" class="form-control" name="single_quantity" />
+                                <input type="number" class="form-control"name="quantity"
+                                    value="{{ old('quantity') }}" />
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Price</label>
@@ -166,7 +195,7 @@
 
                     <!-- Variable Product Section -->
 
-                    {{-- <div class="variable-product-section" style="display: none">
+                    <div class="variable-product-section" style="display: none">
                         <div class="mb-3">
                             <button type="button" class="btn btn-primary" id="addVariation">
                                 <i class="bi bi-plus"></i> Add Variation
@@ -200,7 +229,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Quantity</label>
-                                        <input type="number" class="form-control" />
+                                        <input type="number" class="form-control" name="quantity"
+                                            value="{{ old('quantity') }}" />
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Price</label>
@@ -223,22 +253,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
-                    <div class="mb-3">
-                        <label class="form-label">Select Variants</label>
-                        <select class="form-select" id="variantDropdown" multiple>
-                            <option>choose</option>
-                            @foreach ($variants as $variant)
-                                <option value="{{ $variant->id }}">{{ $variant->name }}</option>
-                            @endforeach
-                        </select>
                     </div>
-
-                    <div id="combinationContainer">
-                        <!-- Dynamically generated rows will appear here -->
-                    </div>
-
                 </div>
+               
 
 
                 <div class="mb-3">
@@ -318,7 +335,7 @@
         });
     });
 </script>
-{{-- <script>
+<script>
     document.addEventListener("DOMContentLoaded", function() {
         // Product type interaction
         const productTypeSelect = document.getElementById("productType");
@@ -400,75 +417,5 @@
             console.log("Form submitted");
         });
     });
-</script> --}}
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const variantDropdown = document.getElementById("variantDropdown");
-    const combinationContainer = document.getElementById("combinationContainer");
-
-    const variantData = @json($variants); // Pass variants data from the controller.
-
-    function generateCombinations(selectedVariants) {
-        if (selectedVariants.length === 0) {
-            combinationContainer.innerHTML = "";
-            return;
-        }
-
-        // Retrieve variant values for the selected variants
-        const variantValues = selectedVariants.map((id) => {
-            const variant = variantData.find((v) => v.id == id);
-            return variant ? variant.variant_values : [];
-        });
-
-        // Generate Cartesian product of the selected variant values
-        const combinations = variantValues.reduce((acc, values) => {
-            const result = [];
-            acc.forEach((a) => {
-                values.forEach((v) => {
-                    result.push([...a, v]);
-                });
-            });
-            return result;
-        }, [[]]);
-
-        // Render rows for combinations
-        combinationContainer.innerHTML = combinations
-            .map((combo, index) => {
-                const combinationName = combo.map((v) => v.value).join(", ");
-                return `
-                    <div class="row g-3 mb-2 combination-row" data-index="${index}">
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" value="${combinationName}" readonly />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control" placeholder="Quantity" />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control" placeholder="Price" />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" placeholder="Barcode" />
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-danger remove-row">Remove</button>
-                        </div>
-                    </div>`;
-            })
-            .join("");
-
-        // Attach event listeners for remove buttons
-        document.querySelectorAll(".remove-row").forEach((button) => {
-            button.addEventListener("click", function () {
-                const row = this.closest(".combination-row");
-                row.remove();
-            });
-        });
-    }
-
-    variantDropdown.addEventListener("change", function () {
-        const selectedVariantIds = Array.from(this.selectedOptions).map((opt) => opt.value);
-        generateCombinations(selectedVariantIds);
-    });
-});
-
 </script>
+

@@ -45,3 +45,7 @@
       // Initialize DataTable
       new DataTable('#example');
   </script>
+
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

@@ -36,55 +36,58 @@
 
                             <div class="card-body">
                                 <div class="listjs-table" id="customerList">
-                                    <table class="table table-nowrap" id="example">
-                                        <thead>
-                                            <tr>
-                                                <th width="20%">Title</th>
-                                                <th width="20%">Values</th>
-                                                <th width="20%">Created at</th>
-                                                <th width="20%">Status</th>
-                                                <th width="20%">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($variants as $variant)
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="example">
+                                            <thead>
                                                 <tr>
-                                                    <td>{{ $variant->name }}
-                                                    </td>
-                                                    <td>{{ $variant->variantValues->pluck('value')->implode(', ') }}</td>
-                                                    <td> {{ \Carbon\Carbon::parse($variant->created_at)->format('Y-m-d') }}
-                                                    </td>
-                                                    <td class="status">
-                                                        @if ($variant->status == 1)
-                                                            <span class="badge bg-success">Active</span>
-                                                        @elseif ($variant->status == 0)
-                                                            <span class="badge bg-danger">Inactive</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex gap-2">
-                                                            <div class="edit">
-                                                                <button class="btn btn-sm btn-success"
-                                                                    data-bs-toggle="modal" value="{{ $variant->id }}"
-                                                                    data-bs-target="#editVariantModal{{ $variant->id }}"><i
-                                                                        class="las la-edit"></i></button>
-                                                            </div>
-
-                                                            <div class="remove">
-                                                                <button class="btn btn-sm btn-danger remove-item-btn"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#deleteRecordModal{{ $variant->id }}"><i
-                                                                        class="ri-delete-bin-2-line"></i></button>
-                                                            </div>
-
-                                                        </div>
-                                                    </td>
+                                                    <th width="20%">Title</th>
+                                                    <th width="20%">Values</th>
+                                                    <th width="20%">Created at</th>
+                                                    <th width="20%">Status</th>
+                                                    <th width="20%">Action</th>
                                                 </tr>
-                                                @include('admin.variant.edit')
-                                                @include('admin.variant.delete-modal')
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($variants as $variant)
+                                                    <tr>
+                                                        <td>{{ $variant->name }}
+                                                        </td>
+                                                        <td>{{ $variant->variantValues->pluck('value')->implode(', ') }}
+                                                        </td>
+                                                        <td> {{ \Carbon\Carbon::parse($variant->created_at)->format('Y-m-d') }}
+                                                        </td>
+                                                        <td class="status">
+                                                            @if ($variant->status == 1)
+                                                                <span class="badge bg-success">Active</span>
+                                                            @elseif ($variant->status == 0)
+                                                                <span class="badge bg-danger">Inactive</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex gap-2">
+                                                                <div class="edit">
+                                                                    <button class="btn btn-sm btn-success"
+                                                                        data-bs-toggle="modal" value="{{ $variant->id }}"
+                                                                        data-bs-target="#editVariantModal{{ $variant->id }}"><i
+                                                                            class="las la-edit"></i></button>
+                                                                </div>
+
+                                                                <div class="remove">
+                                                                    <button class="btn btn-sm btn-danger remove-item-btn"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#deleteRecordModal{{ $variant->id }}"><i
+                                                                            class="ri-delete-bin-2-line"></i></button>
+                                                                </div>
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @include('admin.variant.edit')
+                                                    @include('admin.variant.delete-modal')
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
 
                                 </div>
                             </div><!-- end card -->

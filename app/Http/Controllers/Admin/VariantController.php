@@ -51,9 +51,8 @@ class VariantController extends Controller
                         ]);
                     }
                 }
-
-                return redirect()->back();
             });
+            return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong' . $e->getMessage());
         }
@@ -80,7 +79,7 @@ class VariantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
         $variant_id = $request->variant_id;
         $variant = Variant::findOrFail($variant_id);
         $variant->update([

@@ -227,7 +227,7 @@
                     <div class="mb-3" id="variantSection" style="display: none;">
                         <label class="form-label">Select Variants</label>
                         <select class="form-select" id="variantDropdown" multiple>
-                           
+
                             @foreach ($variants as $variant)
                                 <option value="{{ $variant->id }}">{{ $variant->name }}</option>
                             @endforeach
@@ -241,7 +241,7 @@
                 </div>
 
 
-                <div class="mb-3" >
+                <div class="mb-3">
                     <label for="productImages" class="form-label">Images</label>
                     <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
                         <div class="border rounded p-2" style="width: 100px; height: 100px">
@@ -402,16 +402,16 @@
     });
 </script> --}}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const productTypeSelect = document.getElementById("productType");
         const variantSection = document.getElementById("variantSection");
-    const variantDropdown = document.getElementById("variantDropdown");
-    const combinationContainer = document.getElementById("combinationContainer");
+        const variantDropdown = document.getElementById("variantDropdown");
+        const combinationContainer = document.getElementById("combinationContainer");
 
-    const variantData = @json($variants); // Pass variants data from the controller.
+        const variantData = @json($variants); // Pass variants data from the controller.
 
-            // Toggle visibility of the variant section based on product type selection
-            productTypeSelect.addEventListener("change", function () {
+        // Toggle visibility of the variant section based on product type selection
+        productTypeSelect.addEventListener("change", function() {
             if (this.value === "variable") {
                 variantSection.style.display = "block"; // Show the variant section
             } else {
@@ -420,37 +420,41 @@
             }
         });
 
-    function generateCombinations(selectedVariants) {
-        if (selectedVariants.length === 0) {
-            combinationContainer.innerHTML = "";
-            return;
-        }
+        function generateCombinations(selectedVariants) {
+            if (selectedVariants.length === 0) {
+                combinationContainer.innerHTML = "";
+                return;
+            }
 
-        // Retrieve variant values for the selected variants
-        const variantValues = selectedVariants.map((id) => {
-            const variant = variantData.find((v) => v.id == id);
-            return variant ? variant.variant_values : [];
-        });
-
-        // Generate Cartesian product of the selected variant values
-        const combinations = variantValues.reduce((acc, values) => {
-            const result = [];
-            acc.forEach((a) => {
-                values.forEach((v) => {
-                    result.push([...a, v]);
-                });
+            // Retrieve variant values for the selected variants
+            const variantValues = selectedVariants.map((id) => {
+                const variant = variantData.find((v) => v.id == id);
+                return variant ? variant.variant_values : [];
             });
-            return result;
-        }, [[]]);
 
-        // Render rows for combinations
-        combinationContainer.innerHTML = combinations
-            .map((combo, index) => {
-                const combinationName = combo.map((v, idx) => {
-                const variantName = variantData[idx] ? variantData[idx].name : '';
-                return `${variantName}: ${v.value}`;
-            }).join(", ");
-                return `
+            // Generate Cartesian product of the selected variant values
+            const combinations = variantValues.reduce((acc, values) => {
+                const result = [];
+                acc.forEach((a) => {
+                    values.forEach((v) => {
+                        result.push([...a, v]);
+                    });
+                });
+                return result;
+            }, [
+                []
+            ]);
+
+            // Render rows for combinations
+            combinationContainer.innerHTML = combinations
+                .map((combo, index) => {
+                    const combinationName = combo.map((v, idx) => {
+                        // const variantName = variantData[idx] ? variantData[idx].name : '';
+                        // return `${variantName}: ${v.value}`;
+                        const variant = variantData[idx];
+                        return `${variant.name}: ${v.value}`;
+                    }).join(", ");
+                    return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
                         <div class="col-md-4">
                             <input type="text" class="form-control" value="${combinationName}" readonly />
@@ -468,22 +472,21 @@
                             <button class="btn btn-danger remove-row">Remove</button>
                         </div>
                     </div>`;
-            })
-            .join("");
+                })
+                .join("");
 
-        // Attach event listeners for remove buttons
-        document.querySelectorAll(".remove-row").forEach((button) => {
-            button.addEventListener("click", function () {
-                const row = this.closest(".combination-row");
-                row.remove();
+            // Attach event listeners for remove buttons
+            document.querySelectorAll(".remove-row").forEach((button) => {
+                button.addEventListener("click", function() {
+                    const row = this.closest(".combination-row");
+                    row.remove();
+                });
             });
+        }
+
+        variantDropdown.addEventListener("change", function() {
+            const selectedVariantIds = Array.from(this.selectedOptions).map((opt) => opt.value);
+            generateCombinations(selectedVariantIds);
         });
-    }
-
-    variantDropdown.addEventListener("change", function () {
-        const selectedVariantIds = Array.from(this.selectedOptions).map((opt) => opt.value);
-        generateCombinations(selectedVariantIds);
     });
-});
-
 </script>

@@ -9,7 +9,7 @@
                     <div class="col-12">
                         <div
                             class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
-                            <h4 class="mb-sm-0">Categories</h4>
+                            <h4 class="mb-sm-0">Variants</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
@@ -27,21 +27,15 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title mb-0">Add, Edit & Remove</h4>
+                                <div class="d-flex justify-content-sm-end">
+                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
+                                        id="create-btn" data-bs-target="#showModal"><i
+                                            class="ri-add-line align-bottom me-1"></i> Create</button>
+                                </div>
                             </div><!-- end card header -->
 
                             <div class="card-body">
                                 <div class="listjs-table" id="customerList">
-                                    <div class="row g-4 mb-3">
-                                        <div class="col-sm-auto">
-                                            <div>
-                                                <button type="button" class="btn btn-success add-btn"
-                                                    data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i
-                                                        class="ri-add-line align-bottom me-1"></i> Add</button>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
                                     <table class="table table-nowrap" id="example">
                                         <thead>
                                             <tr>

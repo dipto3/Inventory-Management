@@ -69,12 +69,12 @@
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <label class="form-label">Sub Sub Category</label>
                             <select class="form-select">
                                 <option>Choose</option>
                             </select>
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-4">
                             <label class="form-label">Brand</label>
@@ -101,10 +101,13 @@
                             </select>
                         </div>
 
-                        <div class="col-md-8">
-                            <label class="form-label">Barcode Symbology</label>
-                            <select class="form-select">
-                                <option>Choose</option>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Tax Type</label>
+                            <select class="form-select" name="single_tax_type">
+                                <option value="">Choose</option>
+                                <option value="exclusive">Exclusive</option>
+                                <option value="inclusive">Inclusive</option>
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -141,9 +144,9 @@
                             </select>
                         </div>
                     </div>
-
+                    
                     <!-- Single Product Section -->
-                    <div class="single-product-section">
+                    <div class="single-product-section" style="display: none;">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label">Quantity</label>
@@ -153,14 +156,7 @@
                                 <label class="form-label">Price</label>
                                 <input type="number" class="form-control" name="single_price" />
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Tax Type</label>
-                                <select class="form-select" name="single_tax_type">
-                                    <option value="">Choose</option>
-                                    <option value="exclusive">Exclusive</option>
-                                    <option value="inclusive">Inclusive</option>
-                                </select>
-                            </div>
+
                         </div>
                     </div>
 
@@ -321,6 +317,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const productTypeSelect = document.getElementById("productType");
+        const singleProductSection = document.querySelector(".single-product-section");
         const variantSection = document.getElementById("variantSection");
         const variantDropdown = document.getElementById("variantDropdown");
         const combinationContainer = document.getElementById("combinationContainer");
@@ -328,14 +325,33 @@
         const variantData = @json($variants); // Pass variants data from the controller.
 
         // Toggle visibility of the variant section based on product type selection
-        productTypeSelect.addEventListener("change", function() {
-            if (this.value === "variable") {
-                variantSection.style.display = "block"; // Show the variant section
-            } else {
-                variantSection.style.display = "none"; // Hide the variant section
-                combinationContainer.innerHTML = ""; // Clear combinations if hidden
+        productTypeSelect.addEventListener("change", function () {
+            if (this.value === "single") {
+                singleProductSection.style.display = "block"; // Show the single product section
+                if (variantSection) {
+                    variantSection.style.display = "none"; // Hide the variant section
+                    combinationContainer.innerHTML = ""; // Clear combinations if hidden
+                }
+            } else if (this.value === "variable") {
+                singleProductSection.style.display = "none"; // Hide the single product section
+                if (variantSection) {
+                    variantSection.style.display = "block"; // Show the variant section
+                }
             }
         });
+         // Initialize visibility based on the current value of product type
+         if (productTypeSelect.value === "single") {
+            singleProductSection.style.display = "block";
+            if (variantSection) {
+                variantSection.style.display = "none";
+            }
+        } else if (productTypeSelect.value === "variable") {
+            singleProductSection.style.display = "none";
+            if (variantSection) {
+                variantSection.style.display = "block";
+            }
+        }
+        
 
         function generateCombinations(selectedVariants) {
             if (selectedVariants.length === 0) {
@@ -373,7 +389,7 @@
                     }).join(", ");
                     return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <input type="text" class="form-control" value="${combinationName}" readonly />
                         </div>
                         <div class="col-md-2">
@@ -382,8 +398,9 @@
                         <div class="col-md-2">
                             <input type="number" class="form-control" placeholder="Price" />
                         </div>
+                        
                         <div class="col-md-2">
-                            <input type="text" class="form-control" placeholder="Barcode" />
+                            <input type="text" class="form-control" placeholder="Quantity alert" />
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-danger remove-row">Remove</button>

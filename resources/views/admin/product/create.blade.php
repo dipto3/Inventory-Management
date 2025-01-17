@@ -224,10 +224,10 @@
                             </div>
                         </div>
                     </div> --}}
-                    <div class="mb-3">
+                    <div class="mb-3" id="variantSection" style="display: none;">
                         <label class="form-label">Select Variants</label>
                         <select class="form-select" id="variantDropdown" multiple>
-                            <option>choose</option>
+                           
                             @foreach ($variants as $variant)
                                 <option value="{{ $variant->id }}">{{ $variant->name }}</option>
                             @endforeach
@@ -241,7 +241,7 @@
                 </div>
 
 
-                <div class="mb-3">
+                <div class="mb-3" >
                     <label for="productImages" class="form-label">Images</label>
                     <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
                         <div class="border rounded p-2" style="width: 100px; height: 100px">
@@ -403,10 +403,22 @@
 </script> --}}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const productTypeSelect = document.getElementById("productType");
+        const variantSection = document.getElementById("variantSection");
     const variantDropdown = document.getElementById("variantDropdown");
     const combinationContainer = document.getElementById("combinationContainer");
 
     const variantData = @json($variants); // Pass variants data from the controller.
+
+            // Toggle visibility of the variant section based on product type selection
+            productTypeSelect.addEventListener("change", function () {
+            if (this.value === "variable") {
+                variantSection.style.display = "block"; // Show the variant section
+            } else {
+                variantSection.style.display = "none"; // Hide the variant section
+                combinationContainer.innerHTML = ""; // Clear combinations if hidden
+            }
+        });
 
     function generateCombinations(selectedVariants) {
         if (selectedVariants.length === 0) {
@@ -434,7 +446,10 @@
         // Render rows for combinations
         combinationContainer.innerHTML = combinations
             .map((combo, index) => {
-                const combinationName = combo.map((v) => v.value).join(", ");
+                const combinationName = combo.map((v, idx) => {
+                const variantName = variantData[idx] ? variantData[idx].name : '';
+                return `${variantName}: ${v.value}`;
+            }).join(", ");
                 return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
                         <div class="col-md-4">

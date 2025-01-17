@@ -8,9 +8,6 @@
   <script src="{{ asset('admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
   <script src="{{ asset('admin/assets/js/plugins.js') }}"></script>
 
-  <!-- apexcharts -->
-  <script src="{{ asset('admin/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-
   <!-- Vector map-->
   <script src="{{ asset('admin/assets/libs/jsvectormap/jsvectormap.min.js') }}"></script>
   <script src="{{ asset('admin/assets/libs/jsvectormap/maps/world-merc.js') }}"></script>

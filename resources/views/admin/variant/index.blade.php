@@ -42,7 +42,6 @@
                                                 <th width="20%">Title</th>
                                                 <th width="20%">Values</th>
                                                 <th width="20%">Created at</th>
-
                                                 <th width="20%">Status</th>
                                                 <th width="20%">Action</th>
                                             </tr>

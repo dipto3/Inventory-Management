@@ -62,7 +62,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
+        // dd($request->all());
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'store' => 'nullable|string|max:255',
@@ -75,7 +75,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'subcategory_id' => 'nullable|exists:subcategories,id',
-            'product_type' => 'required|in:single,variable',
+            'productType' => 'required|in:single,variable',
             'manufactured_date' => 'nullable|date',
             'expired_date' => 'nullable|date',
             'item_code' => 'nullable',
@@ -94,15 +94,15 @@ class ProductController extends Controller
             'sku' => $validatedData['sku'] ?? Str::random(10),
             'slug' => $validatedData['slug'] ?? Str::slug($validatedData['name']),
             'item_code' => $validatedData['item_code'],
-            'manufactured_date' => Carbon::parse($validatedData['manufactured_date']),
-            'expired_date' => Carbon::parse($validatedData['expired_date']),
+            'manufactured_date' => isset($validatedData['manufactured_date']) ? Carbon::parse($validatedData['manufactured_date']) : null,
+            'expired_date' => isset($validatedData['expired_date']) ? Carbon::parse($validatedData['expired_date']) : null,
             'unit' => $validatedData['unit'],
             'brand' => $validatedData['brand'],
             'selling_type' => $validatedData['selling_type'],
             'description' => $validatedData['description'],
-            'discount_type' => $validatedData['discount_type'],
-            'discount_value' =>$validatedData['discount_value'],
-            'tax_type' =>$validatedData['tax_type']
+            'discount_type' => $validatedData['discount_type'] ,
+            'discount_value' => $validatedData['discount_value'],
+            'tax_type' => $validatedData['tax_type']
         ]);
 
         if ($request->hasFile('image')) {
@@ -118,7 +118,7 @@ class ProductController extends Controller
             'subcategory_id' => $validatedData['subcategory_id'],
         ]);
 
-        if ($validatedData['product_type'] === 'single') {
+        if ($validatedData['productType'] === 'single') {
             // Handle single product
             $this->handleSingleProduct($product, $request);
         } else {

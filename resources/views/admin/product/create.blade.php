@@ -11,7 +11,8 @@
         </div>
 
         <div class="container-fluid py-4">
-            <form id="productForm">
+            <form id="productForm" action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
                 <!-- Product Information -->
                 <div class="form-section">
                     <div class="form-section-title">
@@ -22,40 +23,62 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Store</label>
-                            <select class="form-select">
+                            <select class="form-select"name="store">
                                 <option>Choose</option>
+                                <option value="Thomas" {{ old('store') == 'Thomas' ? 'selected' : '' }}>Thomas</option>
+                                <option value="Rasmussen" {{ old('store') == 'Rasmussen' ? 'selected' : '' }}>Rasmussen
+                                </option>
+                                <option value="Fred john" {{ old('store') == 'Fred john' ? 'selected' : '' }}>Fred john
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Warehouse</label>
-                            <select class="form-select">
+                            <select class="form-select" name="warehouse">
                                 <option>Choose</option>
+                                <option value="Legendary" {{ old('warehouse') == 'Legendary' ? 'selected' : '' }}>Legendary
+                                </option>
+                                <option value="Determined" {{ old('warehouse') == 'Determined' ? 'selected' : '' }}>
+                                    Determined</option>
+                                <option value="Sincere" {{ old('warehouse') == 'Sincere' ? 'selected' : '' }}>Sincere
+                                </option>
                             </select>
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Product Name</label>
-                            <input type="text" class="form-control" />
+                            <input type="text" class="form-control" name="name" value="{{ old('name') }}" />
+                            @error('name')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Slug</label>
-                            <input type="text" class="form-control" />
+                            <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
+                            @error('slug')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">SKU</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter SKU" />
-                                <button class="generate-btn" type="button">
-                                    Generate Code
-                                </button>
+                                <input type="text" class="form-control" placeholder="Enter SKU" name="sku"
+                                    value="{{ old('sku') }}">
+                                @error('sku')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Category</label>
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select" name="category_id">
                                     <option>Choose</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
                                 </select>
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
@@ -63,8 +86,11 @@
                         <div class="col-md-4">
                             <label class="form-label">Sub Category</label>
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select"name="subcategory_id">
                                     <option>Choose</option>
+                                    @foreach ($subcategories as $subcategory)
+                                        <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                    @endforeach
                                 </select>
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
@@ -75,12 +101,35 @@
                                 <option>Choose</option>
                             </select>
                         </div> --}}
+                        <div class="col-md-4">
+                            <label class="form-label">Discount Type</label>
+                            <div class="input-group">
+                                <select class="form-select"name="discount_type">
+
+                                    <option>Choose</option>
+                                    <option value="Percentage">Percentage</option>
+                                    <option value="Cash">Cash</option>
+                                </select>
+                                <button class="add-new-btn" type="button">Add New</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Discount Value</label>
+                            <div class="input-group">
+                                <input type="text" placeholder="Choose" name="discount_value">
+
+
+                            </div>
+                        </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Brand</label>
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select"name="brand">
                                     <option>Choose</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                                    @endforeach
                                 </select>
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
@@ -88,23 +137,28 @@
                         <div class="col-md-4">
                             <label class="form-label">Unit</label>
                             <div class="input-group">
-                                <select class="form-select">
+                                <select class="form-select"name="unit">
                                     <option>Choose</option>
+                                    @foreach ($units as $unit)
+                                        <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
+                                    @endforeach
                                 </select>
                                 <button class="add-new-btn" type="button">Add New</button>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Selling Type</label>
-                            <select class="form-select">
+                            <select class="form-select"name="selling_type">
                                 <option>Choose</option>
+                                <option>Transactional selling</option>
+                                <option>Solution selling</option>
                             </select>
                         </div>
 
-                        
+
                         <div class="col-md-4">
                             <label class="form-label">Tax Type</label>
-                            <select class="form-select" name="single_tax_type">
+                            <select class="form-select" name="tax_type">
                                 <option value="">Choose</option>
                                 <option value="exclusive">Exclusive</option>
                                 <option value="inclusive">Inclusive</option>
@@ -113,7 +167,8 @@
                         <div class="col-md-4">
                             <label class="form-label">Item Code</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Please Enter Item Code" />
+                                <input type="text" class="form-control"
+                                    placeholder="Please Enter Item Code"name="item_code" />
                                 <button class="generate-btn" type="button">
                                     Generate Code
                                 </button>
@@ -122,7 +177,7 @@
 
                         <div class="col-12">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" rows="4"></textarea>
+                            <textarea class="form-control" rows="4" name="description"></textarea>
                             <small class="text-muted">Maximum 60 Characters</small>
                         </div>
                     </div>
@@ -144,17 +199,21 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- Single Product Section -->
                     <div class="single-product-section" style="display: none;">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label">Quantity</label>
-                                <input type="number" class="form-control" name="single_quantity" />
+                                <input type="number" class="form-control" name="quantity" />
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Price</label>
-                                <input type="number" class="form-control" name="single_price" />
+                                <input type="number" class="form-control" name="price" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Quantity Alert</label>
+                                <input type="number" class="form-control" name="quantity_alert" />
                             </div>
 
                         </div>
@@ -246,7 +305,7 @@
                                 <i class="bi bi-cloud-upload fs-3"></i>
                                 <span class="small text-muted">Upload</span>
                             </label>
-                            <input type="file" id="productImages" accept="image/*" multiple class="d-none" />
+                            <input type="file" id="productImages" multiple class="d-none" name="image[]" multiple />
                         </div>
                     </div>
                 </div>
@@ -319,12 +378,12 @@
         const productTypeSelect = document.getElementById("productType");
         const singleProductSection = document.querySelector(".single-product-section");
         const variantSection = document.getElementById("variantSection");
-        const variantDropdown = document.getElementById("variantDropdown");
         const combinationContainer = document.getElementById("combinationContainer");
+        const variantDropdown = document.getElementById("variantDropdown");
 
         const variantData = @json($variants); // Pass variants data from the controller.
 
-        // Toggle visibility of the variant section based on product type selection
+        // Toggle visibility of sections based on product type selection
         productTypeSelect.addEventListener("change", function () {
             if (this.value === "single") {
                 singleProductSection.style.display = "block"; // Show the single product section
@@ -339,8 +398,9 @@
                 }
             }
         });
-         // Initialize visibility based on the current value of product type
-         if (productTypeSelect.value === "single") {
+
+        // Initialize visibility based on the current value of product type
+        if (productTypeSelect.value === "single") {
             singleProductSection.style.display = "block";
             if (variantSection) {
                 variantSection.style.display = "none";
@@ -352,6 +412,7 @@
             }
         }
         
+
 
         function generateCombinations(selectedVariants) {
             if (selectedVariants.length === 0) {
@@ -389,14 +450,15 @@
                     }).join(", ");
                     return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
+                        
                         <div class="col-md-2">
                             <input type="text" class="form-control" value="${combinationName}" readonly />
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" placeholder="Quantity" />
+                            <input type="number" class="form-control" placeholder="Quantity"  />
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" placeholder="Price" />
+                            <input type="number" class="form-control" placeholder="Price"  />
                         </div>
                         
                         <div class="col-md-2">

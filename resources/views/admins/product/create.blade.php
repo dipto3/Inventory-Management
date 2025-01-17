@@ -50,9 +50,14 @@
                                                     <label class="form-label">Store</label>
                                                     <select class="select" name="store">
                                                         <option>Choose</option>
-                                                        <option value="Thomas" {{ old('store') == 'Thomas' ? 'selected' : '' }}>Thomas</option>
-                                                        <option value="Rasmussen" {{ old('store') == 'Rasmussen' ? 'selected' : '' }}>Rasmussen</option>
-                                                        <option value="Fred john" {{ old('store') == 'Fred john' ? 'selected' : '' }}>Fred john</option>
+                                                        <option value="Thomas"
+                                                            {{ old('store') == 'Thomas' ? 'selected' : '' }}>Thomas</option>
+                                                        <option value="Rasmussen"
+                                                            {{ old('store') == 'Rasmussen' ? 'selected' : '' }}>Rasmussen
+                                                        </option>
+                                                        <option value="Fred john"
+                                                            {{ old('store') == 'Fred john' ? 'selected' : '' }}>Fred john
+                                                        </option>
                                                     </select>
                                                     @error('store')
                                                         <div class="text-danger">{{ $message }}</div>
@@ -64,9 +69,15 @@
                                                     <label class="form-label">Warehouse</label>
                                                     <select class="select" name="warehouse">
                                                         <option>Choose</option>
-                                                        <option value="Legendary" {{ old('warehouse') == 'Legendary' ? 'selected' : '' }}>Legendary</option>
-                                                        <option value="Determined" {{ old('warehouse') == 'Determined' ? 'selected' : '' }}>Determined</option>
-                                                        <option value="Sincere" {{ old('warehouse') == 'Sincere' ? 'selected' : '' }}>Sincere</option>
+                                                        <option value="Legendary"
+                                                            {{ old('warehouse') == 'Legendary' ? 'selected' : '' }}>
+                                                            Legendary</option>
+                                                        <option value="Determined"
+                                                            {{ old('warehouse') == 'Determined' ? 'selected' : '' }}>
+                                                            Determined</option>
+                                                        <option value="Sincere"
+                                                            {{ old('warehouse') == 'Sincere' ? 'selected' : '' }}>Sincere
+                                                        </option>
                                                     </select>
                                                     @error('warehouse')
                                                         <div class="text-danger">{{ $message }}</div>
@@ -78,7 +89,8 @@
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Product Name</label>
-                                                    <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+                                                    <input type="text" name="name" class="form-control"
+                                                        value="{{ old('name') }}">
                                                     @error('name')
                                                         <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -87,7 +99,8 @@
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="mb-3 add-product">
                                                     <label class="form-label">Slug</label>
-                                                    <input type="text" name="slug" class="form-control" value="{{ old('slug') }}">
+                                                    <input type="text" name="slug" class="form-control"
+                                                        value="{{ old('slug') }}">
                                                     @error('slug')
                                                         <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -96,7 +109,8 @@
                                             <div class="col-lg-4 col-sm-6 col-12">
                                                 <div class="input-blocks add-product list">
                                                     <label>SKU</label>
-                                                    <input type="text" name="sku" class="form-control list" placeholder="Enter SKU" value="{{ old('sku') }}">
+                                                    <input type="text" name="sku" class="form-control list"
+                                                        placeholder="Enter SKU" value="{{ old('sku') }}">
                                                     @error('sku')
                                                         <div class="text-danger">{{ $message }}</div>
                                                     @enderror
@@ -118,9 +132,10 @@
                                                         <select class="select" name="category_id">
                                                             <option>Choose</option>
                                                             @foreach ($categories as $category)
-                                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                                <option value="{{ $category->id }}">{{ $category->name }}
+                                                                </option>
                                                             @endforeach
-                                                            
+
                                                         </select>
                                                     </div>
                                                 </div>
@@ -130,7 +145,8 @@
                                                         <select class="select" name="subcategory_id">
                                                             <option>Choose</option>
                                                             @foreach ($subcategories as $subcategory)
-                                                                <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                                                <option value="{{ $subcategory->id }}">
+                                                                    {{ $subcategory->name }}</option>
                                                             @endforeach
                                                             <option>Lenovo</option>
                                                             <option>Electronics</option>
@@ -165,7 +181,8 @@
                                                         <select class="select" name="brand">
                                                             <option>Choose</option>
                                                             @foreach ($brands as $brand)
-                                                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                                                                <option value="{{ $brand->name }}">{{ $brand->name }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -182,7 +199,8 @@
                                                         <select class="select" name="unit">
                                                             <option>Choose</option>
                                                             @foreach ($units as $unit)
-                                                            <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
+                                                                <option value="{{ $unit->short_name }}">
+                                                                    {{ $unit->short_name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -216,7 +234,7 @@
                                                     <label>Item Code</label>
                                                     <input type="text" class="form-control list" name="item_code"
                                                         placeholder="Please Enter Item Code">
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -266,8 +284,9 @@
                                                     <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Quantity</label>
-                                                            <input type="text" class="form-control" name="quantity" value="{{ old('quantity') }}">
-                                                            
+                                                            <input type="text" class="form-control" name="quantity"
+                                                                value="{{ old('quantity') }}">
+
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-sm-6 col-12">
@@ -276,16 +295,18 @@
                                                             <input type="text" class="form-control" name="price">
                                                         </div>
                                                     </div>
-                                                     <div class="col-lg-4 col-sm-6 col-12">
+                                                    <div class="col-lg-4 col-sm-6 col-12">
                                                         <div class="input-blocks add-product">
                                                             <label>Quantity Alert</label>
-                                                            <input type="text" class="form-control" name="quantity_alert" value="{{ old('quantity_alert') }}">
-                                                           
+                                                            <input type="text" class="form-control"
+                                                                name="quantity_alert"
+                                                                value="{{ old('quantity_alert') }}">
+
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
-                                               
+
                                             </div>
                                             <div class="tab-pane fade" id="variableProduct" role="tabpanel">
                                                 <div class="row select-color-add">
@@ -294,19 +315,21 @@
                                                             <label>Variant Attributes</label>
                                                             <div class="row">
                                                                 <div class="col-lg-10 col-sm-10 col-10">
-                                                                    <select class="form-control select2" id="variantSelect" multiple name="variant_ids[]">
+                                                                    <select class="form-control select2"
+                                                                        id="variantSelect" multiple name="variant_ids[]">
                                                                         <option value="">Choose</option>
                                                                         @foreach ($variants as $variant)
                                                                             <option value="{{ $variant->id }}"
-                                                                                    data-name="{{ $variant->name }}"
-                                                                                    data-values="{{ $variant->variantValues->pluck('value') }}">
+                                                                                data-name="{{ $variant->name }}"
+                                                                                data-values="{{ $variant->variantValues->pluck('value') }}">
                                                                                 {{ $variant->name }}
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-lg-2 col-sm-2 col-2">
-                                                                    <button id="generateVariants" class="btn btn-primary" type="button">
+                                                                    <button id="generateVariants" class="btn btn-primary"
+                                                                        type="button">
                                                                         <i class="feather-plus-circle"></i>
                                                                     </button>
                                                                 </div>
@@ -317,13 +340,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="modal-body-table variant-table" id="variant-table" style="display: none;">
+                                                <div class="modal-body-table variant-table" id="variant-table"
+                                                    style="display: none;">
                                                     <div class="table-responsive">
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
                                                                     <th>Variant Combination</th>
-                                                                    
+
                                                                     <th>Quantity</th>
                                                                     <th>Price</th>
                                                                     <th>Quantity Alert</th>
@@ -380,7 +404,7 @@
                                                 <div class="col-lg-4 col-sm-6 col-12">
                                                     <div class="input-blocks add-product">
                                                         <label>Discount Type</label>
-                                                        <select class="select">
+                                                        <select class="select" name="discount_type">
                                                             <option>Choose</option>
                                                             <option>Percentage</option>
                                                             <option>Cash</option>
@@ -402,14 +426,14 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                
+
                                                 <div class="col-lg-4 col-sm-6 col-12">
                                                     <div class="input-blocks">
                                                         <label>Manufactured Date</label>
                                                         <div class="input-groupicon calender-input">
                                                             <i data-feather="calendar" class="info-img"></i>
-                                                            <input type="text" class="datetimepicker" name="manufactured_date"
-                                                                placeholder="Choose Date">
+                                                            <input type="text" class="datetimepicker"
+                                                                name="manufactured_date" placeholder="Choose Date">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -418,8 +442,8 @@
                                                         <label>Expiry On</label>
                                                         <div class="input-groupicon calender-input">
                                                             <i data-feather="calendar" class="info-img"></i>
-                                                            <input type="text" class="datetimepicker" name="expired_date"
-                                                                placeholder="Choose Date">
+                                                            <input type="text" class="datetimepicker"
+                                                                name="expired_date" placeholder="Choose Date">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -448,7 +472,8 @@
                                                                         <div class="add-choosen">
                                                                             <div class="input-blocks">
                                                                                 <div class="image-upload">
-                                                                                    <input type="file" name="image[]" multiple>
+                                                                                    <input type="file" name="image[]"
+                                                                                        multiple>
                                                                                     <div class="image-uploads">
                                                                                         <i data-feather="plus-circle"
                                                                                             class="plus-down-add me-0"></i>
@@ -520,83 +545,83 @@ type="3e7d17d336227172fbef6778-text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <style>
-.select2-container--default .select2-selection--multiple {
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-}
+    .select2-container--default .select2-selection--multiple {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
 
-.select2-container--default.select2-container--focus .select2-selection--multiple {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-}
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+    }
 
-.select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: #007bff;
-    border: 1px solid #007bff;
-    color: #fff;
-}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        color: #fff;
+    }
 
-.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    color: #fff;
-}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: #fff;
+    }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const productTypeSelect = document.getElementById('productType');
-    const singleProductPane = document.getElementById('singleProduct');
-    const variableProductPane = document.getElementById('variableProduct');
-    const variantSelect = $('#variantSelect');
-    const generateVariantsBtn = document.getElementById('generateVariants');
-    const variantValuesContainer = document.getElementById('variant-values-container');
-    const variantTable = document.getElementById('variant-table');
-    const variantTableBody = document.getElementById('variant-table-body');
+    document.addEventListener('DOMContentLoaded', function() {
+        const productTypeSelect = document.getElementById('productType');
+        const singleProductPane = document.getElementById('singleProduct');
+        const variableProductPane = document.getElementById('variableProduct');
+        const variantSelect = $('#variantSelect');
+        const generateVariantsBtn = document.getElementById('generateVariants');
+        const variantValuesContainer = document.getElementById('variant-values-container');
+        const variantTable = document.getElementById('variant-table');
+        const variantTableBody = document.getElementById('variant-table-body');
 
-    let selectedVariants = {};
+        let selectedVariants = {};
 
-    // Initialize Select2
-    variantSelect.select2({
-        placeholder: "Select variants",
-        allowClear: true,
-        width: '100%'
-    });
-
-    variantSelect.on('change', function() {
-        updateSelectedVariants();
-        updateVariantValuesContainer();
-    });
-
-    generateVariantsBtn.addEventListener('click', function(event) {
-        event.preventDefault();
-        generateVariantCombinations();
-    });
-
-    productTypeSelect.addEventListener('change', function() {
-        if (this.value === 'single') {
-            singleProductPane.classList.add('show', 'active');
-            variableProductPane.classList.remove('show', 'active');
-        } else {
-            singleProductPane.classList.remove('show', 'active');
-            variableProductPane.classList.add('show', 'active');
-        }
-    });
-
-    function updateSelectedVariants() {
-        selectedVariants = {};
-        variantSelect.find(':selected').each(function() {
-            const option = $(this);
-            selectedVariants[option.val()] = {
-                name: option.data('name'),
-                values: option.data('values')
-            };
+        // Initialize Select2
+        variantSelect.select2({
+            placeholder: "Select variants",
+            allowClear: true,
+            width: '100%'
         });
-    }
 
-    function updateVariantValuesContainer() {
-        variantValuesContainer.innerHTML = '';
-        Object.entries(selectedVariants).forEach(([variantId, variant]) => {
-            const variantDiv = document.createElement('div');
-            variantDiv.innerHTML = `
+        variantSelect.on('change', function() {
+            updateSelectedVariants();
+            updateVariantValuesContainer();
+        });
+
+        generateVariantsBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            generateVariantCombinations();
+        });
+
+        productTypeSelect.addEventListener('change', function() {
+            if (this.value === 'single') {
+                singleProductPane.classList.add('show', 'active');
+                variableProductPane.classList.remove('show', 'active');
+            } else {
+                singleProductPane.classList.remove('show', 'active');
+                variableProductPane.classList.add('show', 'active');
+            }
+        });
+
+        function updateSelectedVariants() {
+            selectedVariants = {};
+            variantSelect.find(':selected').each(function() {
+                const option = $(this);
+                selectedVariants[option.val()] = {
+                    name: option.data('name'),
+                    values: option.data('values')
+                };
+            });
+        }
+
+        function updateVariantValuesContainer() {
+            variantValuesContainer.innerHTML = '';
+            Object.entries(selectedVariants).forEach(([variantId, variant]) => {
+                const variantDiv = document.createElement('div');
+                variantDiv.innerHTML = `
                 <h5>${variant.name}</h5>
                 <div class="variant-values-list" data-variant-id="${variantId}">
                     ${variant.values.map(value => `
@@ -607,48 +632,55 @@ document.addEventListener('DOMContentLoaded', function() {
                     `).join('')}
                 </div>
             `;
-            variantValuesContainer.appendChild(variantDiv);
-        });
-    }
+                variantValuesContainer.appendChild(variantDiv);
+            });
+        }
 
         window.removeVariantValue = function(variantId, value) {
-            selectedVariants[variantId].values = selectedVariants[variantId].values.filter(v => v !== value);
+            selectedVariants[variantId].values = selectedVariants[variantId].values.filter(v => v !==
+            value);
             updateVariantValuesList(variantId);
         }
 
-    function updateVariantValuesList(variantId) {
-        const valuesList = document.querySelector(`.variant-values-list[data-variant-id="${variantId}"]`);
-        valuesList.innerHTML = selectedVariants[variantId].values.map(value => `
+        function updateVariantValuesList(variantId) {
+            const valuesList = document.querySelector(`.variant-values-list[data-variant-id="${variantId}"]`);
+            valuesList.innerHTML = selectedVariants[variantId].values.map(value => `
             <span class="badge bg-primary me-2 mb-2">
                 ${value}
                 <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="removeVariantValue('${variantId}', '${value}')"></button>
             </span>
         `).join('');
-    }
+        }
 
-    function generateVariantCombinations() {
-        const variants = Object.values(selectedVariants);
-        const combinations = getCombinations(variants);
-        updateVariantTable(combinations);
-    }
+        function generateVariantCombinations() {
+            const variants = Object.values(selectedVariants);
+            const combinations = getCombinations(variants);
+            updateVariantTable(combinations);
+        }
 
-    function getCombinations(variants) {
-        if (variants.length === 0) return [[]];
-        const [first, ...rest] = variants;
-        const combsWithoutFirst = getCombinations(rest);
-        const combsWithFirst = first.values.flatMap(value =>
-            combsWithoutFirst.map(comb => [{ name: first.name, value }].concat(comb))
-        );
-        return combsWithFirst;
-    }
+        function getCombinations(variants) {
+            if (variants.length === 0) return [
+                []
+            ];
+            const [first, ...rest] = variants;
+            const combsWithoutFirst = getCombinations(rest);
+            const combsWithFirst = first.values.flatMap(value =>
+                combsWithoutFirst.map(comb => [{
+                    name: first.name,
+                    value
+                }].concat(comb))
+            );
+            return combsWithFirst;
+        }
 
-    function updateVariantTable(combinations) {
-        variantTableBody.innerHTML = '';
-        combinations.forEach((combination, index) => {
-            const row = document.createElement('tr');
-            const combinationText = combination.map(v => `${v.name}: ${v.value}`).join(', ');
-            const variantIds = Object.keys(selectedVariants).join(',');
-            row.innerHTML = `
+        function updateVariantTable(combinations) {
+            variantTableBody.innerHTML = '';
+            combinations.forEach((combination, index) => {
+                const row = document.createElement('tr');
+                const combinationText = combination.map(v => `${v.name}: ${v.value}`).join(', ');
+                const variantIds = Object.keys(selectedVariants).join(',');
+                row.innerHTML =
+                    `
                 <td>
                     <input type="hidden" name="child_products[${index}][combination]" value="${combinationText}">
                     <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
@@ -659,9 +691,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td><input type="number" class="form-control" name="child_products[${index}][price]" placeholder="Price"></td>
                
                 <td><input type="number" class="form-control" name="child_products[${index}][quantity_alert]" placeholder="Quantity Alert"></td>            `;
-            variantTableBody.appendChild(row);
-        });
-        variantTable.style.display = 'block';
-    }
-});
+                variantTableBody.appendChild(row);
+            });
+            variantTable.style.display = 'block';
+        }
+    });
 </script>

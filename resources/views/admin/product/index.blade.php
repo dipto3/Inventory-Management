@@ -49,6 +49,7 @@
                                             @foreach ($products as $product)
                                                 <tr>
                                                     <td>
+                                                        {{ $product->name }}
                                                     </td>
                                                     <td></td>
                                                     <td>

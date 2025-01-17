@@ -130,7 +130,7 @@
                                     </div>
 
                                     <div class="d-flex justify-content-end">
-                                        <div class="pagination-wrap hstack gap-2">
+                                        {{-- <div class="pagination-wrap hstack gap-2">
                                             <a class="page-item pagination-prev disabled" href="javascript:void(0);">
                                                 Previous
                                             </a>
@@ -138,7 +138,7 @@
                                             <a class="page-item pagination-next" href="javascript:void(0);">
                                                 Next
                                             </a>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div><!-- end card -->

@@ -52,13 +52,7 @@
                                 <div class="text-danger small">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Slug</label>
-                            <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
-                            @error('slug')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
+
                         <div class="col-md-4">
                             <label class="form-label">SKU</label>
                             <div class="input-group">
@@ -116,7 +110,7 @@
                         <div class="col-md-4">
                             <label class="form-label">Discount Value</label>
                             <div class="input-group">
-                                <input type="text" placeholder="Choose" name="discount_value">
+                                <input type="text" placeholder="Choose" class="form-control" name="discount_value">
 
 
                             </div>
@@ -384,7 +378,7 @@
         const variantData = @json($variants); // Pass variants data from the controller.
 
         // Toggle visibility of sections based on product type selection
-        productTypeSelect.addEventListener("change", function () {
+        productTypeSelect.addEventListener("change", function() {
             if (this.value === "single") {
                 singleProductSection.style.display = "block"; // Show the single product section
                 if (variantSection) {
@@ -411,7 +405,7 @@
                 variantSection.style.display = "block";
             }
         }
-        
+
 
 
         function generateCombinations(selectedVariants) {
@@ -421,12 +415,32 @@
             }
 
             // Retrieve variant values for the selected variants
+            // const variantValues = selectedVariants.map((id) => {
+            //     const variant = variantData.find((v) => v.id == id);
+            //     return variant ? variant.variant_values : [];
+            // });
             const variantValues = selectedVariants.map((id) => {
                 const variant = variantData.find((v) => v.id == id);
-                return variant ? variant.variant_values : [];
+                return variant ?
+                    variant.variant_values.map((value) => ({
+                        id: variant.id, // Variant model's id
+                        name: variant.name,
+                        value: value,
+                    })) : [];
             });
 
             // Generate Cartesian product of the selected variant values
+            // const combinations = variantValues.reduce((acc, values) => {
+            //     const result = [];
+            //     acc.forEach((a) => {
+            //         values.forEach((v) => {
+            //             result.push([...a, v]);
+            //         });
+            //     });
+            //     return result;
+            // }, [
+            //     []
+            // ]);
             const combinations = variantValues.reduce((acc, values) => {
                 const result = [];
                 acc.forEach((a) => {
@@ -440,29 +454,39 @@
             ]);
 
             // Render rows for combinations
+            // combinationContainer.innerHTML = combinations
+            //     .map((combo, index) => {
+            //         const combinationName = combo.map((v, idx) => {
+            //             // const variantName = variantData[idx] ? variantData[idx].name : '';
+            //             // return `${variantName}: ${v.value}`;
+            //             const variant = variantData[idx];
+            //             return `${variant.name}: ${v.value}`;
+            //         }).join(", ");
+            //         const variantIds = combo.map((v) => v.id).join(",");
             combinationContainer.innerHTML = combinations
                 .map((combo, index) => {
-                    const combinationName = combo.map((v, idx) => {
-                        // const variantName = variantData[idx] ? variantData[idx].name : '';
-                        // return `${variantName}: ${v.value}`;
-                        const variant = variantData[idx];
-                        return `${variant.name}: ${v.value}`;
-                    }).join(", ");
+                    const combinationName = combo
+                        .map((v) => `${v.name}: ${v.value.value}`)
+                        .join(", ");
+
+                    // Collect variant IDs for the current combination
+                    const variantIds = combo.map((v) => v.id).join(",");
                     return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
                         
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="${combinationName}" readonly />
+                            <input type="text" class="form-control" value="${combinationName}" readonly name="child_products[${index}][combination]"/>
+                            <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" placeholder="Quantity"  />
+                            <input type="number" class="form-control" name="child_products[${index}][quantity]" placeholder="Quantity"  />
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" placeholder="Price"  />
+                            <input type="number" class="form-control" placeholder="Price" name="child_products[${index}][price]" />
                         </div>
                         
                         <div class="col-md-2">
-                            <input type="text" class="form-control" placeholder="Quantity alert" />
+                            <input type="text" class="form-control" placeholder="Quantity alert" name="child_products[${index}][quantity_alert]"/>
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-danger remove-row">Remove</button>

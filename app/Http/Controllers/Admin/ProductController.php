@@ -195,7 +195,7 @@ class ProductController extends Controller
 
             foreach ($combinations as $index => $combination) {
                 list($variantName, $variantValue) = explode(': ', $combination);
-
+                // dd($variantIds[$index]);
                 // Find the variant and variant value
                 $variantModel = Variant::find($variantIds[$index]);
                 $variantValueModel = VariantValue::where('value', $variantValue)

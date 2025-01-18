@@ -85,6 +85,7 @@ class ProductController extends Controller
             'discount_value' => 'nullable',
             'tax_type' => 'nullable',
             'productType' => 'required|in:single,variable'
+
         ]);
 
         // Create the product

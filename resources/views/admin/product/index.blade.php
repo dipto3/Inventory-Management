@@ -55,7 +55,11 @@
                                                     <td>
                                                         {{ $product->name }}
                                                     </td>
-                                                    <td> <img src="{{ $product->getFirstMediaUrl() }}" alt="product"></td>
+                                                    <td >
+                                                        @foreach ($product->getMedia() as $media)
+                                                            <img style="height: 100px; width: 100px;" src="{{ $media->getUrl() }}" alt="product">
+                                                        @endforeach
+                                                    </td>
                                                     <td>{{ $product->sku }} </td>
                                                     <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>
                                                     <td>{{ $product->brand }}</td>

@@ -29,6 +29,8 @@ return new class extends Migration
             $table->string('discount_type')->nullable();
             $table->integer('discount_value')->nullable();
             $table->string('tax_type')->nullable();
+            $table->string('product_type')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

@@ -83,7 +83,8 @@ class ProductController extends Controller
             // 'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
             'discount_type' => 'nullable',
             'discount_value' => 'nullable',
-            'tax_type' => 'nullable'
+            'tax_type' => 'nullable',
+            'productType' => 'required|in:single,variable'
         ]);
 
         // Create the product
@@ -100,9 +101,10 @@ class ProductController extends Controller
             'brand' => $validatedData['brand'],
             'selling_type' => $validatedData['selling_type'],
             'description' => $validatedData['description'],
-            'discount_type' => $validatedData['discount_type'] ,
+            'discount_type' => $validatedData['discount_type'],
             'discount_value' => $validatedData['discount_value'],
-            'tax_type' => $validatedData['tax_type']
+            'tax_type' => $validatedData['tax_type'],
+            'product_type' => $validatedData['productType']
         ]);
 
         if ($request->hasFile('image')) {
@@ -235,7 +237,14 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.product.edit');
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+        $subcategories = Subcategory::all();
+        $brands = Brand::all();
+        $units = Unit::all();
+        $variants = Variant::with('variantValues')->get();
+
+        return view('admin.product.edit', compact('product', 'categories', 'subcategories', 'brands', 'units', 'variants'));
     }
 
     /**

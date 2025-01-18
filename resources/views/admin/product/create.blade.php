@@ -215,64 +215,7 @@
 
                     <!-- Variable Product Section -->
 
-                    {{-- <div class="variable-product-section" style="display: none">
-                        <div class="mb-3">
-                            <button type="button" class="btn btn-primary" id="addVariation">
-                                <i class="bi bi-plus"></i> Add Variation
-                            </button>
-                        </div>
-                        <div id="variationsContainer">
-                            <!-- Variation Template -->
-                            <div class="variation-item border rounded p-3 mb-3">
-                                <div class="row g-3">
-                                    <div class="col-md-3">
-                                        <label class="form-label">Color</label>
-                                        <select class="form-select variant-color">
-                                            <option value="">Choose Color</option>
-                                            <option value="Red">Red</option>
-                                            <option value="Blue">Blue</option>
-                                            <option value="Green">Green</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Size</label>
-                                        <select class="form-select variant-size">
-                                            <option value="">Choose Size</option>
-                                            <option value="Small">Small</option>
-                                            <option value="Medium">Medium</option>
-                                            <option value="Large">Large</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Variant Value Name</label>
-                                        <input type="text" class="form-control variant-value-name" readonly />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Quantity</label>
-                                        <input type="number" class="form-control" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Price</label>
-                                        <input type="number" class="form-control" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Tax Type</label>
-                                        <select class="form-select">
-                                            <option value="">Choose</option>
-                                            <option value="exclusive">Exclusive</option>
-                                            <option value="inclusive">Inclusive</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <label class="form-label">&nbsp;</label>
-                                        <button type="button" class="btn btn-danger d-block w-100 remove-variation">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
+                    
                     <div class="mb-3" id="variantSection" style="display: none;">
                         <label class="form-label">Select Variants</label>
                         <select class="form-select" id="variantDropdown" multiple>
@@ -369,78 +312,93 @@
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // DOM Elements
+        const form = document.getElementById("productForm");
+        const imageInput = document.getElementById("productImages");
+        const imagePreviewContainer = document.getElementById("imagePreviewContainer");
         const productTypeSelect = document.getElementById("productType");
         const singleProductSection = document.querySelector(".single-product-section");
         const variantSection = document.getElementById("variantSection");
         const combinationContainer = document.getElementById("combinationContainer");
         const variantDropdown = document.getElementById("variantDropdown");
-
-        const variantData = @json($variants); // Pass variants data from the controller.
-
-        // Toggle visibility of sections based on product type selection
-        productTypeSelect.addEventListener("change", function() {
-            if (this.value === "single") {
-                singleProductSection.style.display = "block"; // Show the single product section
-                if (variantSection) {
-                    variantSection.style.display = "none"; // Hide the variant section
-                    combinationContainer.innerHTML = ""; // Clear combinations if hidden
-                }
-            } else if (this.value === "variable") {
-                singleProductSection.style.display = "none"; // Hide the single product section
-                if (variantSection) {
-                    variantSection.style.display = "block"; // Show the variant section
-                }
-            }
-        });
-
-        // Initialize visibility based on the current value of product type
-        if (productTypeSelect.value === "single") {
-            singleProductSection.style.display = "block";
-            if (variantSection) {
+    
+        // Data
+        const variantData = @json($variants);
+    
+        // Initialize product type sections
+        function initializeProductType() {
+            if (productTypeSelect.value === 'single') {
+                singleProductSection.style.display = "block";
                 variantSection.style.display = "none";
-            }
-        } else if (productTypeSelect.value === "variable") {
-            singleProductSection.style.display = "none";
-            if (variantSection) {
+                combinationContainer.innerHTML = "";
+            } else {
+                singleProductSection.style.display = "none";
                 variantSection.style.display = "block";
             }
         }
-
-
-
+    
+        // Call initialization on page load
+        initializeProductType();
+    
+        // Image Preview Handler
+        imageInput.addEventListener("change", function(event) {
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+    
+                reader.onload = function(e) {
+                    const imgContainer = document.createElement("div");
+                    imgContainer.classList.add("d-flex", "flex-column", "align-items-center", "m-2");
+    
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.classList.add("img-thumbnail");
+                    img.style.width = "100px";
+                    img.style.height = "100px";
+                    img.style.objectFit = "cover";
+    
+                    const removeButton = document.createElement("button");
+                    removeButton.textContent = "Remove";
+                    removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
+                    removeButton.onclick = () => imgContainer.remove();
+    
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(removeButton);
+                    imagePreviewContainer.insertBefore(imgContainer, imagePreviewContainer.lastElementChild);
+                };
+    
+                reader.readAsDataURL(file);
+            }
+        });
+    
+        // Product Type Handler
+        productTypeSelect.addEventListener("change", function() {
+            if (this.value === "single") {
+                singleProductSection.style.display = "block";
+                variantSection.style.display = "none";
+                combinationContainer.innerHTML = "";
+            } else {
+                singleProductSection.style.display = "none";
+                variantSection.style.display = "block";
+            }
+        });
+    
         function generateCombinations(selectedVariants) {
             if (selectedVariants.length === 0) {
                 combinationContainer.innerHTML = "";
                 return;
             }
-
-            // Retrieve variant values for the selected variants
-            // const variantValues = selectedVariants.map((id) => {
-            //     const variant = variantData.find((v) => v.id == id);
-            //     return variant ? variant.variant_values : [];
-            // });
+    
             const variantValues = selectedVariants.map((id) => {
                 const variant = variantData.find((v) => v.id == id);
-                return variant ?
-                    variant.variant_values.map((value) => ({
-                        id: variant.id, // Variant model's id
-                        name: variant.name,
-                        value: value,
-                    })) : [];
+                return variant ? variant.variant_values.map((value) => ({
+                    id: variant.id,
+                    name: variant.name,
+                    value: value,
+                })) : [];
             });
-
-            // Generate Cartesian product of the selected variant values
-            // const combinations = variantValues.reduce((acc, values) => {
-            //     const result = [];
-            //     acc.forEach((a) => {
-            //         values.forEach((v) => {
-            //             result.push([...a, v]);
-            //         });
-            //     });
-            //     return result;
-            // }, [
-            //     []
-            // ]);
+    
             const combinations = variantValues.reduce((acc, values) => {
                 const result = [];
                 acc.forEach((a) => {
@@ -449,64 +407,52 @@
                     });
                 });
                 return result;
-            }, [
-                []
-            ]);
-
-            // Render rows for combinations
-            // combinationContainer.innerHTML = combinations
-            //     .map((combo, index) => {
-            //         const combinationName = combo.map((v, idx) => {
-            //             // const variantName = variantData[idx] ? variantData[idx].name : '';
-            //             // return `${variantName}: ${v.value}`;
-            //             const variant = variantData[idx];
-            //             return `${variant.name}: ${v.value}`;
-            //         }).join(", ");
-            //         const variantIds = combo.map((v) => v.id).join(",");
-            combinationContainer.innerHTML = combinations
-                .map((combo, index) => {
-                    const combinationName = combo
-                        .map((v) => `${v.name}: ${v.value.value}`)
-                        .join(", ");
-
-                    // Collect variant IDs for the current combination
-                    const variantIds = combo.map((v) => v.id).join(",");
-                    return `
+            }, [[]]);
+    
+            renderCombinations(combinations);
+        }
+    
+        function renderCombinations(combinations) {
+            combinationContainer.innerHTML = combinations.map((combo, index) => {
+                const combinationName = combo.map(v => `${v.name}: ${v.value.value}`).join(", ");
+                const variantIds = combo.map(v => v.id).join(",");
+    
+                return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
-                        
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="${combinationName}" readonly name="child_products[${index}][combination]"/>
+                            <input type="text" class="form-control" value="${combinationName}" readonly 
+                                name="child_products[${index}][combination]"/>
                             <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][quantity]" placeholder="Quantity"  />
+                            <input type="number" class="form-control" name="child_products[${index}][quantity]" 
+                                placeholder="Quantity" />
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" placeholder="Price" name="child_products[${index}][price]" />
-                        </div>
-                        
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" placeholder="Quantity alert" name="child_products[${index}][quantity_alert]"/>
+                            <input type="number" class="form-control" name="child_products[${index}][price]" 
+                                placeholder="Price" />
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-danger remove-row">Remove</button>
+                            <input type="text" class="form-control" name="child_products[${index}][quantity_alert]" 
+                                placeholder="Quantity alert"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger remove-row">Remove</button>
                         </div>
                     </div>`;
-                })
-                .join("");
-
-            // Attach event listeners for remove buttons
-            document.querySelectorAll(".remove-row").forEach((button) => {
+            }).join("");
+    
+            document.querySelectorAll(".remove-row").forEach(button => {
                 button.addEventListener("click", function() {
-                    const row = this.closest(".combination-row");
-                    row.remove();
+                    this.closest(".combination-row").remove();
                 });
             });
         }
-
+    
         variantDropdown.addEventListener("change", function() {
-            const selectedVariantIds = Array.from(this.selectedOptions).map((opt) => opt.value);
+            const selectedVariantIds = Array.from(this.selectedOptions).map(opt => opt.value);
             generateCombinations(selectedVariantIds);
         });
     });
-</script>
+    </script>
+    

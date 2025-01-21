@@ -35,7 +35,7 @@
                                         <div class="col-sm-auto">
                                             <div>
                                                 <button type="button" class="btn btn-success add-btn"
-                                                    data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i
+                                                     id="create-btn" data-bs-toggle="modal" data-bs-target="#showModal"><i
                                                         class="ri-add-line align-bottom me-1"></i> Add</button>
 
                                             </div>

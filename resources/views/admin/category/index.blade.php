@@ -35,7 +35,8 @@
                                         <div class="col-sm-auto">
                                             <div>
                                                 <button type="button" class="btn btn-success add-btn"
-                                                    data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i
+                                                    data-bs-toggle="modal" id="create-btn"
+                                                    data-bs-target="#showCategoryModal"><i
                                                         class="ri-add-line align-bottom me-1"></i> Add</button>
 
                                             </div>
@@ -153,7 +154,7 @@
         </div>
 
         @include('admin.category.create')
-@endsection
+    @endsection
     @push('js')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 

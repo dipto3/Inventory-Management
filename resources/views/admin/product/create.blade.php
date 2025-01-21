@@ -74,7 +74,8 @@
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+                                <button class="add-new-btn" type="button" data-bs-toggle="modal" id="create-btn"
+                                    data-bs-target="#showCategoryModal">Add New</button>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -86,7 +87,8 @@
                                         <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+                                <button class="add-new-btn" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#showModal">Add New</button>
                             </div>
                         </div>
                         {{-- <div class="col-md-4">
@@ -104,7 +106,7 @@
                                     <option value="Percentage">Percentage</option>
                                     <option value="Cash">Cash</option>
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+                               
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -125,7 +127,8 @@
                                         <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+                                <button class="add-new-btn" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#showBrandModal">Add New</button>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -137,7 +140,8 @@
                                         <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+                                <button class="add-new-btn" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#showUnitModal">Add New</button>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -163,9 +167,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control"
                                     placeholder="Please Enter Item Code"name="item_code" />
-                                <button class="generate-btn" type="button">
-                                    Generate Code
-                                </button>
+                               
                             </div>
                         </div>
 
@@ -270,6 +272,11 @@
             </form>
         </div>
     </div>
+    @include('admin.category.create')
+    @include('admin.subcategory.create')
+    @include('admin.unit.create')
+    @include('admin.brand.create')
+    @include('admin.variant.create')
 @endsection
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet" />
 <script>

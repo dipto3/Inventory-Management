@@ -29,7 +29,7 @@
                                 <h4 class="card-title mb-0">Add, Edit & Remove</h4>
                                 <div class="d-flex justify-content-sm-end">
                                     <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal"
-                                        id="create-btn" data-bs-target="#showModal"><i
+                                        id="create-btn" data-bs-target="#showVariantModal"><i
                                             class="ri-add-line align-bottom me-1"></i> Create</button>
                                 </div>
                             </div><!-- end card header -->

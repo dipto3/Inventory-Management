@@ -1,4 +1,4 @@
-<div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="showCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
@@ -16,14 +16,14 @@
 
                     <div class="mb-3">
                         <label for="customername-field" class="form-label">Category Name</label>
-                        <input type="text"class="form-control"
-                            placeholder="Enter Category  Name" name="name" value="{{ old('name') }}" required />
+                        <input type="text"class="form-control" placeholder="Enter Category  Name" name="name"
+                            value="{{ old('name') }}" required />
                         <div class="invalid-feedback">Please enter a Category name.</div>
                     </div>
                     <div class="mb-3">
                         <label for="customername-field" class="form-label">Category Description</label>
-                        <textarea type="text" class="form-control"
-                            placeholder="Enter Category description"name="description" value="{{ old('description') }}" required></textarea>
+                        <textarea type="text" class="form-control" placeholder="Enter Category description"name="description"
+                            value="{{ old('description') }}" required></textarea>
                         <div class="invalid-feedback">Please enter a customer name.</div>
                     </div>
 

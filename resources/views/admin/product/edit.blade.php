@@ -276,6 +276,13 @@
                                         @endforeach
                                     </div>
                                     <div class="col-md-2">
+                                        @foreach ($variant->prices as $price)
+                                            <input type="number" class="form-control mb-2"
+                                                name="child_products[{{ $index }}][purchase_price][]"
+                                                value="{{ $price->purchase_price }}" placeholder="Purchase Price" />
+                                        @endforeach
+                                    </div>
+                                    <div class="col-md-2">
                                         <input type="text" class="form-control"
                                             name="child_products[{{ $index }}][quantity_alert]"
                                             value="{{ $variant->quantity_alert }}" placeholder="Quantity alert" />
@@ -580,16 +587,16 @@
             const variantSection = document.getElementById("variantSection");
             const combinationContainer = document.getElementById("combinationContainer");
             const variantDropdown = document.getElementById("variantDropdown");
-    
+
             const variantData = @json($variants);
-    
+
             // Image handling
             imageInput.addEventListener("change", function(event) {
                 const files = event.target.files;
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     const reader = new FileReader();
-    
+
                     reader.onload = function(e) {
                         const img = document.createElement("img");
                         img.src = e.target.result;
@@ -597,16 +604,16 @@
                         img.style.width = "100px";
                         img.style.height = "100px";
                         img.style.objectFit = "cover";
-    
+
                         const removeButton = document.createElement("button");
                         removeButton.textContent = "Remove";
                         removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
                         removeButton.style.display = "block";
-    
+
                         removeButton.addEventListener("click", function() {
                             imgContainer.remove();
                         });
-    
+
                         const imgContainer = document.createElement("div");
                         imgContainer.classList.add(
                             "d-flex",
@@ -616,14 +623,14 @@
                         );
                         imgContainer.appendChild(img);
                         imgContainer.appendChild(removeButton);
-    
+
                         imagePreviewContainer.appendChild(imgContainer);
                     };
-    
+
                     reader.readAsDataURL(file);
                 }
             });
-    
+
             // Product type handling
             productTypeSelect.addEventListener("change", function() {
                 if (this.value === "single") {
@@ -639,7 +646,7 @@
                     }
                 }
             });
-    
+
             // Initialize product type sections
             if (productTypeSelect.value === "single") {
                 singleProductSection.style.display = "block";
@@ -652,14 +659,14 @@
                     variantSection.style.display = "block";
                 }
             }
-    
+
             // Variant combinations generator
             function generateCombinations(selectedVariants) {
                 if (selectedVariants.length === 0) {
                     combinationContainer.innerHTML = "";
                     return;
                 }
-    
+
                 const variantValues = selectedVariants.map((id) => {
                     const variant = variantData.find((v) => v.id == id);
                     return variant ?
@@ -669,7 +676,7 @@
                             value: value,
                         })) : [];
                 });
-    
+
                 const combinations = variantValues.reduce((acc, values) => {
                     const result = [];
                     acc.forEach((a) => {
@@ -678,14 +685,16 @@
                         });
                     });
                     return result;
-                }, [[]]);
-    
+                }, [
+                    []
+                ]);
+
                 combinationContainer.innerHTML = combinations
                     .map((combo, index) => {
                         const combinationName = combo
                             .map((v) => `${v.name}: ${v.value.value}`)
                             .join(", ");
-    
+
                         const variantIds = combo.map((v) => v.id).join(",");
                         return `
                         <div class="row g-3 mb-2 combination-row" data-index="${index}">
@@ -708,14 +717,14 @@
                         </div>`;
                     })
                     .join("");
-    
+
                 document.querySelectorAll(".remove-row").forEach((button) => {
                     button.addEventListener("click", function() {
                         this.closest(".combination-row").remove();
                     });
                 });
             }
-    
+
             // Handle variant selection changes
             variantDropdown.addEventListener("change", function() {
                 const selectedVariantIds = Array.from(this.selectedOptions).map((opt) => opt.value);
@@ -723,5 +732,4 @@
             });
         });
     </script>
-    
 @endpush

@@ -66,9 +66,15 @@
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button"
                         class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle light-dark-mode">
-                        <i class='bx bx-moon fs-22'></i>
+                        <i class='bx bx-sun fs-22'></i>
                     </button>
                 </div>
+                {{-- <div class="ms-1 header-item d-none d-sm-flex">
+                    <button type="button" id="darkModeToggle"
+                        class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle light-dark-mode">
+                        <i class='bx bx-moon fs-22'></i>
+                    </button>
+                </div> --}}
 
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown"

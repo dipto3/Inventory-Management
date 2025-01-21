@@ -206,6 +206,10 @@
                                 <input type="number" class="form-control" name="price" />
                             </div>
                             <div class="col-md-4">
+                                <label class="form-label">Purchase Price</label>
+                                <input type="number" class="form-control" name="purchase_price" />
+                            </div>
+                            <div class="col-md-4">
                                 <label class="form-label">Quantity Alert</label>
                                 <input type="number" class="form-control" name="quantity_alert" />
                             </div>
@@ -215,7 +219,7 @@
 
                     <!-- Variable Product Section -->
 
-                    
+
                     <div class="mb-3" id="variantSection" style="display: none;">
                         <label class="form-label">Select Variants</label>
                         <select class="form-select" id="variantDropdown" multiple>
@@ -230,6 +234,18 @@
                         <!-- Dynamically generated rows will appear here -->
                     </div>
 
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Manufactured Date</label>
+                        <i data-feather="calendar" class="info-img"></i>
+                        <input type="date" class="form-control" name="manufactured_date" placeholder="Choose Date">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Expiry On</label>
+                        <i data-feather="calendar" class="info-img"></i>
+                        <input type="date" class="form-control" name="expired_date" placeholder="Choose Date">
+                    </div>
                 </div>
 
 
@@ -321,10 +337,10 @@
         const variantSection = document.getElementById("variantSection");
         const combinationContainer = document.getElementById("combinationContainer");
         const variantDropdown = document.getElementById("variantDropdown");
-    
+
         // Data
         const variantData = @json($variants);
-    
+
         // Initialize product type sections
         function initializeProductType() {
             if (productTypeSelect.value === 'single') {
@@ -336,42 +352,44 @@
                 variantSection.style.display = "block";
             }
         }
-    
+
         // Call initialization on page load
         initializeProductType();
-    
+
         // Image Preview Handler
         imageInput.addEventListener("change", function(event) {
             const files = event.target.files;
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 const reader = new FileReader();
-    
+
                 reader.onload = function(e) {
                     const imgContainer = document.createElement("div");
-                    imgContainer.classList.add("d-flex", "flex-column", "align-items-center", "m-2");
-    
+                    imgContainer.classList.add("d-flex", "flex-column", "align-items-center",
+                        "m-2");
+
                     const img = document.createElement("img");
                     img.src = e.target.result;
                     img.classList.add("img-thumbnail");
                     img.style.width = "100px";
                     img.style.height = "100px";
                     img.style.objectFit = "cover";
-    
+
                     const removeButton = document.createElement("button");
                     removeButton.textContent = "Remove";
                     removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
                     removeButton.onclick = () => imgContainer.remove();
-    
+
                     imgContainer.appendChild(img);
                     imgContainer.appendChild(removeButton);
-                    imagePreviewContainer.insertBefore(imgContainer, imagePreviewContainer.lastElementChild);
+                    imagePreviewContainer.insertBefore(imgContainer, imagePreviewContainer
+                        .lastElementChild);
                 };
-    
+
                 reader.readAsDataURL(file);
             }
         });
-    
+
         // Product Type Handler
         productTypeSelect.addEventListener("change", function() {
             if (this.value === "single") {
@@ -383,13 +401,13 @@
                 variantSection.style.display = "block";
             }
         });
-    
+
         function generateCombinations(selectedVariants) {
             if (selectedVariants.length === 0) {
                 combinationContainer.innerHTML = "";
                 return;
             }
-    
+
             const variantValues = selectedVariants.map((id) => {
                 const variant = variantData.find((v) => v.id == id);
                 return variant ? variant.variant_values.map((value) => ({
@@ -398,7 +416,7 @@
                     value: value,
                 })) : [];
             });
-    
+
             const combinations = variantValues.reduce((acc, values) => {
                 const result = [];
                 acc.forEach((a) => {
@@ -407,16 +425,18 @@
                     });
                 });
                 return result;
-            }, [[]]);
-    
+            }, [
+                []
+            ]);
+
             renderCombinations(combinations);
         }
-    
+
         function renderCombinations(combinations) {
             combinationContainer.innerHTML = combinations.map((combo, index) => {
                 const combinationName = combo.map(v => `${v.name}: ${v.value.value}`).join(", ");
                 const variantIds = combo.map(v => v.id).join(",");
-    
+
                 return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
                         <div class="col-md-2">
@@ -432,6 +452,10 @@
                             <input type="number" class="form-control" name="child_products[${index}][price]" 
                                 placeholder="Price" />
                         </div>
+                         <div class="col-md-2">
+                            <input type="number" class="form-control" name="child_products[${index}][purchase_price]" 
+                                placeholder="Purchase price" />
+                        </div>
                         <div class="col-md-2">
                             <input type="text" class="form-control" name="child_products[${index}][quantity_alert]" 
                                 placeholder="Quantity alert"/>
@@ -441,18 +465,17 @@
                         </div>
                     </div>`;
             }).join("");
-    
+
             document.querySelectorAll(".remove-row").forEach(button => {
                 button.addEventListener("click", function() {
                     this.closest(".combination-row").remove();
                 });
             });
         }
-    
+
         variantDropdown.addEventListener("change", function() {
             const selectedVariantIds = Array.from(this.selectedOptions).map(opt => opt.value);
             generateCombinations(selectedVariantIds);
         });
     });
-    </script>
-    
+</script>

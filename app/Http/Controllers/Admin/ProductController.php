@@ -84,7 +84,7 @@ class ProductController extends Controller
             'discount_type' => 'nullable',
             'discount_value' => 'nullable',
             'tax_type' => 'nullable',
-            'productType' => 'required|in:single,variable'
+            'productType' => 'required|in:single,variable',
 
         ]);
 
@@ -138,6 +138,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'quantity' => 'required|integer|min:0',
             'price' => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
             'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
         ]);
 
@@ -147,6 +148,7 @@ class ProductController extends Controller
             'quantity' => $validatedData['quantity'],
             'barcode' => str_pad(random_int(0, 999999999), 9, '0', STR_PAD_LEFT),
             'quantity_alert' => $validatedData['quantity_alert'],
+
             // 'variant_value_price' => $validatedData['variant_value_price'],
 
         ]);
@@ -156,6 +158,7 @@ class ProductController extends Controller
             'product_id' => $product->id,
             'product_variant_id' => $variant->id,
             'price' => $validatedData['price'],
+            'purchase_price' => $validatedData['purchase_price'],
         ]);
     }
 
@@ -169,6 +172,7 @@ class ProductController extends Controller
             'child_products.*.barcode' => 'nullable|string',
             'child_products.*.quantity' => 'required|integer|min:0',
             'child_products.*.price' => 'required|numeric|min:0',
+            'child_products.*.purchase_price' => 'required|numeric|min:0',
             // 'child_products.*.quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
             'child_products.*.quantity_alert' =>  'required|integer|min:0',
         ]);
@@ -189,7 +193,7 @@ class ProductController extends Controller
                 'product_id' => $product->id,
                 'product_variant_id' => $variant->id,
                 'price' => $childProduct['price'],
-
+                'purchase_price' => $childProduct['purchase_price'],
             ]);
 
             // Handle variant combinations

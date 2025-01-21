@@ -7,7 +7,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
-            <form method="POST" action="{{ route('supplier.update', $supplier->id ?? '') }}">
+            <form method="POST" action="{{ route('supplier.update', $supplier->id ?? '') }}"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="supplier_id" id="supplier_id" value="{{ $supplier->id }}"

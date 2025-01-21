@@ -34,12 +34,10 @@ class SupplierController extends Controller
             'address' => $request->address,
             'city' => $request->city,
             'status' => $request->status ?? 0,
-
         ]);
         if ($request->hasFile('image')) {
             $supplier->addMediaFromRequest('image')->toMediaCollection();
         }
-
         return redirect()->back();
     }
 
@@ -71,7 +69,6 @@ class SupplierController extends Controller
             'status' => 'required',
             'address' => 'nullable',
             'city' => 'nullable',
-
         ]);
         $supplier_id = $request->supplier_id;
         $supplier = Supplier::findOrFail($supplier_id);
@@ -84,7 +81,6 @@ class SupplierController extends Controller
             'status' => $validatedData['status'],
 
         ]);
-
         if ($request->hasFile('image')) {
             $supplier->clearMediaCollection();
             $supplier->addMediaFromRequest('image')->toMediaCollection();

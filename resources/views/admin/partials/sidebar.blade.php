@@ -92,7 +92,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="t-crm">Expired Products </a>
+                                <a href="{{ route('expired.products') }}" class="nav-link" data-key="t-crm">Expired
+                                    Products </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('category.index') }}" class="nav-link">

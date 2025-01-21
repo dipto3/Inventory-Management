@@ -10,12 +10,12 @@
     <meta charset="utf-8" />
     <title>Dashboard </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    @include('admin.partials.assets.css')
 
+    @include('admin.partials.assets.css')
+    
 </head>
 
-<body>
+<body class="dark-mode">
     <!-- Begin page -->
     <div id="layout-wrapper">
         @include('admin.partials.header')
@@ -30,8 +30,9 @@
     </div>
     <!-- END layout-wrapper -->
     <!--preloader-->
-    
+
     @include('admin.partials.assets.js')
+    
 </body>
 
 </html>

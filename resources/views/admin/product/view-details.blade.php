@@ -70,6 +70,10 @@
                                     <td>{{ $variant->prices?->first()->price }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Purchase Price</th>
+                                    <td>{{ $variant->prices?->first()->purchase_price }}</td>
+                                </tr>
+                                <tr>
                                     <th>Status</th>
                                     <td><span class="badge {{ $product->status == 1 ? 'bg-success' : 'bg-danger' }}">
                                             {{ $product->status == 1 ? 'Active' : 'Inactive' }}

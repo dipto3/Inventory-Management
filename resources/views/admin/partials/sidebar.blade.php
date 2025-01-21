@@ -83,23 +83,23 @@
                     <div class="collapse menu-dropdown" id="sidebarDashboards">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
+                                <a href="{{ route('supplier.index') }}" class="nav-link">Supplier </a>
+                            </li>
+                            <li class="nav-item">
+
                                 <a href="{{ route('product.index') }}" class="nav-link" data-key="t-analytics">
                                     Products
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="dashboard-crm.html" class="nav-link" data-key="t-crm">Expired Products </a>
+                                <a href="" class="nav-link" data-key="t-crm">Expired Products </a>
                             </li>
                             <li class="nav-item">
-                                <a href="index.html" class="nav-link" data-key="t-ecommerce"> Low Stocks </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('category.index') }}" class="nav-link" data-key="t-ecommerce">
+                                <a href="{{ route('category.index') }}" class="nav-link">
                                     Category </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('subcategory.index') }}" class="nav-link"
-                                    data-key="t-ecommerce">Sub Category </a>
+                                <a href="{{ route('subcategory.index') }}" class="nav-link">Sub Category </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('brand.index') }}" class="nav-link">Brands</a>
@@ -108,14 +108,13 @@
                                 <a href="{{ route('unit.index') }}" class="nav-link">Units</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('variant.index') }}" class="nav-link"
-                                    data-key="t-ecommerce">Variant Attributes</a>
+                                <a href="{{ route('variant.index') }}" class="nav-link">Variant Attributes</a>
                             </li>
 
                         </ul>
                     </div>
                 </li> <!-- end Dashboard Menu -->
-               
+
                 <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Stock</span></li>
 
                 <li class="nav-item">

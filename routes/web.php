@@ -1,15 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\Auth\AuthController;
-use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\SubcategoryController;
-use App\Http\Controllers\Admin\UnitController;
-use App\Http\Controllers\Admin\VariantController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\StoreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,18 +17,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
-Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/login', [App\Http\Controllers\Admin\Auth\AuthController::class, 'loginPage'])->name('login');
+Route::post('/authenticate', [App\Http\Controllers\Admin\Auth\AuthController::class, 'authenticate'])->name('authenticate');
+Route::post('/logout', [App\Http\Controllers\Admin\Auth\AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::resource('category', CategoryController::class);
-    Route::resource('subcategory', SubcategoryController::class);
-    Route::resource('brand', BrandController::class);
-    Route::resource('unit', UnitController::class);
-    Route::resource('variant', VariantController::class);
-    Route::resource('product', ProductController::class);
-    Route::get('/product-details/{productID}/{variantID}',[ProductController::class,'viewDetails'])->name('view.details');
-    Route::get('/expired-products',[ProductController::class,'expiredProducts'])->name('expired.products');
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::resource('category', App\Http\Controllers\Admin\CategoryController::class);
+    Route::resource('subcategory', App\Http\Controllers\Admin\SubcategoryController::class);
+    Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
+    Route::resource('unit', App\Http\Controllers\Admin\UnitController::class);
+    Route::resource('variant', App\Http\Controllers\Admin\VariantController::class);
+    Route::resource('product', App\Http\Controllers\Admin\ProductController::class);
+    Route::resource('supplier', App\Http\Controllers\Admin\SupplierController::class);
+    Route::get('/product-details/{productID}/{variantID}', [App\Http\Controllers\Admin\ProductController::class, 'viewDetails'])->name('view.details');
+    Route::get('/expired-products', [App\Http\Controllers\Admin\ProductController::class, 'expiredProducts'])->name('expired.products');
 });

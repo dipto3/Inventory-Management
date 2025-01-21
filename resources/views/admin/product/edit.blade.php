@@ -67,7 +67,7 @@
                         <div class="col-md-4">
                             <label class="form-label">Categories</label>
                             <div class="input-group">
-                                <select class="form-select" name="category_ids[]" multiple>
+                                <select class="form-select" name="category_id" multiple>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
                                             {{ in_array($category->id, $product->categories->pluck('id')->toArray()) ? 'selected' : '' }}>
@@ -75,14 +75,14 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Sub Categories</label>
                             <div class="input-group">
-                                <select class="form-select" name="subcategory_ids[]" multiple>
+                                <select class="form-select" name="subcategory_id" multiple>
                                     @foreach ($subcategories as $subcategory)
                                         <option value="{{ $subcategory->id }}"
                                             {{ in_array($subcategory->id, $product->subcategories->pluck('id')->toArray()) ? 'selected' : '' }}>
@@ -90,7 +90,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+
                             </div>
                         </div>
 
@@ -104,7 +104,7 @@
                                     <option value="Cash" {{ $product->discount_type == 'Cash' ? 'selected' : '' }}>Cash
                                     </option>
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+
                             </div>
                         </div>
 
@@ -128,7 +128,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+
                             </div>
                         </div>
 
@@ -144,7 +144,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button">Add New</button>
+
                             </div>
                         </div>
 
@@ -179,7 +179,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" name="item_code"
                                     value="{{ $product->item_code }}" />
-                                <button class="generate-btn" type="button">Generate Code</button>
+
                             </div>
                         </div>
 
@@ -230,6 +230,13 @@
                                     @endforeach
                                 </div>
                                 <div class="col-md-4">
+                                    <label class="form-label">Purchase Price</label>
+                                    @foreach ($variant->prices as $price)
+                                        <input type="number" class="form-control" name="purchase_price"
+                                            value="{{ $price->purchase_price }}" />
+                                    @endforeach
+                                </div>
+                                <div class="col-md-4">
                                     <label class="form-label">Quantity Alert</label>
                                     <input type="number" class="form-control" name="quantity_alert"
                                         value="{{ $variant->quantity_alert }}" />
@@ -260,6 +267,8 @@
                                         <input type="text" class="form-control"
                                             value="{{ $variant->variant_value_name }}" readonly
                                             name="child_products[{{ $index }}][combination]" />
+                                        <input type="hidden" name="child_products[{{ $index }}][id]"
+                                            value="{{ $variant->id }}">
                                         <input type="hidden" name="child_products[{{ $index }}][variant_ids]"
                                             value="{{ $variant->variantValues->pluck('variant_id')->join(',') }}">
                                     </div>
@@ -271,14 +280,14 @@
                                     <div class="col-md-2">
                                         @foreach ($variant->prices as $price)
                                             <input type="number" class="form-control mb-2"
-                                                name="child_products[{{ $index }}][prices][]"
+                                                name="child_products[{{ $index }}][price]"
                                                 value="{{ $price->price }}" placeholder="Price" />
                                         @endforeach
                                     </div>
                                     <div class="col-md-2">
                                         @foreach ($variant->prices as $price)
                                             <input type="number" class="form-control mb-2"
-                                                name="child_products[{{ $index }}][purchase_price][]"
+                                                name="child_products[{{ $index }}][purchase_price]"
                                                 value="{{ $price->purchase_price }}" placeholder="Purchase Price" />
                                         @endforeach
                                     </div>
@@ -701,6 +710,7 @@
                             <div class="col-md-2">
                                 <input type="text" class="form-control" value="${combinationName}" readonly name="child_products[${index}][combination]"/>
                                 <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
+                                
                             </div>
                             <div class="col-md-2">
                                 <input type="number" class="form-control" name="child_products[${index}][quantity]" placeholder="Quantity" />

@@ -4,13 +4,13 @@
     <div class="main-content">
         <div class="top-bar">
             <h4 class="mb-0">New Product</h4>
-            <button class="btn btn-primary">
+            <a href="{{ route('product.index') }}" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i>
                 Back to Products
-            </button>
+            </a>
         </div>
-
         <div class="container-fluid py-4">
+
             <form id="productForm" action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <!-- Product Information -->
@@ -106,7 +106,7 @@
                                     <option value="Percentage">Percentage</option>
                                     <option value="Cash">Cash</option>
                                 </select>
-                               
+
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -167,7 +167,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control"
                                     placeholder="Please Enter Item Code"name="item_code" />
-                               
+
                             </div>
                         </div>
 

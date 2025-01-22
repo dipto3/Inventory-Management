@@ -16,6 +16,7 @@ use App\Models\VariantValue;
 use App\Rules\QuantityAlertRule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
@@ -26,7 +27,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('variants', 'prices')->get();
+        $products = Product::with('variants', 'variants.prices', 'categories')->get();
+
         return view('admin.product.index', compact('products'));
     }
 
@@ -43,12 +45,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $subcategories = Subcategory::all();
-        $brands = Brand::where('status', 1)->get();
-        $units = Unit::where('status', 1)->get();
+        $categories = Category::select('id', 'name')->get();
+        $subcategories = Subcategory::where('status', 1)->select('id', 'name', 'category_id')->get();
+        $brands = Brand::where('status', 1)->select('id', 'name')->get();
+        $units = Unit::where('status', 1)->select('id', 'name')->get();
         $variants = Variant::with('variantValues')->get();
-
         return view('admin.product.create', compact('variants', 'categories', 'subcategories', 'brands', 'units'));
     }
 
@@ -113,7 +114,6 @@ class ProductController extends Controller
                 $product->addMedia($image)->toMediaCollection();
             }
         }
-
 
         ProductCategory::create([
             'product_id' => $product->id,
@@ -451,7 +451,7 @@ class ProductController extends Controller
     {
         foreach ($request->child_products as $childProduct) {
             if (!isset($childProduct['id'])) {
-                continue; // Skip if no ID is present
+                continue;
             }
 
             $variant = ProductVariant::findOrFail($childProduct['id']);
@@ -475,6 +475,7 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
+        $product->clearMediaCollection();
         $product->delete();
         return redirect()->back()->with('info', 'Product Deleted successfully.');
     }

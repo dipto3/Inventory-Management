@@ -22,7 +22,7 @@
   <script src="{{ asset('admin/assets/js/app.js') }}"></script>
   <!-- prismjs plugin -->
   <script src="{{ asset('admin/assets/libs/prismjs/prism.js') }}"></script>
-  <script src="{{ asset('admin/assets/libs/list.js/list.min.js') }}"></script>
+  {{-- <script src="{{ asset('admin/assets/libs/list.js/list.min.js') }}"></script> --}}
   <script src="{{ asset('admin/assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
 
   <!-- listjs init -->

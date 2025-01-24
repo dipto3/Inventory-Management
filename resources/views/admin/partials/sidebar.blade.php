@@ -111,7 +111,6 @@
                             <li class="nav-item">
                                 <a href="{{ route('variant.index') }}" class="nav-link">Variant Attributes</a>
                             </li>
-
                         </ul>
                     </div>
                 </li> <!-- end Dashboard Menu -->

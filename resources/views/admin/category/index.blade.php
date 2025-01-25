@@ -62,16 +62,16 @@
                                                                 value="option">
                                                         </div>
                                                     </th>
-                                                    <th class="sort" data-sort="title">Title</th>
+                                                    <th class="sort" data-sort="title">Category</th>
+                                                    <th class="sort" data-sort="title">Parent Category</th>
                                                     <th class="sort" data-sort="description">Description</th>
-                                                    <th class="sort" data-sort="phone">Created at</th>
-
                                                     <th class="sort" data-sort="status">Status</th>
+                                                    <th class="sort" data-sort="status">Ordering</th>
                                                     <th class="sort" data-sort="action">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
-                                                @foreach ($categories as $category)
+                                                @foreach ($allCategories as $category)
                                                     <tr>
                                                         <th scope="row">
                                                             <div class="form-check">
@@ -83,10 +83,10 @@
                                                                 href="javascript:void(0);"
                                                                 class="fw-medium link-primary">#VZ2101</a></td>
                                                         <td class="customer_name">{{ $category->name }}</td>
-                                                        <td class="email">{{ $category->description }}</td>
-                                                        <td class="phone">
-                                                            {{ \Carbon\Carbon::parse($category->created_at)->format('Y-m-d') }}
+                                                        <td class="customer_name">
+                                                            {{ isset($category->parentCategory) ? $category->parentCategory->name : 'Parent Category' }}
                                                         </td>
+                                                        <td class="email">{{ $category->description }}</td>
 
                                                         <td class="status">
                                                             @if ($category->status == 1)
@@ -95,6 +95,13 @@
                                                                 <span class="badge bg-danger">Inactive</span>
                                                             @endif
                                                         </td>
+                                                        <td>
+                                                            <input type="number" class="form-control"
+                                                                value="{{ $category->ordering }}" name="ordering"
+                                                                id="ordering" style="width: 50px;"
+                                                                data-category-id="{{ $category->id }}">
+                                                        </td>
+
                                                         <td>
                                                             <div class="d-flex gap-2">
                                                                 <div class="edit">
@@ -157,6 +164,8 @@
     @endsection
     @push('js')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
         <script type="text/javascript">
             $('.show_confirm').click(function(event) {
@@ -192,5 +201,39 @@
                     });
 
             });
-        </script>
-    @endpush
+            </script>
+<script>
+$(document).ready(function() {
+    console.log('Document ready');
+
+    $('input[name="ordering"]').each(function() {
+        console.log('Found ordering input:', $(this).data('category-id'));
+    });
+
+    $('input[name="ordering"]').on('change', function() {
+        console.log('Input changed');
+        let ordering = $(this).val();
+        let categoryId = $(this).data('category-id');
+
+        console.log('Ordering:', ordering);
+        console.log('Category ID:', categoryId);
+
+        $.ajax({
+            url: "{{ route('category.updateOrdering') }}",
+            type: "POST",
+            data: {
+                ordering: ordering,
+                category_id: categoryId,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                console.log('Success:', response);
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+});
+</script>
+@endpush

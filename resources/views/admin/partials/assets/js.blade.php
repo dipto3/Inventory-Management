@@ -32,11 +32,21 @@
   <script src="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-
+  <script src="{{ asset('admin/assets/js/bootstrap-select.min.js') }}"></script>
   <script>
+
+$(document).ready(function() {
+    $('.selectpicker').selectpicker({
+        liveSearch: true,
+        actionsBox: true,
+        size: 5
+    });
+});
+
       $(document).ready(function() {
           $('#tags').tagsinput();
       });
+
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,10 @@ Route::post('/logout', [App\Http\Controllers\Admin\Auth\AuthController::class, '
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard'])->name('dashboard');
     Route::resource('category', App\Http\Controllers\Admin\CategoryController::class);
+    Route::controller(CategoryController::class)->group(function () {
+        Route::post('/category/update-ordering', 'updateOrdering')->name('category.updateOrdering');
+
+    });
     Route::resource('subcategory', App\Http\Controllers\Admin\SubcategoryController::class);
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
     Route::resource('unit', App\Http\Controllers\Admin\UnitController::class);

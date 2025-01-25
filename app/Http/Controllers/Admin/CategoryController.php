@@ -15,8 +15,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index',compact('categories'));
+        $allCategories = Category::with('parentCategory')->get();
+        $categories = Category::where('parent_id', 0)
+        ->with('childrenCategories')
+        ->get();
+        return view('admin.category.index',compact('categories','allCategories'));
     }
 
     /**
@@ -37,9 +40,13 @@ class CategoryController extends Controller
 
         $category = Category::create([
             'name' => $request->name,
+            'parent_id' => $request->parent_id,
             'status' => $request->status,
             'description' => $request->description,
         ]);
+        $slug = strtolower(str_replace(' ', '_', $request->name)) . '_' . $category->id;
+        $category->slug = $slug;
+        $category->save();
 
         return redirect()->back()->with('success', 'Category created successfully.');
     }
@@ -76,7 +83,7 @@ class CategoryController extends Controller
         ]);
         $category_id = $request->category_id;
         $category = Category::findOrFail($category_id);
-    
+
         $category->name = $validatedData['name'];
         $category->description = $validatedData['description'];
         $category->status = $validatedData['status'];
@@ -91,5 +98,14 @@ class CategoryController extends Controller
     {
         $category->delete();
         return redirect()->back()->with('error', 'Category Deleted successfully.');
+    }
+
+    public function updateOrdering(Request $request)
+    {
+        $category = Category::findOrFail($request->category_id);
+        $category->ordering = $request->ordering;
+        $category->save();
+
+        return response()->json(['success' => true]);
     }
 }

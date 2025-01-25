@@ -57,7 +57,11 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         $category = Category::where('id',$id)->first();
-		return response()->json($category);
+        $categories = Category::where('parent_id', 0)
+            ->with('childrenCategories')
+            ->orderBy('name', 'asc')
+            ->get();
+		return response()->json($category, $categories);
     }
 
     /**
@@ -79,12 +83,14 @@ class CategoryController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
+            'parent_id' => 'required|integer',
             'status' => 'required|boolean'
         ]);
         $category_id = $request->category_id;
         $category = Category::findOrFail($category_id);
 
         $category->name = $validatedData['name'];
+        $category->parent_id = $validatedData['parent_id'];
         $category->description = $validatedData['description'];
         $category->status = $validatedData['status'];
         $category->save();

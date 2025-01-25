@@ -7,12 +7,38 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
-            <form method="POST" action="{{ route('category.update', $category->id ?? '') }}">
+            <form method="POST" action="{{ route('category.update', $category->id) }}">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="category_id" id="category_id" value="{{ $category->id }}"
                     class="form-control">
                 <div class="modal-body">
+                <div class="mb-3">
+                        <select id="parent_id" class="select2 form-control selectpicker" name="parent_id"
+    data-toggle="select2" data-placeholder="Choose ..." data-live-search="true">
+                                        <option value="0" {{ $category->parent_id == 0 ? 'selected' : '' }}>No Parent</option>
+                                    @foreach ($categories as $acategory)
+                                        @php
+                                            $category1[]=$acategory->name;
+                                        @endphp
+
+                                         <option value="{{ $acategory->id }}" {{ $category->parent_id == $acategory->id ? 'selected' : '' }}>
+            {{ $acategory->name }}
+        </option>
+                                        @foreach ($acategory->childrenCategories as $childCategory)
+                                            @include('admin.category.child_category', [
+                                                'child_category' => $childCategory,
+                                                'category' => $category1
+                                            ])
+                                        @endforeach
+
+                                        @php
+                                            array_pop($category1);
+                                        @endphp
+                                    @endforeach
+                                </select>
+
+                    </div>
                     <div class="mb-3">
                         <label>Category Name</label>
                         <input type="text" class="form-control" name="name"

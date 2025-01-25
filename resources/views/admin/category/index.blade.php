@@ -41,60 +41,47 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-sm">
-                                            <div class="d-flex justify-content-sm-end">
-                                                <div class="search-box ms-2">
-                                                    <input type="text" class="form-control search"
-                                                        placeholder="Search...">
-                                                    <i class="ri-search-line search-icon"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="table-responsive table-card mt-3 mb-1">
-                                        <table class="table align-middle table-nowrap" id="customerTable">
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="example">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th scope="col" style="width: 50px;">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" id="checkAll"
-                                                                value="option">
-                                                        </div>
-                                                    </th>
-                                                    <th class="sort" data-sort="title">Category</th>
-                                                    <th class="sort" data-sort="title">Parent Category</th>
+
+                                                    <th>#</th>
+                                                    <th class="sort" data-sort="name">Category</th>
+                                                    <th class="sort" data-sort="parent">Parent Category</th>
                                                     <th class="sort" data-sort="description">Description</th>
                                                     <th class="sort" data-sort="status">Status</th>
-                                                    <th class="sort" data-sort="status">Ordering</th>
+                                                    <th class="sort" data-sort="ordering">Ordering</th>
                                                     <th class="sort" data-sort="action">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
-                                                @foreach ($allCategories as $category)
+                                                @foreach ($allCategories as $key =>$category)
                                                     <tr>
-                                                        <th scope="row">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="chk_child" value="option1">
-                                                            </div>
-                                                        </th>
-                                                        <td class="id" style="display:none;"><a
-                                                                href="javascript:void(0);"
-                                                                class="fw-medium link-primary">#VZ2101</a></td>
+                                                        <td>{{ $key+1 }}</td>
+                                                        <!-- Category Name -->
                                                         <td class="customer_name">{{ $category->name }}</td>
-                                                        <td class="customer_name">
-                                                            {{ isset($category->parentCategory) ? $category->parentCategory->name : 'Parent Category' }}
-                                                        </td>
-                                                        <td class="email">{{ $category->description }}</td>
 
+                                                        <!-- Parent Category -->
+                                                        <td class="customer_name">
+                                                            {{ $category->parentCategory->name ?? 'Parent Category' }}
+                                                        </td>
+
+                                                        <!-- Description -->
+                                                        <td class="description">{{ $category->description }}</td>
+
+                                                        <!-- Status -->
                                                         <td class="status">
                                                             @if ($category->status == 1)
                                                                 <span class="badge bg-success">Active</span>
-                                                            @elseif ($category->status == 0)
+                                                            @else
                                                                 <span class="badge bg-danger">Inactive</span>
                                                             @endif
                                                         </td>
+
+                                                        <!-- Ordering -->
                                                         <td>
                                                             <input type="number" class="form-control"
                                                                 value="{{ $category->ordering }}" name="ordering"
@@ -102,31 +89,41 @@
                                                                 data-category-id="{{ $category->id }}">
                                                         </td>
 
+                                                        <!-- Actions -->
                                                         <td>
                                                             <div class="d-flex gap-2">
+                                                                <!-- Edit Button -->
                                                                 <div class="edit">
                                                                     <button class="btn btn-sm btn-success"
-                                                                        data-bs-toggle="modal" value="{{ $category->id }}"
-                                                                        data-bs-target="#editCategoryModal{{ $category->id }}"><i
-                                                                            class="las la-edit"></i></button>
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#editCategoryModal{{ $category->id }}">
+                                                                        <i class="las la-edit"></i>
+                                                                    </button>
                                                                 </div>
 
+                                                                <!-- Delete Button -->
                                                                 <div class="remove">
                                                                     <button class="btn btn-sm btn-danger remove-item-btn"
                                                                         data-bs-toggle="modal"
-                                                                        data-bs-target="#deleteRecordModal{{ $category->id }}"><i
-                                                                            class="ri-delete-bin-2-line"></i></button>
+                                                                        data-bs-target="#deleteRecordModal{{ $category->id }}">
+                                                                        <i class="ri-delete-bin-2-line"></i>
+                                                                    </button>
                                                                 </div>
-
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    @include('admin.category.edit')
-                                                    @include('admin.category.delete-modal')
-                                                @endforeach
 
+                                                    <!-- Modals -->
+                                                    @include('admin.category.edit', [
+                                                        'category' => $category,
+                                                    ])
+                                                    @include('admin.category.delete-modal', [
+                                                        'category' => $category,
+                                                    ])
+                                                @endforeach
                                             </tbody>
                                         </table>
+
                                         <div class="noresult" style="display: none">
                                             <div class="text-center">
                                                 <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
@@ -135,18 +132,6 @@
                                                 <h5 class="mt-2">Sorry! No Result Found</h5>
                                                 {{-- <p class="text-muted mb-0">We've searched more than 150+ Orders We did not find any orders for you search.</p> --}}
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-end">
-                                        <div class="pagination-wrap hstack gap-2">
-                                            <a class="page-item pagination-prev disabled" href="javascript:void(0);">
-                                                Previous
-                                            </a>
-                                            <ul class="pagination listjs-pagination mb-0"></ul>
-                                            <a class="page-item pagination-next" href="javascript:void(0);">
-                                                Next
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -161,6 +146,11 @@
         </div>
 
         @include('admin.category.create')
+        <style>
+            .dt-type-numeric {
+                text-align: left !important;
+            }
+        </style>
     @endsection
     @push('js')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
@@ -201,39 +191,41 @@
                     });
 
             });
-            </script>
-<script>
-$(document).ready(function() {
-    console.log('Document ready');
+        </script>
+        <script>
+            $(document).ready(function() {
+                console.log('Document ready');
 
-    $('input[name="ordering"]').each(function() {
-        console.log('Found ordering input:', $(this).data('category-id'));
-    });
+                $('input[name="ordering"]').each(function() {
+                    console.log('Found ordering input:', $(this).data('category-id'));
+                });
 
-    $('input[name="ordering"]').on('change', function() {
-        console.log('Input changed');
-        let ordering = $(this).val();
-        let categoryId = $(this).data('category-id');
+                $('input[name="ordering"]').on('change', function() {
+                    console.log('Input changed');
+                    let ordering = $(this).val();
+                    let categoryId = $(this).data('category-id');
 
-        console.log('Ordering:', ordering);
-        console.log('Category ID:', categoryId);
+                    console.log('Ordering:', ordering);
+                    console.log('Category ID:', categoryId);
 
-        $.ajax({
-            url: "{{ route('category.updateOrdering') }}",
-            type: "POST",
-            data: {
-                ordering: ordering,
-                category_id: categoryId,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function(response) {
-                console.log('Success:', response);
-            },
-            error: function(xhr, status, error) {
-                console.log('Error:', error);
-            }
-        });
-    });
-});
-</script>
-@endpush
+                    $.ajax({
+                        url: "{{ route('category.updateOrdering') }}",
+                        type: "POST",
+                        data: {
+                            ordering: ordering,
+                            category_id: categoryId,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            console.log('Success:', response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Error:', error);
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
+
+

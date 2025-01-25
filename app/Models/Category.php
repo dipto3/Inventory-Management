@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    protected $guarded =[''];
+    protected $guarded = [''];
 
     public function productCategories()
     {
@@ -27,7 +27,6 @@ class Category extends Model
 
     public function parentCategory()
     {
-        return $this->belongsTo(Category::class, 'parent_id')->orderBy('ordering','asc');
+        return $this->belongsTo(Category::class, 'parent_id');
     }
-
 }

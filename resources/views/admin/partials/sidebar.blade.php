@@ -111,6 +111,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('variant.index') }}" class="nav-link">Variant Attributes</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">Purchase Order</a>
+                            </li>
                         </ul>
                     </div>
                 </li> <!-- end Dashboard Menu -->

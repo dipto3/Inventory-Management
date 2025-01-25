@@ -20,6 +20,7 @@ return new class extends Migration
             $table->double('discount')->nullable();
             $table->double('shipping_cost')->nullable();
             $table->string('code')->nullable();
+            $table->double('tax')->nullable();
             $table->string('payment_type')->nullable();
             $table->string('reference')->nullable();
             $table->string('account_number')->nullable();

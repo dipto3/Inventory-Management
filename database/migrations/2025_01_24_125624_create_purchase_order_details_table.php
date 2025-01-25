@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('purchase_order_details', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('purchase_order_id')->constrained('purchase_orders')->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
+            $table->string('barcode');
+            $table->integer('quantity');
+            $table->double('price');
+            $table->double('sub_total');
+            $table->string('purchase_code');
+            $table->string('receive_quantity');
+            $table->string('purchase_quantity');
             $table->timestamps();
         });
     }

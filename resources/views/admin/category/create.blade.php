@@ -9,6 +9,27 @@
             <form method="post" action="{{ route('category.store') }}">
                 @csrf
                 <div class="modal-body">
+                    <div class = "mb-3">
+                        <select class="form-control selectpicker" name="parent_id" id="status-field" required
+                            data-live-search="true">
+                            <option value="0">No Parent</option>
+                            @foreach ($categories as $category)
+                                @php
+                                    $category1[] = $category->name;
+                                @endphp
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @foreach ($category->childrenCategories as $childCategory)
+                                    @include('admin.category.child_category', [
+                                        'child_category' => $childCategory,
+                                        'category' => $category1,
+                                    ])
+                                @endforeach
+                                @php
+                                    array_pop($category1);
+                                @endphp
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="mb-3" id="modal-id" style="display: none;">
                         <label for="id-field" class="form-label">ID</label>
                         <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
@@ -23,7 +44,7 @@
                     <div class="mb-3">
                         <label for="customername-field" class="form-label">Category Description</label>
                         <textarea type="text" class="form-control" placeholder="Enter Category description"name="description"
-                            value="{{ old('description') }}" required></textarea>
+                            value="{{ old('description') }}"></textarea>
                         <div class="invalid-feedback">Please enter a customer name.</div>
                     </div>
 

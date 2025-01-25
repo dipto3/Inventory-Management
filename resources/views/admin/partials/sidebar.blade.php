@@ -2,7 +2,7 @@
     <!-- LOGO -->
     <div class="navbar-brand-box">
         <!-- Dark Logo-->
-        <a href="index.html" class="logo logo-dark">
+        <a href="" class="logo logo-dark">
             <span class="logo-sm">
                 <img src="admin/assets/images/logo-sm.png" alt="" height="22">
             </span>
@@ -41,7 +41,7 @@
         <div class="dropdown-menu dropdown-menu-end">
             <!-- item-->
             <h6 class="dropdown-header">Welcome Anna!</h6>
-            <a class="dropdown-item" href="pages-profile.html"><i
+            <a class="dropdown-item" href=""><i
                     class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                     class="align-middle">Profile</span></a>
             <a class="dropdown-item" href="apps-chat.html"><i

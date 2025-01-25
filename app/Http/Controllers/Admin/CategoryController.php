@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Redirect,Response;
+use Redirect, Response;
 
 class CategoryController extends Controller
 {
@@ -16,10 +16,11 @@ class CategoryController extends Controller
     public function index()
     {
         $allCategories = Category::with('parentCategory')->get();
+        // dd($allCategories);
         $categories = Category::where('parent_id', 0)
-        ->with('childrenCategories')
-        ->get();
-        return view('admin.category.index',compact('categories','allCategories'));
+            ->with('childrenCategories')
+            ->get();
+        return view('admin.category.index', compact('categories', 'allCategories'));
     }
 
     /**
@@ -56,12 +57,12 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::where('id',$id)->first();
+        $category = Category::where('id', $id)->first();
         $categories = Category::where('parent_id', 0)
             ->with('childrenCategories')
             ->orderBy('name', 'asc')
             ->get();
-		return response()->json($category, $categories);
+        return response()->json($category, $categories);
     }
 
     /**

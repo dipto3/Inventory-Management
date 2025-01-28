@@ -47,12 +47,13 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::select('id', 'name')->get();
-        $subcategories = Subcategory::where('status', 1)->select('id', 'name', 'category_id')->get();
+        $categories = Category::where('parent_id', 0)
+            ->with('childrenCategories')
+            ->select('id', 'name')->get();
         $brands = Brand::where('status', 1)->select('id', 'name')->get();
         $units = Unit::where('status', 1)->select('id', 'name', 'short_name')->get();
         $variants = Variant::with('variantValues')->get();
-        return view('admin.product.create', compact('variants', 'categories', 'subcategories', 'brands', 'units'));
+        return view('admin.product.create', compact('variants', 'categories', 'brands', 'units'));
     }
 
     public function ed()
@@ -65,7 +66,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+//         dd($request->all());
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'store' => 'nullable|string|max:255',
@@ -77,7 +78,7 @@ class ProductController extends Controller
             'selling_type' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'nullable|exists:subcategories,id',
+            'category_id.*' => 'exists:categories,id',
             'productType' => 'required|in:single,variable',
             'manufactured_date' => 'nullable|date',
             'expired_date' => 'nullable|date',
@@ -87,7 +88,6 @@ class ProductController extends Controller
             'discount_type' => 'nullable',
             'discount_value' => 'nullable',
             'tax_type' => 'nullable',
-            'productType' => 'required|in:single,variable',
 
         ]);
 
@@ -107,7 +107,8 @@ class ProductController extends Controller
             'discount_type' => $validatedData['discount_type'],
             'discount_value' => $validatedData['discount_value'],
             'tax_type' => $validatedData['tax_type'],
-            'product_type' => $validatedData['productType']
+            'product_type' => $validatedData['productType'],
+            'category_id' => json_encode($validatedData['category_id']),
         ]);
 
         if ($request->hasFile('image')) {
@@ -116,11 +117,12 @@ class ProductController extends Controller
             }
         }
 
-        ProductCategory::create([
-            'product_id' => $product->id,
-            'category_id' => $validatedData['category_id'],
-            'subcategory_id' => $validatedData['subcategory_id'],
-        ]);
+        foreach ($validatedData['category_id'] as $categoryId) {
+            ProductCategory::create([
+                'product_id' => $product->id,
+                'category_id' => $categoryId,
+            ]);
+        }
 
         if ($validatedData['productType'] === 'single') {
             // Handle single product
@@ -135,14 +137,14 @@ class ProductController extends Controller
 
     private function handleSingleProduct(Product $product, Request $request)
     {
-      
+
         $validatedData = $request->validate([
             'quantity' => 'required|integer|min:0',
             'price' => 'required|numeric|min:0',
             'purchase_price' => 'required|numeric|min:0',
             'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
         ]);
-        
+
         $variant = ProductVariant::create([
             'product_id' => $product->id,
             'quantity' => $validatedData['quantity'],
@@ -163,7 +165,7 @@ class ProductController extends Controller
 
     private function handleVariableProduct(Product $product, Request $request)
     {
-       
+
         $validatedData = $request->validate([
             'child_products' => 'required|array',
             'child_products.*.combination' => 'required|string',

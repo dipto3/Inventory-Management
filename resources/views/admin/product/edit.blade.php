@@ -67,27 +67,26 @@
                         <div class="col-md-4">
                             <label class="form-label">Categories</label>
                             <div class="input-group">
-                                <select class="form-select" name="category_id" multiple>
+                                <select class="form-select selectpicker" name="category_id[]" multiple>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            {{ in_array($category->id, $product->categories->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                        @php
+                                            $category1[] = $category->name;
+                                                $selectedCategories = json_decode($product->category_id, true) ?? [];
+                                        @endphp
+
+                                        <option value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
                                             {{ $category->name }}
                                         </option>
-                                    @endforeach
-                                </select>
+                                        @foreach ($category->childrenCategories as $childCategory)
+                                            @include('admin.category.child_category', [
+                                                'child_category' => $childCategory,
+                                                'category' => $category1
+                                            ])
+                                        @endforeach
 
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Sub Categories</label>
-                            <div class="input-group">
-                                <select class="form-select" name="subcategory_id" multiple>
-                                    @foreach ($subcategories as $subcategory)
-                                        <option value="{{ $subcategory->id }}"
-                                            {{ in_array($subcategory->id, $product->subcategories->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                            {{ $subcategory->name }}
-                                        </option>
+                                        @php
+                                            array_pop($category1);
+                                        @endphp
                                     @endforeach
                                 </select>
 
@@ -542,20 +541,20 @@
                     return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="${combinationName}" readonly 
+                            <input type="text" class="form-control" value="${combinationName}" readonly
                                 name="child_products[${index}][combination]"/>
                             <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][quantity]" 
+                            <input type="number" class="form-control" name="child_products[${index}][quantity]"
                                 value="${existingVariant ? existingVariant.quantity : ''}" placeholder="Quantity" />
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][price]" 
+                            <input type="number" class="form-control" name="child_products[${index}][price]"
                                 value="${existingVariant && existingVariant.prices[0] ? existingVariant.prices[0].price : ''}" placeholder="Price" />
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" name="child_products[${index}][quantity_alert]" 
+                            <input type="text" class="form-control" name="child_products[${index}][quantity_alert]"
                                 value="${existingVariant ? existingVariant.quantity_alert : ''}" placeholder="Quantity alert"/>
                         </div>
                         <div class="col-md-2">
@@ -710,7 +709,7 @@
                             <div class="col-md-2">
                                 <input type="text" class="form-control" value="${combinationName}" readonly name="child_products[${index}][combination]"/>
                                 <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
-                                
+
                             </div>
                             <div class="col-md-2">
                                 <input type="number" class="form-control" name="child_products[${index}][quantity]" placeholder="Quantity" />

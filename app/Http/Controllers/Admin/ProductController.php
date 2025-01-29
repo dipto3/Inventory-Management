@@ -56,11 +56,6 @@ class ProductController extends Controller
         return view('admin.product.create', compact('variants', 'categories', 'brands', 'units'));
     }
 
-    public function ed()
-    {
-        return view('admin.product.edit');
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -244,13 +239,14 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::with('variants', 'variants.variantValues', 'variants.prices', 'categories')->findOrFail($id);
-        $categories = Category::all();
-        $subcategories = Subcategory::all();
+        $categories = Category::where('parent_id', 0)
+            ->with('childrenCategories')
+            ->select('id', 'name')->get();
         $brands = Brand::all();
         $units = Unit::all();
         $variants = Variant::all();
 
-        return view('admin.product.edit', compact('product', 'categories', 'subcategories', 'brands', 'units', 'variants'));
+        return view('admin.product.edit', compact('product', 'categories', 'brands', 'units', 'variants'));
     }
 
     /**
@@ -278,6 +274,7 @@ class ProductController extends Controller
             'discount_value' => $request->discount_value,
             'tax_type' => $request->tax_type,
             'product_type' => $request->productType,
+            'category_id' => $request->category_id,
         ]);
 
         if ($request->hasFile('image')) {
@@ -287,10 +284,12 @@ class ProductController extends Controller
             }
         }
 
-        $product->productCategories()->update([
-            'category_id' => $request->category_id,
-            'subcategory_id' => $request->subcategory_id,
-        ]);
+        foreach ($request->category_id as $categoryId) {
+            ProductCategory::updateOrCreate([
+                'product_id' => $product->id,
+                'category_id' => $categoryId,
+            ]);
+        }
 
         if ($product->product_type === 'single') {
             $this->updateSingleProduct($product, $request);

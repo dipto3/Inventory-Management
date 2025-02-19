@@ -23,7 +23,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Store</label>
-                            <select class="form-select"name="store">
+                            <select class="form-select" name="store">
                                 <option>Choose</option>
                                 <option value="Thomas" {{ old('store') == 'Thomas' ? 'selected' : '' }}>Thomas</option>
                                 <option value="Rasmussen" {{ old('store') == 'Rasmussen' ? 'selected' : '' }}>Rasmussen
@@ -68,27 +68,26 @@
                         <div class="col-md-4">
                             <label class="form-label">Category</label>
                             <div class="input-group">
-                                <select class="form-select" name="category_id">
-                                    <option>Choose</option>
+                                <select class="form-select selectpicker" name="category_id[]" data-live-search="true" multiple>
+                                <option>Choose</option>
                                     @foreach ($categories as $category)
+                                        @php
+                                            $category1[] = $category->name;
+                                        @endphp
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @foreach ($category->childrenCategories as $childCategory)
+                                            @include('admin.category.child_category', [
+                                                'child_category' => $childCategory,
+                                                'category' => $category1,
+                                            ])
+                                        @endforeach
+                                        @php
+                                            array_pop($category1);
+                                        @endphp
                                     @endforeach
                                 </select>
                                 <button class="add-new-btn" type="button" data-bs-toggle="modal" id="create-btn"
                                     data-bs-target="#showCategoryModal">Add New</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Sub Category</label>
-                            <div class="input-group">
-                                <select class="form-select"name="subcategory_id">
-                                    <option>Choose</option>
-                                    @foreach ($subcategories as $subcategory)
-                                        <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
-                                    @endforeach
-                                </select>
-                                <button class="add-new-btn" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#showModal">Add New</button>
                             </div>
                         </div>
                         {{-- <div class="col-md-4">
@@ -100,7 +99,7 @@
                         <div class="col-md-4">
                             <label class="form-label">Discount Type</label>
                             <div class="input-group">
-                                <select class="form-select"name="discount_type">
+                                <select class="form-select" name="discount_type">
 
                                     <option>Choose</option>
                                     <option value="Percentage">Percentage</option>
@@ -134,7 +133,7 @@
                         <div class="col-md-4">
                             <label class="form-label">Unit</label>
                             <div class="input-group">
-                                <select class="form-select"name="unit">
+                                <select class="form-select" name="unit">
                                     <option>Choose</option>
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
@@ -224,7 +223,7 @@
 
                     <div class="mb-3" id="variantSection" style="display: none;">
                         <label class="form-label">Select Variants</label>
-                        <select class="form-select" id="variantDropdown" multiple>
+                        <select class="form-select selectpicker" id="variantDropdown" multiple>
 
                             @foreach ($variants as $variant)
                                 <option value="{{ $variant->id }}">{{ $variant->name }}</option>
@@ -447,24 +446,24 @@
                 return `
                     <div class="row g-3 mb-2 combination-row" data-index="${index}">
                         <div class="col-md-2">
-                            <input type="text" class="form-control" value="${combinationName}" readonly 
+                            <input type="text" class="form-control" value="${combinationName}" readonly
                                 name="child_products[${index}][combination]"/>
                             <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][quantity]" 
+                            <input type="number" class="form-control" name="child_products[${index}][quantity]"
                                 placeholder="Quantity" />
                         </div>
                         <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][price]" 
+                            <input type="number" class="form-control" name="child_products[${index}][price]"
                                 placeholder="Price" />
                         </div>
                          <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][purchase_price]" 
+                            <input type="number" class="form-control" name="child_products[${index}][purchase_price]"
                                 placeholder="Purchase price" />
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" name="child_products[${index}][quantity_alert]" 
+                            <input type="text" class="form-control" name="child_products[${index}][quantity_alert]"
                                 placeholder="Quantity alert"/>
                         </div>
                         <div class="col-md-2">

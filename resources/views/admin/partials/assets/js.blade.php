@@ -49,32 +49,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.2.1/js/dataTables.bootstrap5.js"></script>
-  {{-- <script>
-      // Initialize DataTable
-      new DataTable('#example') $.extend($.fn.dataTable.defaults, {
-
-          ordering: true,
-          searching: true,
-          select: true,
-          "order": [
-              [0, 'desc'],
-              [1, 'desc'],
-              [2, 'desc'],
-              [3, 'desc']
-          ]
-      });
-  </script> --}}
   <script>
-      $(document).ready(function() {
-          $('#example').DataTable({
-              order: [
-                  [0, 'desc']
-              ], // Sort by the first column (index 0) in descending order
-              ordering: true, // Enable ordering
-              searching: true, // Enable searching
-              select: true // Enable row selection
-          });
-      });
+      document.addEventListener('DOMContentLoaded', function () {
+    new DataTable('#example', {
+        ordering: true,
+    });
+});
   </script>
 
 

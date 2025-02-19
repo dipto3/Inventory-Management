@@ -22,11 +22,6 @@ class Product extends Model implements HasMedia
         return $this->belongsToMany(Category::class, 'product_categories');
     }
 
-    public function subcategories()
-    {
-        return $this->belongsToMany(Subcategory::class, 'product_categories');
-    }
-
     public function variants()
     {
         return $this->hasMany(ProductVariant::class);

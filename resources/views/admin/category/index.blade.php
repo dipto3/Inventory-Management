@@ -53,7 +53,7 @@
                                     </div>
 
                                     <div class="table-responsive table-card mt-3 mb-1">
-                                        <table class="table align-middle table-nowrap" id="customerTable">
+                                        {{-- <table class="table align-middle table-nowrap" id="customerTable">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th scope="col" style="width: 50px;">
@@ -126,7 +126,7 @@
                                                 @endforeach
 
                                             </tbody>
-                                        </table>
+                                        </table> --}}
                                         <div class="noresult" style="display: none">
                                             <div class="text-center">
                                                 <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"

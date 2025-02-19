@@ -29,7 +29,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Cache::remember('products', now()->addMinutes(10), function () {
-            return Product::with('variants', 'variants.prices', 'categories')->get();
+            return Product::with('variants', 'variants.prices', 'categories')->orderBy('id', 'desc')->get()->values();;
         });
         return view('admin.product.index', compact('products'));
     }

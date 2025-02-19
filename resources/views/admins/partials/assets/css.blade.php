@@ -15,7 +15,7 @@
         <link rel="stylesheet"
         href="{{ asset('admin/assets/css/dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet"
-        href="{{ asset('admin/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">        
+        href="{{ asset('admin/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
 
     <link rel="stylesheet"
         href="{{ asset('admin/assets/plugins/fontawesome/css/fontawesome.min.css') }}">
@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/css/dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet"
     href="{{ asset('admin/assets/plugins/owlcarousel/owl.carousel.min.css') }}">
+    <link href="{{ asset('admin/assets/libs/bootstrap-select/css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css" />
+
     <script
     src="{{ asset('admin/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}"
     data-cf-settings="2bbd58bb513c72193d549e5f-|49" defer></script>

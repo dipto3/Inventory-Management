@@ -314,21 +314,7 @@ class ProductController extends Controller
         ]);
     }
 
-    // private function updateVariableProduct(Product $product, Request $request)
-    // {
-    //     foreach ($request->child_products as $childProduct) {
-    //         $variant = ProductVariant::find($childProduct['id']);
-    //         $variant->update([
-    //             'quantity' => $childProduct['quantity'],
-    //             'quantity_alert' => $childProduct['quantity_alert'],
-    //         ]);
-
-    //         ProductPrice::where('product_variant_id', $variant->id)->update([
-    //             'price' => $childProduct['price'],
-    //             'purchase_price' => $childProduct['purchase_price'],
-    //         ]);
-    //     }
-    // }
+   
     private function updateVariableProduct(Product $product, Request $request)
     {
         foreach ($request->child_products as $childProduct) {

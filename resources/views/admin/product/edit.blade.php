@@ -312,7 +312,7 @@
                 <div class="mb-3">
                     <label class="form-label">Images</label>
                     <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
-                        @foreach ($product->getMedia('images') as $media)
+                        @foreach ($product->getMedia() as $media)
                             <div class="d-flex flex-column align-items-center m-2" data-media-id="{{ $media->id }}">
                                 <img src="{{ $media->getUrl() }}" class="img-thumbnail"
                                     style="width: 100px; height: 100px; object-fit: cover;">
@@ -326,7 +326,7 @@
                                 <i class="bi bi-cloud-upload fs-3"></i>
                                 <span class="small text-muted">Upload</span>
                             </label>
-                            <input type="file" id="productImages" multiple class="d-none" name="images[]" />
+                            <input type="file" id="productImages" multiple class="d-none" name="image[]" />
                         </div>
                     </div>
                 </div>
@@ -419,6 +419,10 @@
                     const reader = new FileReader();
 
                     reader.onload = function(e) {
+                        const imgContainer = document.createElement("div");
+                        imgContainer.classList.add("d-flex", "flex-column", "align-items-center",
+                        "m-2");
+
                         const img = document.createElement("img");
                         img.src = e.target.result;
                         img.classList.add("img-thumbnail");
@@ -429,23 +433,15 @@
                         const removeButton = document.createElement("button");
                         removeButton.textContent = "Remove";
                         removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
-                        removeButton.style.display = "block";
-
-                        removeButton.addEventListener("click", function() {
+                        removeButton.onclick = function() {
                             imgContainer.remove();
-                        });
+                        };
 
-                        const imgContainer = document.createElement("div");
-                        imgContainer.classList.add(
-                            "d-flex",
-                            "flex-column",
-                            "align-items-center",
-                            "m-2"
-                        );
                         imgContainer.appendChild(img);
                         imgContainer.appendChild(removeButton);
 
-                        imagePreviewContainer.appendChild(imgContainer);
+                        const uploadButton = imagePreviewContainer.querySelector('.border.rounded');
+                        imagePreviewContainer.insertBefore(imgContainer, uploadButton);
                     };
 
                     reader.readAsDataURL(file);

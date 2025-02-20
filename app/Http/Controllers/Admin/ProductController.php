@@ -62,7 +62,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //         dd($request->all());
+                // dd($request->image);
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'store' => 'nullable|string|max:255',
@@ -276,7 +276,6 @@ class ProductController extends Controller
             'discount_value' => $request->discount_value,
             'tax_type' => $request->tax_type,
             'product_type' => $request->productType,
-            // 'category_id' => $request->category_id,
         ]);
 
         if ($request->hasFile('image')) {
@@ -287,9 +286,7 @@ class ProductController extends Controller
         }
 
         foreach ($request->category_id as $categoryId) {
-            // dd($categoryId);
            $product->productCategories()->update([
-               
                 'category_id' => $categoryId,
             ]);
         }

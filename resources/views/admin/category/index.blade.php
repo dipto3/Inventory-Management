@@ -47,8 +47,7 @@
                                         <table class="table table-striped" id="example">
                                             <thead class="table-light">
                                                 <tr>
-
-                                                    <th>#</th>
+                                                    <th>ID</th>
                                                     <th class="sort" data-sort="name">Category</th>
                                                     <th class="sort" data-sort="parent">Parent Category</th>
                                                     <th class="sort" data-sort="description">Description</th>

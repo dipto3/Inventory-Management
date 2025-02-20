@@ -68,8 +68,8 @@
                         <div class="col-md-4">
                             <label class="form-label">Category</label>
                             <div class="input-group">
-                                <select class="form-select selectpicker" name="category_id[]" data-live-search="true" multiple>
-                                <option>Choose</option>
+                                <select class="form-select selectpicker" name="category_id[]" data-live-search="true"
+                                    multiple>
                                     @foreach ($categories as $category)
                                         @php
                                             $category1[] = $category->name;
@@ -90,12 +90,6 @@
                                     data-bs-target="#showCategoryModal">Add New</button>
                             </div>
                         </div>
-                        {{-- <div class="col-md-4">
-                            <label class="form-label">Sub Sub Category</label>
-                            <select class="form-select">
-                                <option>Choose</option>
-                            </select>
-                        </div> --}}
                         <div class="col-md-4">
                             <label class="form-label">Discount Type</label>
                             <div class="input-group">
@@ -259,10 +253,12 @@
                                 <i class="bi bi-cloud-upload fs-3"></i>
                                 <span class="small text-muted">Upload</span>
                             </label>
-                            <input type="file" id="productImages" multiple class="d-none" name="image[]" multiple />
+
                         </div>
                     </div>
+                    <input type="file" id="productImages" multiple class="d-none" name="image[]" multiple />
                 </div>
+                
                 <!-- Submit Buttons -->
                 <div class="text-end mt-4">
                     <button type="button" class="btn btn-secondary me-2">Cancel</button>
@@ -272,7 +268,6 @@
         </div>
     </div>
     @include('admin.category.create')
-    @include('admin.subcategory.create')
     @include('admin.unit.create')
     @include('admin.brand.create')
     @include('admin.variant.create')
@@ -332,6 +327,8 @@
         });
     });
 </script>
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // DOM Elements

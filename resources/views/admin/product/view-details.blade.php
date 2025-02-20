@@ -25,10 +25,7 @@
                                     <th>Category</th>
                                     <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Sub Category</th>
-                                    <td>{{ $product->subcategories->pluck('name')->implode(', ') }}</td>
-                                </tr>
+                                
                                 <tr>
                                     <th>Brand</th>
                                     <td>{{ $product->brand }}</td>

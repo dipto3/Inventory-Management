@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('parent_id');
-            $table->string('slug');
-            $table->integer('ordering');
+            $table->string('slug')->nullable();
+            $table->integer('ordering')->nullable();
             $table->text('description')->nullable();
             $table->tinyInteger('status');
             $table->timestamps();

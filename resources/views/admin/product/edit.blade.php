@@ -68,10 +68,12 @@
                             <label class="form-label">Categories</label>
                             <div class="input-group">
                                 <select class="form-select selectpicker" name="category_id[]" multiple>
+                              
                                     @foreach ($categories as $category)
                                         @php
                                             $category1[] = $category->name;
-                                                $selectedCategories = json_decode($product->category_id, true) ?? [];
+                                                // $selectedCategories = json_decode($product->category_id, true) ?? [];
+                                                $selectedCategories =$product->productCategories->pluck('category_id')->toArray();
                                         @endphp
 
                                         <option value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
@@ -89,7 +91,6 @@
                                         @endphp
                                     @endforeach
                                 </select>
-
                             </div>
                         </div>
 

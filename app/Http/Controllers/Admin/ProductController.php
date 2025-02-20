@@ -28,9 +28,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Cache::remember('products', now()->addMinutes(10), function () {
-            return Product::with('variants', 'variants.prices', 'categories')->orderBy('id', 'desc')->get()->values();;
-        });
+        // $products = Cache::remember('products', now()->addMinutes(10), function () {
+        //     return Product::with('variants', 'variants.prices', 'categories')->orderBy('id', 'desc')->get()->values();;
+        // });
+        $products = Product::with('variants', 'variants.prices','categories')->get();
         return view('admin.product.index', compact('products'));
     }
 
@@ -61,7 +62,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-//         dd($request->all());
+        //         dd($request->all());
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'store' => 'nullable|string|max:255',
@@ -255,6 +256,7 @@ class ProductController extends Controller
 
     public function update(Request $request, string $id)
     {
+        // dd($request->category_id);
         $product = Product::findOrFail($id);
 
         $product->update([
@@ -274,7 +276,7 @@ class ProductController extends Controller
             'discount_value' => $request->discount_value,
             'tax_type' => $request->tax_type,
             'product_type' => $request->productType,
-            'category_id' => $request->category_id,
+            // 'category_id' => $request->category_id,
         ]);
 
         if ($request->hasFile('image')) {
@@ -285,8 +287,9 @@ class ProductController extends Controller
         }
 
         foreach ($request->category_id as $categoryId) {
-            ProductCategory::updateOrCreate([
-                'product_id' => $product->id,
+            // dd($categoryId);
+           $product->productCategories()->update([
+               
                 'category_id' => $categoryId,
             ]);
         }

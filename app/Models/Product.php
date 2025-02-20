@@ -10,17 +10,17 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Product extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
-    protected $guarded =[''];
+    protected $guarded = [''];
 
     public function productCategories()
     {
         return $this->hasMany(ProductCategory::class);
     }
 
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, 'product_categories');
-    }
+    // public function categories()
+    // {
+    //     return $this->belongsToMany(Category::class, 'product_categories');
+    // }
 
     public function variants()
     {
@@ -30,5 +30,10 @@ class Product extends Model implements HasMedia
     public function prices()
     {
         return $this->hasMany(ProductPrice::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id');
     }
 }

@@ -99,9 +99,7 @@
                                 <a href="{{ route('category.index') }}" class="nav-link">
                                     Category </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('subcategory.index') }}" class="nav-link">Sub Category </a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a href="{{ route('brand.index') }}" class="nav-link">Brands</a>
                             </li>

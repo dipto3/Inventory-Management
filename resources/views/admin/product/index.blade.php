@@ -129,11 +129,6 @@
             </div>
             <!-- container-fluid -->
         </div>
-        <style>
-            .card-title {
-                color: red;
-                font-size:50px;
-            }
-        </style>
+       
     @endsection
    

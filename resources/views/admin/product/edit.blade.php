@@ -68,21 +68,24 @@
                             <label class="form-label">Categories</label>
                             <div class="input-group">
                                 <select class="form-select selectpicker" name="category_id[]" multiple>
-                              
+
                                     @foreach ($categories as $category)
                                         @php
                                             $category1[] = $category->name;
-                                                // $selectedCategories = json_decode($product->category_id, true) ?? [];
-                                                $selectedCategories =$product->productCategories->pluck('category_id')->toArray();
+                                            // $selectedCategories = json_decode($product->category_id, true) ?? [];
+                                            $selectedCategories = $product->productCategories
+                                                ->pluck('category_id')
+                                                ->toArray();
                                         @endphp
 
-                                        <option value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
+                                        <option value="{{ $category->id }}"
+                                            {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
                                             {{ $category->name }}
                                         </option>
                                         @foreach ($category->childrenCategories as $childCategory)
                                             @include('admin.category.child_category', [
                                                 'child_category' => $childCategory,
-                                                'category' => $category1
+                                                'category' => $category1,
                                             ])
                                         @endforeach
 

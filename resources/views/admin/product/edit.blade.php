@@ -345,14 +345,12 @@
 @push('scripts')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const form = document.getElementById("productForm");
             const imageInput = document.getElementById("productImages");
-            const imagePreviewContainer = document.getElementById(
-                "imagePreviewContainer"
-            );
+            const imagePreviewContainer = document.getElementById("imagePreviewContainer");
 
             imageInput.addEventListener("change", function(event) {
                 const files = event.target.files;
+
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     const reader = new FileReader();
@@ -370,21 +368,14 @@
                         const removeButton = document.createElement("button");
                         removeButton.textContent = "Remove";
                         removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
-                        removeButton.style.display = "block";
-
-                        // Remove button functionality
-                        removeButton.addEventListener("click", function() {
+                        removeButton.onclick = function() {
                             imgContainer.remove();
-                        });
+                        };
 
                         // Create container for image and remove button
                         const imgContainer = document.createElement("div");
-                        imgContainer.classList.add(
-                            "d-flex",
-                            "flex-column",
-                            "align-items-center",
-                            "m-2"
-                        );
+                        imgContainer.classList.add("d-flex", "flex-column", "align-items-center",
+                        "m-2");
                         imgContainer.appendChild(img);
                         imgContainer.appendChild(removeButton);
 
@@ -412,41 +403,6 @@
             const variantData = @json($variants);
 
             // Image handling
-            imageInput.addEventListener("change", function(event) {
-                const files = event.target.files;
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        const imgContainer = document.createElement("div");
-                        imgContainer.classList.add("d-flex", "flex-column", "align-items-center",
-                        "m-2");
-
-                        const img = document.createElement("img");
-                        img.src = e.target.result;
-                        img.classList.add("img-thumbnail");
-                        img.style.width = "100px";
-                        img.style.height = "100px";
-                        img.style.objectFit = "cover";
-
-                        const removeButton = document.createElement("button");
-                        removeButton.textContent = "Remove";
-                        removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
-                        removeButton.onclick = function() {
-                            imgContainer.remove();
-                        };
-
-                        imgContainer.appendChild(img);
-                        imgContainer.appendChild(removeButton);
-
-                        const uploadButton = imagePreviewContainer.querySelector('.border.rounded');
-                        imagePreviewContainer.insertBefore(imgContainer, uploadButton);
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            });
 
             // Product type handling
             productTypeSelect.addEventListener("change", function() {

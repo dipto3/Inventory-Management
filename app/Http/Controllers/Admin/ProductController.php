@@ -31,7 +31,7 @@ class ProductController extends Controller
         // $products = Cache::remember('products', now()->addMinutes(10), function () {
         //     return Product::with('variants', 'variants.prices', 'categories')->orderBy('id', 'desc')->get()->values();;
         // });
-        $products = Product::with('variants', 'variants.prices','categories')->get();
+        $products = Product::with('variants', 'variants.prices', 'categories')->get();
         return view('admin.product.index', compact('products'));
     }
 
@@ -62,7 +62,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-                // dd($request->image);
+        // dd($request->image);
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'store' => 'nullable|string|max:255',
@@ -160,6 +160,7 @@ class ProductController extends Controller
     private function handleVariableProduct(Product $product, Request $request)
     {
 
+        // dd($request->child_products);
         $validatedData = $request->validate([
             'child_products' => 'required|array',
             'child_products.*.combination' => 'required|string',
@@ -193,6 +194,8 @@ class ProductController extends Controller
 
             // Handle variant combinations
             $variantIds = explode(',', $childProduct['variant_ids']);
+            // $variantIds = array_map('trim', explode(',', $childProduct['variant_ids']));
+            // dd("Extracted Variant IDs:", compact('variantIds'));
             $combinations = explode(', ', $childProduct['combination']);
 
             foreach ($combinations as $index => $combination) {
@@ -200,9 +203,20 @@ class ProductController extends Controller
                 // dd($variantIds[$index]);
                 // Find the variant and variant value
                 $variantModel = Variant::find($variantIds[$index]);
-                $variantValueModel = VariantValue::where('value', $variantValue)
-                    ->where('variant_id', $variantModel->id)
+
+                if (!$variantModel) {
+                    dd("VariantModel is NULL!", compact('variantIds', 'index'));
+                }
+
+                $variantValue = trim(strtolower($variantValue));
+
+                $variantValueModel = VariantValue::whereRaw('LOWER(value) = ?', [$variantValue])
+                    ->where('variant_id', (int) $variantModel->id)
                     ->first();
+
+                if (!$variantValueModel) {
+                    dd("VariantValueModel is NULL!", compact('variantValue', 'variantModel', 'variantModel->id'));
+                }
 
                 if ($variantModel && $variantValueModel) {
                     // Create a new entry in product_variant_values table
@@ -214,6 +228,8 @@ class ProductController extends Controller
             }
         }
     }
+
+
 
     /**
      * Display the specified resource.
@@ -284,7 +300,7 @@ class ProductController extends Controller
         }
 
         foreach ($request->category_id as $categoryId) {
-           $product->productCategories()->update([
+            $product->productCategories()->update([
                 'category_id' => $categoryId,
             ]);
         }
@@ -312,7 +328,7 @@ class ProductController extends Controller
         ]);
     }
 
-   
+
     private function updateVariableProduct(Product $product, Request $request)
     {
         foreach ($request->child_products as $childProduct) {

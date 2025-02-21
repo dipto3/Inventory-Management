@@ -225,7 +225,7 @@
                         </select>
                     </div>
                     <div id="variantValuesSection"></div>
-<div id="combinationContainer"></div>
+                    <div id="combinationContainer"></div>
 
                 </div>
                 <div class="row g-3">
@@ -405,116 +405,118 @@
             }
         });
 
-        function generateCombinations(selectedVariants) {
-            if (selectedVariants.length === 0) {
-                combinationContainer.innerHTML = "";
-                return;
-            }
+        // function generateCombinations(selectedVariants) {
+        //     if (selectedVariants.length === 0) {
+        //         combinationContainer.innerHTML = "";
+        //         return;
+        //     }
 
-            const variantValues = selectedVariants.map((id) => {
-                const variant = variantData.find((v) => v.id == id);
-                return variant ? variant.variant_values.map((value) => ({
-                    id: variant.id,
-                    name: variant.name,
-                    value: value,
-                })) : [];
-            });
+        //     const variantValues = selectedVariants.map((id) => {
+        //         const variant = variantData.find((v) => v.id == id);
+        //         return variant ? variant.variant_values.map((value) => ({
+        //             id: variant.id,
+        //             name: variant.name,
+        //             value: value,
+        //         })) : [];
+        //     });
 
-            const combinations = variantValues.reduce((acc, values) => {
-                const result = [];
-                acc.forEach((a) => {
-                    values.forEach((v) => {
-                        result.push([...a, v]);
-                    });
-                });
-                return result;
-            }, [
-                []
-            ]);
+        //     const combinations = variantValues.reduce((acc, values) => {
+        //         const result = [];
+        //         acc.forEach((a) => {
+        //             values.forEach((v) => {
+        //                 result.push([...a, v]);
+        //             });
+        //         });
+        //         return result;
+        //     }, [
+        //         []
+        //     ]);
 
-            renderCombinations(combinations);
-        }
+        //     renderCombinations(combinations);
+        // }
 
-        function renderCombinations(combinations) {
-            combinationContainer.innerHTML = combinations.map((combo, index) => {
-                const combinationName = combo.map(v => `${v.name}: ${v.value.value}`).join(", ");
-                const variantIds = combo.map(v => v.id).join(",");
+        // function renderCombinations(combinations) {
+        //     combinationContainer.innerHTML = combinations.map((combo, index) => {
+        //         const combinationName = combo.map(v => `${v.name}: ${v.value.value}`).join(", ");
+        //         const variantIds = combo.map(v => v.id).join(",");
 
-                return `
-                    <div class="row g-3 mb-2 combination-row" data-index="${index}">
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" value="${combinationName}" readonly
-                                name="child_products[${index}][combination]"/>
-                            <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][quantity]"
-                                placeholder="Quantity" />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][price]"
-                                placeholder="Price" />
-                        </div>
-                         <div class="col-md-2">
-                            <input type="number" class="form-control" name="child_products[${index}][purchase_price]"
-                                placeholder="Purchase price" />
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" class="form-control" name="child_products[${index}][quantity_alert]"
-                                placeholder="Quantity alert"/>
-                        </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-danger remove-row">Remove</button>
-                        </div>
-                    </div>`;
-            }).join("");
+        //         return `
+        //             <div class="row g-3 mb-2 combination-row" data-index="${index}">
+        //                 <div class="col-md-2">
+        //                     <input type="text" class="form-control" value="${combinationName}" readonly
+        //                         name="child_products[${index}][combination]"/>
+        //                     <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
+        //                 </div>
+        //                 <div class="col-md-2">
+        //                     <input type="number" class="form-control" name="child_products[${index}][quantity]"
+        //                         placeholder="Quantity" />
+        //                 </div>
+        //                 <div class="col-md-2">
+        //                     <input type="number" class="form-control" name="child_products[${index}][price]"
+        //                         placeholder="Price" />
+        //                 </div>
+        //                  <div class="col-md-2">
+        //                     <input type="number" class="form-control" name="child_products[${index}][purchase_price]"
+        //                         placeholder="Purchase price" />
+        //                 </div>
+        //                 <div class="col-md-2">
+        //                     <input type="text" class="form-control" name="child_products[${index}][quantity_alert]"
+        //                         placeholder="Quantity alert"/>
+        //                 </div>
+        //                 <div class="col-md-2">
+        //                     <button type="button" class="btn btn-danger remove-row">Remove</button>
+        //                 </div>
+        //             </div>`;
+        //     }).join("");
 
-            document.querySelectorAll(".remove-row").forEach(button => {
-                button.addEventListener("click", function() {
-                    this.closest(".combination-row").remove();
-                });
-            });
-        }
+        //     document.querySelectorAll(".remove-row").forEach(button => {
+        //         button.addEventListener("click", function() {
+        //             this.closest(".combination-row").remove();
+        //         });
+        //     });
+        // }
 
-        variantDropdown.addEventListener("change", function() {
-            const selectedVariantIds = Array.from(this.selectedOptions).map(opt => opt.value);
-            generateCombinations(selectedVariantIds);
+        // variantDropdown.addEventListener("change", function() {
+        //     const selectedVariantIds = Array.from(this.selectedOptions).map(opt => opt.value);
+        //     generateCombinations(selectedVariantIds);
+        // });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const variantData = @json($variants);
+
+        $('.selectpicker').selectpicker({
+            width: '80%',
+            liveSearch: true,
+            container: 'body' // This ensures dropdown renders at body level
         });
-    });
 
-document.addEventListener("DOMContentLoaded", function() {
-    const variantData = @json($variants);
+        $('#variantDropdown').on('changed.bs.select', function() {
+            const selectedVariantIds = $(this).val();
+            if (hasRequiredVariants(selectedVariantIds)) {
+                showVariantValueSelections(selectedVariantIds);
+                // Clear any existing combinations
+                $('#combinationContainer').empty();
+            }
+        });
 
-    $('.selectpicker').selectpicker({
-    width: '80%',
-    liveSearch: true,
-    container: 'body' // This ensures dropdown renders at body level
-});
+        function hasRequiredVariants(selectedIds) {
+            const colorVariant = variantData.find(v => v.name === "Color");
 
-    $('#variantDropdown').on('changed.bs.select', function() {
-        const selectedVariantIds = $(this).val();
-        if (hasRequiredVariants(selectedVariantIds)) {
-            showVariantValueSelections(selectedVariantIds);
-            // Clear any existing combinations
-            $('#combinationContainer').empty();
+            const sizeVariant = variantData.find(v => v.name === "Size");
+            return selectedIds && selectedIds.includes(colorVariant.id.toString()) && selectedIds.includes(
+                sizeVariant.id.toString());
         }
-    });
 
-    function hasRequiredVariants(selectedIds) {
-        const colorVariant = variantData.find(v => v.name === "Color");
-        const sizeVariant = variantData.find(v => v.name === "Size");
-        return selectedIds && selectedIds.includes(colorVariant.id.toString()) && selectedIds.includes(sizeVariant.id.toString());
-    }
+        function showVariantValueSelections(selectedVariantIds) {
+            const valuesSection = $('#variantValuesSection');
+            let html = '';
 
-    function showVariantValueSelections(selectedVariantIds) {
-        const valuesSection = $('#variantValuesSection');
-        let html = '';
+            const sortedVariants = selectedVariantIds.map(id => variantData.find(v => v.id == id))
+                .sort((a, b) => a.name === "Color" ? -1 : 1);
 
-        const sortedVariants = selectedVariantIds.map(id => variantData.find(v => v.id == id))
-            .sort((a, b) => a.name === "Color" ? -1 : 1);
-
-        sortedVariants.forEach(variant => {
-            html += `
+            sortedVariants.forEach(variant => {
+                html += `
                 <div class="mb-3">
                     <label class="form-label">Select ${variant.name}</label>
                     <select class="form-select selectpicker variant-values"
@@ -528,74 +530,87 @@ document.addEventListener("DOMContentLoaded", function() {
                     </select>
                 </div>
             `;
-        });
+            });
 
-        valuesSection.html(html);
-        $('.variant-values').selectpicker();
+            valuesSection.html(html);
+            $('.variant-values').selectpicker();
 
-        // Add change listener to variant value selections
-        $('.variant-values').on('changed.bs.select', function() {
-            const colorValues = $('#colorSelect').val();
-            const sizeValues = $('#sizeSelect').val();
+            // Add change listener to variant value selections
+            $('.variant-values').on('changed.bs.select', function() {
+                const colorValues = $('#colorSelect').val();
+                const sizeValues = $('#sizeSelect').val();
 
-            // Only generate combinations if both color and size values are selected
-            if (colorValues?.length && sizeValues?.length) {
-                const combinations = [];
-                colorValues.forEach(color => {
-                    sizeValues.forEach(size => {
-                        combinations.push({
-                            color: {
-                                id: color,
-                                value: $('#colorSelect').find(`option[value='${color}']`).text()
-                            },
-                            size: {
-                                id: size,
-                                value: $('#sizeSelect').find(`option[value='${size}']`).text()
-                            }
+                // Only generate combinations if both color and size values are selected
+                if (colorValues?.length && sizeValues?.length) {
+                    const combinations = [];
+                    colorValues.forEach(color => {
+                        sizeValues.forEach(size => {
+                            combinations.push({
+                                color: {
+                                    id: color,
+                                    value: $('#colorSelect').find(
+                                        `option[value='${color}']`).text()
+                                },
+                                size: {
+                                    id: size,
+                                    value: $('#sizeSelect').find(
+                                        `option[value='${size}']`).text()
+                                }
+                            });
                         });
                     });
-                });
-                renderCombinationsTable(combinations);
-            } else {
-                $('#combinationContainer').empty();
-            }
-        });
-    }
+                    renderCombinationsTable(combinations);
+                } else {
+                    $('#combinationContainer').empty();
+                }
+            });
+        }
 
-    function renderCombinationsTable(combinations) {
-        let html = `
+        function renderCombinationsTable(combinations) {
+            const colorVariant = variantData.find(v => v.name === "Color");
+            const sizeVariant = variantData.find(v => v.name === "Size");
+            let html = `
             <div class="mt-4">
                 <table class="table">
                     <thead>
                         <tr>
                             <th>Combination</th>
                             <th>Price</th>
-                            <th>Stock</th>
+                            <th>Quantity</th>
+                            <th>Purchase Price</th>
+                            <th>Quantity alert</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
         `;
 
-        combinations.forEach((combo, index) => {
-            html += `
-                <tr>
-                    <td>Color: ${combo.color.value} / Size: ${combo.size.value}</td>
-                    <td><input type="number" class="form-control" name="combinations[${index}][price]"></td>
-                    <td><input type="number" class="form-control" name="combinations[${index}][stock]"></td>
-                    <td><button type="button" class="btn btn-danger btn-sm remove-combination">Remove</button></td>
-                </tr>
-            `;
-        });
+            combinations.forEach((combo, index) => {
+                const combinationName = `Color: ${combo.color.value}, Size: ${combo.size.value}`;
+                const variantIds = `${colorVariant.id},${sizeVariant.id}`;
+                console.log(variantIds);
+                html += `
+        <tr>
+            <td>
+                ${combinationName}
+                <input type="hidden" name="child_products[${index}][combination]" value="${combinationName}">
+                <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
+            </td>
+            <td><input type="number" class="form-control" name="child_products[${index}][price]" placeholder="Price"></td>
+            <td><input type="number" class="form-control" name="child_products[${index}][quantity]" placeholder="Quantity"></td>
+            <td><input type="number" class="form-control" name="child_products[${index}][purchase_price]" placeholder="Purchase price" /></td>
+            <td><input type="text" class="form-control" name="child_products[${index}][quantity_alert]" placeholder="Quantity alert"/></td>
+            <td><button type="button" class="btn btn-danger btn-sm remove-combination">Remove</button></td>
+        </tr>
+    `;
+            });
 
-        html += '</tbody></table></div>';
-        $('#combinationContainer').html(html);
+            html += '</tbody></table></div>';
+            $('#combinationContainer').html(html);
 
-        $('.remove-combination').click(function() {
-            $(this).closest('tr').remove();
-        });
-    }
-});
-
-
+            $('.remove-combination').click(function() {
+                $(this).closest('tr').remove();
+            });
+        }
+    });
 </script>

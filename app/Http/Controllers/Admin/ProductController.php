@@ -204,19 +204,15 @@ class ProductController extends Controller
                 // Find the variant and variant value
                 $variantModel = Variant::find($variantIds[$index]);
 
-                if (!$variantModel) {
-                    dd("VariantModel is NULL!", compact('variantIds', 'index'));
-                }
+                
 
                 $variantValue = trim(strtolower($variantValue));
 
-                $variantValueModel = VariantValue::whereRaw('LOWER(value) = ?', [$variantValue])
+                $variantValueModel = VariantValue::where('value', $variantValue)
                     ->where('variant_id', (int) $variantModel->id)
                     ->first();
 
-                if (!$variantValueModel) {
-                    dd("VariantValueModel is NULL!", compact('variantValue', 'variantModel', 'variantModel->id'));
-                }
+               
 
                 if ($variantModel && $variantValueModel) {
                     // Create a new entry in product_variant_values table

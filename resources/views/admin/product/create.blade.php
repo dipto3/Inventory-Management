@@ -224,10 +224,8 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <div id="combinationContainer">
-                        <!-- Dynamically generated rows will appear here -->
-                    </div>
+                    <div id="variantValuesSection"></div>
+<div id="combinationContainer"></div>
 
                 </div>
                 <div class="row g-3">
@@ -258,7 +256,7 @@
                     </div>
                     <input type="file" id="productImages" multiple class="d-none" name="image[]" multiple />
                 </div>
-                
+
                 <!-- Submit Buttons -->
                 <div class="text-end mt-4">
                     <button type="button" class="btn btn-secondary me-2">Cancel</button>
@@ -275,6 +273,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet" />
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+
         const form = document.getElementById("productForm");
         const imageInput = document.getElementById("productImages");
         const imagePreviewContainer = document.getElementById(
@@ -481,4 +480,121 @@
             generateCombinations(selectedVariantIds);
         });
     });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const variantData = @json($variants);
+
+    $('.selectpicker').selectpicker({
+    width: '80%',
+    liveSearch: true,
+    container: 'body' // This ensures dropdown renders at body level
+});
+
+    $('#variantDropdown').on('changed.bs.select', function() {
+        const selectedVariantIds = $(this).val();
+        if (hasRequiredVariants(selectedVariantIds)) {
+            showVariantValueSelections(selectedVariantIds);
+            // Clear any existing combinations
+            $('#combinationContainer').empty();
+        }
+    });
+
+    function hasRequiredVariants(selectedIds) {
+        const colorVariant = variantData.find(v => v.name === "Color");
+        const sizeVariant = variantData.find(v => v.name === "Size");
+        return selectedIds && selectedIds.includes(colorVariant.id.toString()) && selectedIds.includes(sizeVariant.id.toString());
+    }
+
+    function showVariantValueSelections(selectedVariantIds) {
+        const valuesSection = $('#variantValuesSection');
+        let html = '';
+
+        const sortedVariants = selectedVariantIds.map(id => variantData.find(v => v.id == id))
+            .sort((a, b) => a.name === "Color" ? -1 : 1);
+
+        sortedVariants.forEach(variant => {
+            html += `
+                <div class="mb-3">
+                    <label class="form-label">Select ${variant.name}</label>
+                    <select class="form-select selectpicker variant-values"
+                            id="${variant.name.toLowerCase()}Select"
+                            data-variant="${variant.name}"
+                            multiple
+                            data-live-search="true">
+                        ${variant.variant_values.map(value =>
+                            `<option value="${value.id}">${value.value}</option>`
+                        ).join('')}
+                    </select>
+                </div>
+            `;
+        });
+
+        valuesSection.html(html);
+        $('.variant-values').selectpicker();
+
+        // Add change listener to variant value selections
+        $('.variant-values').on('changed.bs.select', function() {
+            const colorValues = $('#colorSelect').val();
+            const sizeValues = $('#sizeSelect').val();
+
+            // Only generate combinations if both color and size values are selected
+            if (colorValues?.length && sizeValues?.length) {
+                const combinations = [];
+                colorValues.forEach(color => {
+                    sizeValues.forEach(size => {
+                        combinations.push({
+                            color: {
+                                id: color,
+                                value: $('#colorSelect').find(`option[value='${color}']`).text()
+                            },
+                            size: {
+                                id: size,
+                                value: $('#sizeSelect').find(`option[value='${size}']`).text()
+                            }
+                        });
+                    });
+                });
+                renderCombinationsTable(combinations);
+            } else {
+                $('#combinationContainer').empty();
+            }
+        });
+    }
+
+    function renderCombinationsTable(combinations) {
+        let html = `
+            <div class="mt-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Combination</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        combinations.forEach((combo, index) => {
+            html += `
+                <tr>
+                    <td>Color: ${combo.color.value} / Size: ${combo.size.value}</td>
+                    <td><input type="number" class="form-control" name="combinations[${index}][price]"></td>
+                    <td><input type="number" class="form-control" name="combinations[${index}][stock]"></td>
+                    <td><button type="button" class="btn btn-danger btn-sm remove-combination">Remove</button></td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table></div>';
+        $('#combinationContainer').html(html);
+
+        $('.remove-combination').click(function() {
+            $(this).closest('tr').remove();
+        });
+    }
+});
+
+
 </script>

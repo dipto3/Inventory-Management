@@ -86,7 +86,6 @@ class ProductController extends Controller
             'tax_type' => 'nullable',
 
         ]);
-
         $product = Product::create([
             'name' => $validatedData['name'],
             'store' => $validatedData['store'],
@@ -106,7 +105,6 @@ class ProductController extends Controller
             'product_type' => $validatedData['productType'],
             'category_id' => json_encode($validatedData['category_id']),
         ]);
-
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
                 $product->addMedia($image)->toMediaCollection();

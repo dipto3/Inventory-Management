@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -13,25 +14,38 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        // Insert categories
         $categories = [
-            ['name' => 'Man', 'description' => 'Category for men', 'status' => 1],
-            ['name' => 'Woman', 'description' => 'Category for women', 'status' => 1],
+            [
+                'name' => 'Electronics',
+                'parent_id' => 0,
+                'slug' => Str::slug('Electronics'),
+                'ordering' => 1,
+                'description' => 'Electronic devices and accessories',
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'Clothing',
+                'parent_id' => 0,
+                'slug' => Str::slug('Clothing'),
+                'ordering' => 2,
+                'description' => 'Fashion and apparel items',
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'Home & Living',
+                'parent_id' => 0,
+                'slug' => Str::slug('Home & Living'),
+                'ordering' => 3,
+                'description' => 'Home decor and living essentials',
+                'status' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
         ];
-
         DB::table('categories')->insert($categories);
-
-        // Retrieve the inserted category IDs
-        $categoryIds = DB::table('categories')->pluck('id', 'name');
-
-        // Insert subcategories
-        $subcategories = [
-            ['category_id' => $categoryIds['Man'], 'name' => 'Shirts', 'description' => 'Shirts for men', 'status' => 1],
-            ['category_id' => $categoryIds['Man'], 'name' => 'Pants', 'description' => 'Pants for men', 'status' => 1],
-            ['category_id' => $categoryIds['Woman'], 'name' => 'Dresses', 'description' => 'Dresses for women', 'status' => 1],
-            ['category_id' => $categoryIds['Woman'], 'name' => 'Skirts', 'description' => 'Skirts for women', 'status' => 1],
-        ];
-
-        DB::table('subcategories')->insert($subcategories);
     }
 }

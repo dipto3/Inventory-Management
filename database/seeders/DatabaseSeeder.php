@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(BrandSeeder::class);
         $this->call(UnitSeeder::class);
-        
+        $this->call(SupplierSeeder::class);
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

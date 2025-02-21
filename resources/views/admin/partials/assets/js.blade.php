@@ -7,7 +7,7 @@
   <script src="{{ asset('admin/assets/libs/feather-icons/feather.min.js') }}"></script>
   {{-- <script src="{{ asset('admin/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
   <script src="{{ asset('admin/assets/js/plugins.js') }}"></script> --}}
-  <script src="{{ asset('admin/assets/js/app.js') }}"></script>
+  <script src="{{ asset('admin/assets/js/app.js') }}" defer></script>
 
   <script src="{{ asset('admin/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

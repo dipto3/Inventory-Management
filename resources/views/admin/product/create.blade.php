@@ -258,7 +258,7 @@
                     </div>
                     <input type="file" id="productImages" multiple class="d-none" name="image[]" multiple />
                 </div>
-                
+
                 <!-- Submit Buttons -->
                 <div class="text-end mt-4">
                     <button type="button" class="btn btn-secondary me-2">Cancel</button>
@@ -273,6 +273,7 @@
     @include('admin.variant.create')
 @endsection
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet" />
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const form = document.getElementById("productForm");

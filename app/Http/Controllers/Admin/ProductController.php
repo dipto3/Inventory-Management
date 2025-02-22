@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
@@ -107,10 +108,10 @@ class ProductController extends Controller
         ]);
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
-                $product->addMedia($image)->toMediaCollection();
+                $media =  $product->addMedia($image)->toMediaCollection();
+                Session::put('image', $media->getUrl());
             }
         }
-
         foreach ($validatedData['category_id'] as $categoryId) {
             ProductCategory::create([
                 'product_id' => $product->id,
@@ -204,15 +205,11 @@ class ProductController extends Controller
                 // Find the variant and variant value
                 $variantModel = Variant::find($variantIds[$index]);
 
-                
-
                 $variantValue = trim(strtolower($variantValue));
 
                 $variantValueModel = VariantValue::where('value', $variantValue)
                     ->where('variant_id', (int) $variantModel->id)
                     ->first();
-
-               
 
                 if ($variantModel && $variantValueModel) {
                     // Create a new entry in product_variant_values table
@@ -224,7 +221,6 @@ class ProductController extends Controller
             }
         }
     }
-
 
 
     /**

@@ -363,76 +363,74 @@
             liveSearch: true,
             container: 'body' // This ensures dropdown renders at body level
         });
+$('#variantDropdown').on('changed.bs.select', function() {
+    const selectedVariantIds = $(this).val() || [];
+    showVariantValueSelections(selectedVariantIds);
+    // Clear combinations when variants change
+    $('#combinationContainer').empty();
+});
 
-        $('#variantDropdown').on('changed.bs.select', function() {
-            const selectedVariantIds = $(this).val();
-            if (hasRequiredVariants(selectedVariantIds)) {
-                showVariantValueSelections(selectedVariantIds);
-                // Clear any existing combinations
-                $('#combinationContainer').empty();
+function showVariantValueSelections(selectedVariantIds) {
+    const valuesSection = $('#variantValuesSection');
+    
+    // Clear existing dropdowns if no variants selected
+    if (!selectedVariantIds.length) {
+        valuesSection.empty();
+        return;
+    }
+
+    let html = '';
+    
+    // Get selected variants
+    const selectedVariants = selectedVariantIds.map(id => 
+        variantData.find(v => v.id == id)
+    );
+
+    // Create dropdowns for all selected variants
+    selectedVariants.forEach(variant => {
+        html += `
+            <div class="mb-3">
+                <label class="form-label">Select ${variant.name}</label>
+                <select class="form-select selectpicker variant-values"
+                        id="${variant.name.toLowerCase()}Select"
+                        data-variant="${variant.name}"
+                        multiple
+                        data-live-search="true">
+                    ${variant.variant_values.map(value =>
+                        `<option value="${value.id}">${value.value}</option>`
+                    ).join('')}
+                </select>
+            </div>`;
+    });
+
+    valuesSection.html(html);
+    $('.variant-values').selectpicker();
+
+    // Add change listener to variant value selections
+    $('.variant-values').on('changed.bs.select', function() {
+        const variantSelections = {};
+
+        // Collect all selected values
+        $('.variant-values').each(function() {
+            const variantName = $(this).data('variant');
+            const selectedValues = $(this).val();
+            if (selectedValues?.length) {
+                variantSelections[variantName] = selectedValues.map(value => ({
+                    id: value,
+                    value: $(this).find(`option[value='${value}']`).text()
+                }));
             }
         });
 
-        function hasRequiredVariants(selectedIds) {
-            const colorVariant = variantData.find(v => v.name === "Color");
-
-            const sizeVariant = variantData.find(v => v.name === "Size");
-            return selectedIds && selectedIds.includes(colorVariant.id.toString()) && selectedIds.includes(
-                sizeVariant.id.toString());
+        // Generate combinations if all variants have selections
+        if (Object.keys(variantSelections).length === selectedVariants.length) {
+            const combinations = generateAllCombinations(variantSelections);
+            renderCombinationsTable(combinations, selectedVariants);
+        } else {
+            $('#combinationContainer').empty();
         }
-
-        function showVariantValueSelections(selectedVariantIds) {
-            const valuesSection = $('#variantValuesSection');
-            let html = '';
-
-            // Get all selected variants without sorting/prioritizing Color/Size
-            const selectedVariants = selectedVariantIds.map(id =>
-                variantData.find(v => v.id == id)
-            );
-
-            selectedVariants.forEach(variant => {
-                html += `
-        <div class="mb-3">
-            <label class="form-label">Select ${variant.name}</label>
-            <select class="form-select selectpicker variant-values"
-                    id="${variant.name.toLowerCase()}Select"
-                    data-variant="${variant.name}"
-                    multiple
-                    data-live-search="true">
-                ${variant.variant_values.map(value =>
-                    `<option value="${value.id}">${value.value}</option>`
-                ).join('')}
-            </select>
-        </div>`;
-            });
-
-            valuesSection.html(html);
-            $('.variant-values').selectpicker();
-
-            // Add change listener to all variant value selections
-            $('.variant-values').on('changed.bs.select', function() {
-                const variantSelections = {};
-
-                // Collect all selected values from each variant
-                $('.variant-values').each(function() {
-                    const variantName = $(this).data('variant');
-                    const selectedValues = $(this).val();
-                    if (selectedValues?.length) {
-                        variantSelections[variantName] = selectedValues.map(value => ({
-                            id: value,
-                            value: $(this).find(`option[value='${value}']`).text()
-                        }));
-                    }
-                });
-
-                // Generate combinations only if all variants have selections
-                if (Object.keys(variantSelections).length === selectedVariants.length) {
-                    const combinations = generateAllCombinations(variantSelections);
-                    renderCombinationsTable(combinations, selectedVariants);
-                }
-            });
-        }
-
+    });
+}
         function generateAllCombinations(variantSelections) {
             const variants = Object.keys(variantSelections);
             const combinations = [{}];

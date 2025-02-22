@@ -267,9 +267,6 @@
         </div>
     </div>
 
-
-
-
     @include('admin.category.create')
     @include('admin.unit.create')
     @include('admin.brand.create')
@@ -356,81 +353,6 @@
             }
         });
 
-        // function generateCombinations(selectedVariants) {
-        //     if (selectedVariants.length === 0) {
-        //         combinationContainer.innerHTML = "";
-        //         return;
-        //     }
-
-        //     const variantValues = selectedVariants.map((id) => {
-        //         const variant = variantData.find((v) => v.id == id);
-        //         return variant ? variant.variant_values.map((value) => ({
-        //             id: variant.id,
-        //             name: variant.name,
-        //             value: value,
-        //         })) : [];
-        //     });
-
-        //     const combinations = variantValues.reduce((acc, values) => {
-        //         const result = [];
-        //         acc.forEach((a) => {
-        //             values.forEach((v) => {
-        //                 result.push([...a, v]);
-        //             });
-        //         });
-        //         return result;
-        //     }, [
-        //         []
-        //     ]);
-
-        //     renderCombinations(combinations);
-        // }
-
-        // function renderCombinations(combinations) {
-        //     combinationContainer.innerHTML = combinations.map((combo, index) => {
-        //         const combinationName = combo.map(v => `${v.name}: ${v.value.value}`).join(", ");
-        //         const variantIds = combo.map(v => v.id).join(",");
-
-        //         return `
-        //             <div class="row g-3 mb-2 combination-row" data-index="${index}">
-        //                 <div class="col-md-2">
-        //                     <input type="text" class="form-control" value="${combinationName}" readonly
-        //                         name="child_products[${index}][combination]"/>
-        //                     <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
-        //                 </div>
-        //                 <div class="col-md-2">
-        //                     <input type="number" class="form-control" name="child_products[${index}][quantity]"
-        //                         placeholder="Quantity" />
-        //                 </div>
-        //                 <div class="col-md-2">
-        //                     <input type="number" class="form-control" name="child_products[${index}][price]"
-        //                         placeholder="Price" />
-        //                 </div>
-        //                  <div class="col-md-2">
-        //                     <input type="number" class="form-control" name="child_products[${index}][purchase_price]"
-        //                         placeholder="Purchase price" />
-        //                 </div>
-        //                 <div class="col-md-2">
-        //                     <input type="text" class="form-control" name="child_products[${index}][quantity_alert]"
-        //                         placeholder="Quantity alert"/>
-        //                 </div>
-        //                 <div class="col-md-2">
-        //                     <button type="button" class="btn btn-danger remove-row">Remove</button>
-        //                 </div>
-        //             </div>`;
-        //     }).join("");
-
-        //     document.querySelectorAll(".remove-row").forEach(button => {
-        //         button.addEventListener("click", function() {
-        //             this.closest(".combination-row").remove();
-        //         });
-        //     });
-        // }
-
-        // variantDropdown.addEventListener("change", function() {
-        //     const selectedVariantIds = Array.from(this.selectedOptions).map(opt => opt.value);
-        //     generateCombinations(selectedVariantIds);
-        // });
     });
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -459,63 +381,6 @@
                 sizeVariant.id.toString());
         }
 
-        // function showVariantValueSelections(selectedVariantIds) {
-        //     const valuesSection = $('#variantValuesSection');
-        //     let html = '';
-
-        //     const sortedVariants = selectedVariantIds.map(id => variantData.find(v => v.id == id))
-        //         .sort((a, b) => a.name === "Color" ? -1 : 1);
-
-        //     sortedVariants.forEach(variant => {
-        //         html += `
-        //         <div class="mb-3">
-        //             <label class="form-label">Select ${variant.name}</label>
-        //             <select class="form-select selectpicker variant-values"
-        //                     id="${variant.name.toLowerCase()}Select"
-        //                     data-variant="${variant.name}"
-        //                     multiple
-        //                     data-live-search="true">
-        //                 ${variant.variant_values.map(value =>
-        //                     `<option value="${value.id}">${value.value}</option>`
-        //                 ).join('')}
-        //             </select>
-        //         </div>
-        //     `;
-        //     });
-
-        //     valuesSection.html(html);
-        //     $('.variant-values').selectpicker();
-
-        //     // Add change listener to variant value selections
-        //     $('.variant-values').on('changed.bs.select', function() {
-        //         const colorValues = $('#colorSelect').val();
-        //         const sizeValues = $('#sizeSelect').val();
-
-        //         // Only generate combinations if both color and size values are selected
-        //         if (colorValues?.length && sizeValues?.length) {
-        //             const combinations = [];
-        //             colorValues.forEach(color => {
-        //                 sizeValues.forEach(size => {
-        //                     combinations.push({
-        //                         color: {
-        //                             id: color,
-        //                             value: $('#colorSelect').find(
-        //                                 `option[value='${color}']`).text()
-        //                         },
-        //                         size: {
-        //                             id: size,
-        //                             value: $('#sizeSelect').find(
-        //                                 `option[value='${size}']`).text()
-        //                         }
-        //                     });
-        //                 });
-        //             });
-        //             renderCombinationsTable(combinations);
-        //         } else {
-        //             $('#combinationContainer').empty();
-        //         }
-        //     });
-        // }
         function showVariantValueSelections(selectedVariantIds) {
             const valuesSection = $('#variantValuesSection');
             let html = '';
@@ -588,107 +453,6 @@
 
             return combinations;
         }
-
-
-        //     function renderCombinationsTable(combinations) {
-        //         const colorVariant = variantData.find(v => v.name === "Color");
-        //         const sizeVariant = variantData.find(v => v.name === "Size");
-        //         let html = `
-        //         <div class="mt-4">
-        //             <div class="row mb-3">
-        //         <div class="card mb-3">
-        //     <div class="card-header bg-light">
-        //         <h5 class="mb-0">Global Price & Stock Settings</h5>
-        //     </div>
-        //     <div class="card-body">
-        //         <div class="row">
-        //             <div class="col-md-3">
-        //                 <div class="input-group">
-        //                     <input type="number" class="form-control" id="globalPrice" placeholder="Set price for all variants">
-        //                     <span class="input-group-text">Price</span>
-        //                 </div>
-        //             </div>
-        //             <div class="col-md-3">
-        //                 <div class="input-group">
-        //                     <input type="number" class="form-control" id="globalPurchasePrice" placeholder="Set purchase price for all variants">
-        //                     <span class="input-group-text">Purchase Price</span>
-        //                 </div>
-        //             </div>
-
-        //             <div class="col-md-3">
-        //                 <div class="input-group">
-        //                     <input type="number" class="form-control" id="globalQuantity" placeholder="Set quantity for all variants">
-        //                     <span class="input-group-text">Quantity</span>
-        //                 </div>
-        //             </div>
-
-        //             <div class="col-md-3">
-        //                 <div class="input-group">
-        //                     <input type="number" class="form-control" id="globalQuantityAlert" placeholder="Set quantity alert for all variants">
-        //                     <span class="input-group-text">Quantity Alert</span>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
-        //     </div>
-        //             <table class="table">
-        //                 <thead>
-        //                     <tr>
-        //                         <th>Combination</th>
-        //                         <th>Price</th>
-        //                         <th>Quantity</th>
-        //                         <th>Purchase Price</th>
-        //                         <th>Quantity alert</th>
-        //                         <th>Action</th>
-        //                     </tr>
-        //                 </thead>
-        //                 <tbody>
-        //     `;
-
-        //         combinations.forEach((combo, index) => {
-        //             const combinationName = `Color: ${combo.color.value}, Size: ${combo.size.value}`;
-        //             const variantIds = `${colorVariant.id},${sizeVariant.id}`;
-        //             console.log(variantIds);
-        //             html += `
-        //     <tr>
-        //         <td>
-        //             ${combinationName}
-        //             <input type="hidden" name="child_products[${index}][combination]" value="${combinationName}">
-        //             <input type="hidden" name="child_products[${index}][variant_ids]" value="${variantIds}">
-        //         </td>
-        //         <td><input type="number" class="form-control price-input" name="child_products[${index}][price]" placeholder="Price"></td>
-        //         <td><input type="number" class="form-control quantity" name="child_products[${index}][quantity]" placeholder="Quantity"></td>
-        //         <td><input type="number" class="form-control purchase-price-input" name="child_products[${index}][purchase_price]" placeholder="Purchase price" /></td>
-        //         <td><input type="text" class="form-control quantity_alert" name="child_products[${index}][quantity_alert]" placeholder="Quantity alert"/></td>
-        //         <td><button type="button" class="btn btn-danger btn-sm remove-combination">Remove</button></td>
-        //     </tr>
-        // `;
-        //         });
-
-        //         html += '</tbody></table></div>';
-        //         $('#combinationContainer').html(html);
-        //         // Auto-fill prices as user types
-        //         $('#globalPrice').on('input', function() {
-        //             $('.price-input').val($(this).val());
-        //         });
-
-        //         $('#globalPurchasePrice').on('input', function() {
-        //             $('.purchase-price-input').val($(this).val());
-        //         });
-
-        //         $('#globalQuantity').on('input', function() {
-        //             $('.quantity').val($(this).val());
-        //         });
-
-        //         $('#globalQuantityAlert').on('input', function() {
-        //             $('.quantity_alert').val($(this).val());
-        //         });
-
-        //         $('.remove-combination').click(function() {
-        //             $(this).closest('tr').remove();
-        //         });
-        //     }
 
         function renderCombinationsTable(combinations, selectedVariants) {
             let html = `

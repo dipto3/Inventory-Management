@@ -194,7 +194,6 @@ class ProductController extends Controller
             'child_products.*.quantity' => 'required|integer|min:0',
             'child_products.*.price' => 'required|numeric|min:0',
             'child_products.*.purchase_price' => 'required|numeric|min:0',
-            // 'child_products.*.quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
             'child_products.*.quantity_alert' =>  'required|integer|min:0',
         ]);
 

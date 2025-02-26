@@ -61,106 +61,97 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
-        // dd($request->image_type);
-
-        // dd($request->file('variant_images'));
-        // dd($request->all());
-        // dd($request->file('image'));
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'store' => 'nullable|string|max:255',
-            'warehouse' => 'nullable|string|max:255',
-            'sku' => 'nullable|string|max:255|unique:products',
-            'slug' => 'nullable|string|max:255|unique:products',
-            'unit' => 'required|string|max:255',
-            'brand' => 'required|string|max:255',
-            'selling_type' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
-            'category_id.*' => 'exists:categories,id',
-            'productType' => 'required|in:single,variable',
-            'manufactured_date' => 'nullable|date',
-            'expired_date' => 'nullable|date',
-            'item_code' => 'nullable',
-            // 'quantity' => 'required|integer|min:0',
-            // 'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
-            'discount_type' => 'nullable',
-            'discount_value' => 'nullable',
-            'tax_type' => 'nullable',
-
-        ]);
-        $product = Product::create([
-            'name' => $validatedData['name'],
-            'store' => $validatedData['store'],
-            'warehouse' => $validatedData['warehouse'],
-            'sku' => $validatedData['sku'] ?? Str::random(10),
-            'slug' => $validatedData['slug'] ?? Str::slug($validatedData['name']),
-            'item_code' => $validatedData['item_code'],
-            'manufactured_date' => isset($validatedData['manufactured_date']) ? Carbon::parse($validatedData['manufactured_date']) : null,
-            'expired_date' => isset($validatedData['expired_date']) ? Carbon::parse($validatedData['expired_date']) : null,
-            'unit' => $validatedData['unit'],
-            'brand' => $validatedData['brand'],
-            'selling_type' => $validatedData['selling_type'],
-            'description' => $validatedData['description'],
-            'discount_type' => $validatedData['discount_type'],
-            'discount_value' => $validatedData['discount_value'],
-            'tax_type' => $validatedData['tax_type'],
-            'product_type' => $validatedData['productType'],
-            'category_id' => json_encode($validatedData['category_id']),
-        ]);
-
-        // Handle image uploads based on type
-        if ($request->image_type === 'variant') {
-            // Get variant images from request
-            $variantImages = $request->file('variant_images');
-            
-            // Store each variant image
-            foreach ($variantImages as $variant_value_id => $imageArray) {
-                foreach ($imageArray as $image) {
-                    // Store physical file
-                    $imagePath = $image->store('product_images', 'public');
-                    
-                    // Create database record
-                    $product->productImage()->create([
-                        'image' => $imagePath,
-                        'variant_id' => $request->imageVariant_id,
-                        'variant_value_id' => $variant_value_id,
-                        // 'product_id' => $product->id
-                    ]);
-                }
-            }
-        }
-         else {
-            // Handle regular product images
-            if ($request->hasFile('image')) {
-                foreach ($request->file('image') as $image) {
-                    $product->productImage()->create([
-                        'image' => $image->store('product_images', 'public'),
-
-                    ]);
-                }
-            }
-        }
-
-
-        foreach ($validatedData['category_id'] as $categoryId) {
-            ProductCategory::create([
-                'product_id' => $product->id,
-                'category_id' => $categoryId,
+        DB::beginTransaction();
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'store' => 'nullable|string|max:255',
+                'warehouse' => 'nullable|string|max:255',
+                'sku' => 'nullable|string|max:255|unique:products',
+                'slug' => 'nullable|string|max:255|unique:products',
+                'unit' => 'required|string|max:255',
+                'brand' => 'required|string|max:255',
+                'selling_type' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'category_id' => 'required|exists:categories,id',
+                'category_id.*' => 'exists:categories,id',
+                'productType' => 'required|in:single,variable',
+                'manufactured_date' => 'nullable|date',
+                'expired_date' => 'nullable|date',
+                'item_code' => 'nullable',
+                'discount_type' => 'nullable',
+                'discount_value' => 'nullable',
+                'tax_type' => 'nullable',
             ]);
-        }
 
-        if ($validatedData['productType'] === 'single') {
-            // Handle single product
-            $this->handleSingleProduct($product, $request);
-        } else {
-            // Handle variable product
-            $this->handleVariableProduct($product, $request);
-        }
+            $product = Product::create([
+                'name' => $validatedData['name'],
+                'store' => $validatedData['store'],
+                'warehouse' => $validatedData['warehouse'],
+                'sku' => $validatedData['sku'] ?? Str::random(10),
+                'slug' => $validatedData['slug'] ?? Str::slug($validatedData['name']),
+                'item_code' => $validatedData['item_code'],
+                'manufactured_date' => isset($validatedData['manufactured_date']) ? Carbon::parse($validatedData['manufactured_date']) : null,
+                'expired_date' => isset($validatedData['expired_date']) ? Carbon::parse($validatedData['expired_date']) : null,
+                'unit' => $validatedData['unit'],
+                'brand' => $validatedData['brand'],
+                'selling_type' => $validatedData['selling_type'],
+                'description' => $validatedData['description'],
+                'discount_type' => $validatedData['discount_type'],
+                'discount_value' => $validatedData['discount_value'],
+                'tax_type' => $validatedData['tax_type'],
+                'product_type' => $validatedData['productType'],
+                'category_id' => json_encode($validatedData['category_id']),
+            ]);
 
-        return redirect()->route('product.index')->with('success', 'Product created successfully.');
+            if ($request->image_type === 'variant') {
+                $variantImages = $request->file('variant_images');
+
+                foreach ($variantImages as $variant_value_id => $imageArray) {
+                    foreach ($imageArray as $image) {
+                        $imagePath = $image->store('product_images', 'public');
+
+                        $product->productImage()->create([
+                            'image' => $imagePath,
+                            'variant_id' => $request->imageVariant_id,
+                            'variant_value_id' => $variant_value_id,
+                        ]);
+                    }
+                }
+            } else {
+                if ($request->hasFile('image')) {
+                    foreach ($request->file('image') as $image) {
+                        $product->productImage()->create([
+                            'image' => $image->store('product_images', 'public'),
+                        ]);
+                    }
+                }
+            }
+
+            foreach ($validatedData['category_id'] as $categoryId) {
+                ProductCategory::create([
+                    'product_id' => $product->id,
+                    'category_id' => $categoryId,
+                ]);
+            }
+
+            if ($validatedData['productType'] === 'single') {
+                $this->handleSingleProduct($product, $request);
+            } else {
+                $this->handleVariableProduct($product, $request);
+            }
+
+            DB::commit();
+            return redirect()->route('product.index')->with('success', 'Product created successfully.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Failed to create product. ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     private function handleSingleProduct(Product $product, Request $request)

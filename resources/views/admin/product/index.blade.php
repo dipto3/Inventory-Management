@@ -57,13 +57,11 @@
                                                             {{ $product->name }}
                                                         </td>
                                                         <td>
-                                                            @foreach ($product->productImage as $image)
+                                                            @if ($product->productImage->first())
                                                                 <img style="height: 100px; width: 100px;"
-                                                                    src="{{ Storage::url($image->image) }}"
-                                                                    {{-- src="{{ asset('storage/product_images/' . $image->image) }}" --}}
-                                                                   
-                                                                alt="product">
-                                                            @endforeach
+                                                                    src="{{ Storage::url($product->productImage->first()->image) }}"
+                                                                    alt="product">
+                                                            @endif
                                                         </td>
                                                         <td>{{ $product->sku }} </td>
                                                         <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>

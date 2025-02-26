@@ -490,7 +490,7 @@
     document.addEventListener("DOMContentLoaded", function() {
         // DOM Elements
         const form = document.getElementById("productForm");
-        const imageInput = document.getElementById("productImages");
+        // const imageInput = document.getElementById("productImages");
         const imagePreviewContainer = document.getElementById("imagePreviewContainer");
         const productTypeSelect = document.getElementById("productType");
         const singleProductSection = document.querySelector(".single-product-section");

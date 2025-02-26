@@ -26,16 +26,16 @@
           $('#tags').tagsinput();
       });
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
   <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.2.1/js/dataTables.bootstrap5.js"></script>
-  
+
   <script>
-      document.addEventListener('DOMContentLoaded', function () {
-    new DataTable('#example', {
-        ordering: true,
-    });
-});
+      document.addEventListener('DOMContentLoaded', function() {
+          new DataTable('#example', {
+              ordering: true,
+          });
+      });
   </script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}

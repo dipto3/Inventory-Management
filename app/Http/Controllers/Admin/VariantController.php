@@ -28,6 +28,11 @@ class VariantController extends Controller
         //
     }
 
+    public function getValues(Variant $variant)
+    {
+        return response()->json($variant->variantValues);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

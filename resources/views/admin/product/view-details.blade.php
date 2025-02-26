@@ -25,7 +25,7 @@
                                     <th>Category</th>
                                     <td>{{ $product->categories->pluck('name')->implode(', ') }}</td>
                                 </tr>
-                                
+
                                 <tr>
                                     <th>Brand</th>
                                     <td>{{ $product->brand }}</td>
@@ -89,9 +89,9 @@
             <div class="col-md-4">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        @foreach ($product->getMedia() as $media)
-                            <img src="{{ $media->getUrl() }}" alt="Product Image"
-                                class="product-image img-fluid rounded mb-3">
+                        @foreach ($product->productImage as $image)
+                            <img style="height: 100px; width: 100px;" src="{{ Storage::url($image->image) }}"
+                                {{-- src="{{ asset('storage/product_images/' . $image->image) }}" --}} alt="product">
                         @endforeach
                         <p class="text-center text-muted small">
                             {{ basename($product->getFirstMediaUrl()) }}<br>

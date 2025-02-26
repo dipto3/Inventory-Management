@@ -32,7 +32,7 @@ class ProductController extends Controller
         // $products = Cache::remember('products', now()->addMinutes(10), function () {
         //     return Product::with('variants', 'variants.prices', 'categories')->orderBy('id', 'desc')->get()->values();;
         // });
-        $products = Product::with('variants', 'variants.prices', 'categories')->get();
+        $products = Product::with('variants', 'productImage', 'variants.prices', 'categories')->get();
         return view('admin.product.index', compact('products'));
     }
 
@@ -63,7 +63,11 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->image);
+        // dd($request->image_type);
+
+        // dd($request->file('variant_images'));
+        // dd($request->all());
+        // dd($request->file('image'));
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'store' => 'nullable|string|max:255',
@@ -106,12 +110,41 @@ class ProductController extends Controller
             'product_type' => $validatedData['productType'],
             'category_id' => json_encode($validatedData['category_id']),
         ]);
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $image) {
-                $media =  $product->addMedia($image)->toMediaCollection();
-                Session::put('image', $media->getUrl());
+
+        // Handle image uploads based on type
+        if ($request->image_type === 'variant') {
+            // Get variant images from request
+            $variantImages = $request->file('variant_images');
+            
+            // Store each variant image
+            foreach ($variantImages as $variant_value_id => $imageArray) {
+                foreach ($imageArray as $image) {
+                    // Store physical file
+                    $imagePath = $image->store('product_images', 'public');
+                    
+                    // Create database record
+                    $product->productImage()->create([
+                        'image' => $imagePath,
+                        'variant_id' => $request->imageVariant_id,
+                        'variant_value_id' => $variant_value_id,
+                        // 'product_id' => $product->id
+                    ]);
+                }
             }
         }
+         else {
+            // Handle regular product images
+            if ($request->hasFile('image')) {
+                foreach ($request->file('image') as $image) {
+                    $product->productImage()->create([
+                        'image' => $image->store('product_images', 'public'),
+
+                    ]);
+                }
+            }
+        }
+
+
         foreach ($validatedData['category_id'] as $categoryId) {
             ProductCategory::create([
                 'product_id' => $product->id,

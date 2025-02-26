@@ -57,9 +57,12 @@
                                                             {{ $product->name }}
                                                         </td>
                                                         <td>
-                                                            @foreach ($product->getMedia() as $media)
+                                                            @foreach ($product->productImage as $image)
                                                                 <img style="height: 100px; width: 100px;"
-                                                                    src="{{ $media->getUrl() }}" alt="product">
+                                                                    src="{{ Storage::url($image->image) }}"
+                                                                    {{-- src="{{ asset('storage/product_images/' . $image->image) }}" --}}
+                                                                   
+                                                                alt="product">
                                                             @endforeach
                                                         </td>
                                                         <td>{{ $product->sku }} </td>
@@ -129,6 +132,4 @@
             </div>
             <!-- container-fluid -->
         </div>
-       
     @endsection
-   

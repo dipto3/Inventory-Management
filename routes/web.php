@@ -29,10 +29,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/category/update-ordering', 'updateOrdering')->name('category.updateOrdering');
 
     });
-    Route::resource('subcategory', App\Http\Controllers\Admin\SubcategoryController::class);
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
     Route::resource('unit', App\Http\Controllers\Admin\UnitController::class);
     Route::resource('variant', App\Http\Controllers\Admin\VariantController::class);
+    Route::get('admin/variants/{variant}/values', [ App\Http\Controllers\Admin\VariantController::class, 'getValues']);
     Route::resource('product', App\Http\Controllers\Admin\ProductController::class);
     Route::resource('supplier', App\Http\Controllers\Admin\SupplierController::class);
     Route::get('/product-details/{productID}/{variantID}', [App\Http\Controllers\Admin\ProductController::class, 'viewDetails'])->name('view.details');

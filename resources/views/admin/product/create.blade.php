@@ -241,22 +241,82 @@
                     </div>
                 </div>
 
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="bi bi-images text-primary"></i>
+                        <h5 class="mb-0">Product Images</h5>
+                    </div>
 
-                <div class="mb-3">
-                    <label for="productImages" class="form-label">Images</label>
-                    <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
-
-                        <div class="border rounded p-2" style="width: 100px; height: 100px">
-                            <label for="productImages"
-                                class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
-                                <i class="bi bi-cloud-upload fs-3"></i>
-                                <span class="small text-muted">Upload</span>
-                            </label>
-
+                    <div class="mb-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="image_type" id="regularImage"
+                                value="regular" checked>
+                            <label class="form-check-label" for="regularImage">Regular Image</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="image_type" id="variantImage"
+                                value="variant">
+                            <label class="form-check-label" for="variantImage">Variant Image</label>
                         </div>
                     </div>
-                    <input type="file" id="productImages" multiple class="d-none" name="image[]" multiple />
+
+                    <!-- Regular Image Section -->
+                    <div id="regularImageSection">
+                        <div class="image-upload-container">
+                            <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
+                                <div class="border rounded p-2" style="width: 100px; height: 100px">
+                                    <label for="productImages"
+                                        class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
+                                        <i class="bi bi-cloud-upload fs-3"></i>
+                                        <span class="small text-muted">Upload</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="file" id="productImages" multiple class="d-none" name="image[]"
+                                accept="image/*">
+                        </div>
+                    </div>
+
+                    <!-- Variant Image Section -->
+                    <div id="variantImageOptions" style="display: none;">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Select Variant</label>
+                                <select class="form-select" id="variantSelect" name="imageVariant_id">
+                                    <option value="">Choose Variant</option>
+                                    @foreach ($variants as $variant)
+                                        <option value="{{ $variant->id }}">{{ $variant->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div id="variantValueTable" class="mt-4">
+                            <!-- Variant values and image upload interface will be dynamically inserted here -->
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Add these styles to your CSS -->
+                <style>
+                    .cursor-pointer {
+                        cursor: pointer;
+                    }
+
+                    .image-upload-container {
+                        min-height: 120px;
+                    }
+
+                    .upload-box:hover {
+                        background-color: #f8f9fa;
+                    }
+
+                    .variant-image-input {
+                        visibility: hidden;
+                        position: absolute;
+                    }
+                </style>
+
+
 
                 <!-- Submit Buttons -->
                 <div class="text-end mt-4">
@@ -273,6 +333,158 @@
     @include('admin.variant.create')
 @endsection
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet" />
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Core elements
+        const form = document.getElementById("productForm");
+        const regularImageInput = document.getElementById("productImages");
+        const regularPreviewContainer = document.getElementById("imagePreviewContainer");
+        const regularImageSection = document.getElementById('regularImageSection');
+        const variantImageOptions = document.getElementById('variantImageOptions');
+
+        // Toggle image type sections
+        document.querySelectorAll('input[name="image_type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                variantImageOptions.style.display = (this.value === 'variant') ? 'block' :
+                    'none';
+                regularImageSection.style.display = (this.value === 'regular') ? 'block' :
+                    'none';
+            });
+        });
+
+        // Handle regular image uploads
+        regularImageInput.addEventListener("change", function(event) {
+            const files = event.target.files;
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgContainer = createImagePreviewElement(e.target.result);
+                    regularPreviewContainer.insertBefore(imgContainer, regularPreviewContainer
+                        .lastElementChild);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle variant selection and image upload
+        document.getElementById('variantSelect').addEventListener('change', function() {
+            if (!this.value) return;
+
+            fetch(`/admin/variants/${this.value}/values`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableHTML = generateVariantValueTable(data);
+                    document.getElementById('variantValueTable').innerHTML = tableHTML;
+
+                    // Add upload handlers to new inputs
+                    document.querySelectorAll('.variant-image-input').forEach(input => {
+                        input.addEventListener('change', handleVariantImageUpload);
+                    });
+                });
+        });
+
+        function createImagePreviewElement(imageSrc) {
+            const container = document.createElement("div");
+            container.classList.add("border", "rounded", "p-2", "position-relative");
+            container.style.width = "100px";
+            container.style.height = "100px";
+
+            const img = document.createElement("img");
+            img.src = imageSrc;
+            img.classList.add("img-fluid", "h-100", "w-100");
+            img.style.objectFit = "cover";
+
+            const removeBtn = document.createElement("button");
+            removeBtn.innerHTML = '<i class="bi bi-x"></i>';
+            removeBtn.classList.add("btn", "btn-sm", "btn-danger", "position-absolute", "top-0", "end-0", "p-0",
+                "m-1");
+            removeBtn.style.width = "20px";
+            removeBtn.style.height = "20px";
+            removeBtn.onclick = (e) => {
+                e.preventDefault();
+                container.remove();
+            };
+
+            container.appendChild(img);
+            container.appendChild(removeBtn);
+            return container;
+        }
+
+        function generateVariantValueTable(data) {
+            return `
+        <table class="table table-bordered">
+            <tbody>
+                ${data.map(value => `
+                    <tr>
+                        <td class="align-middle">
+                            ${value.value}
+                            <input type="hidden" name="variant_value_ids[${value.id}]" value="${value.value}">
+                        </td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-2 image-container" id="imagePreview_${value.id}">
+                                <div class="upload-box border rounded p-2" style="width: 100px; height: 100px">
+                                    <label for="variantImage_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer mb-0">
+                                        <i class="bi bi-plus-circle fs-3"></i>
+                                        <span class="small text-muted">Add Images</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="file" 
+                                id="variantImage_${value.id}" 
+                                class="variant-image-input d-none"
+                                name="variant_images[${value.id}][]"
+                                multiple 
+                                accept="image/*"
+                                data-value-id="${value.id}">
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+        }
+
+        function handleVariantImageUpload(event) {
+            const valueId = event.target.dataset.valueId;
+            const previewContainer = document.getElementById(`imagePreview_${valueId}`);
+            const uploadBox = previewContainer.querySelector('.upload-box');
+
+            // Create fresh file input
+            const newInput = document.createElement('input');
+            newInput.type = 'file';
+            newInput.name = `variant_images[${valueId}][]`;
+            newInput.multiple = true;
+            newInput.style.display = 'none';
+
+            // Transfer only the newly selected files
+            const transfer = new DataTransfer();
+            Array.from(event.target.files).forEach(file => {
+                transfer.items.add(file);
+            });
+            newInput.files = transfer.files;
+
+            // Remove any existing input and add new one
+            const form = event.target.closest('form');
+            form.querySelectorAll(`input[name="variant_images[${valueId}][]"]`).forEach(el => el.remove());
+            form.appendChild(newInput);
+
+            // Clear and update previews
+            previewContainer.querySelectorAll('.preview-container').forEach(el => el.remove());
+
+            Array.from(event.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewContainer.insertBefore(
+                        createImagePreviewElement(e.target.result),
+                        uploadBox
+                    );
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+    });
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -324,7 +536,7 @@
                     img.style.objectFit = "cover";
 
                     const removeButton = document.createElement("button");
-                    removeButton.textContent = "Remove";
+                    removeButton.textContent = "Removeeeee";
                     removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
                     removeButton.onclick = () => imgContainer.remove();
 
@@ -363,32 +575,32 @@
             liveSearch: true,
             container: 'body' // This ensures dropdown renders at body level
         });
-$('#variantDropdown').on('changed.bs.select', function() {
-    const selectedVariantIds = $(this).val() || [];
-    showVariantValueSelections(selectedVariantIds);
-    // Clear combinations when variants change
-    $('#combinationContainer').empty();
-});
+        $('#variantDropdown').on('changed.bs.select', function() {
+            const selectedVariantIds = $(this).val() || [];
+            showVariantValueSelections(selectedVariantIds);
+            // Clear combinations when variants change
+            $('#combinationContainer').empty();
+        });
 
-function showVariantValueSelections(selectedVariantIds) {
-    const valuesSection = $('#variantValuesSection');
-    
-    // Clear existing dropdowns if no variants selected
-    if (!selectedVariantIds.length) {
-        valuesSection.empty();
-        return;
-    }
+        function showVariantValueSelections(selectedVariantIds) {
+            const valuesSection = $('#variantValuesSection');
 
-    let html = '';
-    
-    // Get selected variants
-    const selectedVariants = selectedVariantIds.map(id => 
-        variantData.find(v => v.id == id)
-    );
+            // Clear existing dropdowns if no variants selected
+            if (!selectedVariantIds.length) {
+                valuesSection.empty();
+                return;
+            }
 
-    // Create dropdowns for all selected variants
-    selectedVariants.forEach(variant => {
-        html += `
+            let html = '';
+
+            // Get selected variants
+            const selectedVariants = selectedVariantIds.map(id =>
+                variantData.find(v => v.id == id)
+            );
+
+            // Create dropdowns for all selected variants
+            selectedVariants.forEach(variant => {
+                html += `
             <div class="mb-3">
                 <label class="form-label">Select ${variant.name}</label>
                 <select class="form-select selectpicker variant-values"
@@ -401,36 +613,37 @@ function showVariantValueSelections(selectedVariantIds) {
                     ).join('')}
                 </select>
             </div>`;
-    });
+            });
 
-    valuesSection.html(html);
-    $('.variant-values').selectpicker();
+            valuesSection.html(html);
+            $('.variant-values').selectpicker();
 
-    // Add change listener to variant value selections
-    $('.variant-values').on('changed.bs.select', function() {
-        const variantSelections = {};
+            // Add change listener to variant value selections
+            $('.variant-values').on('changed.bs.select', function() {
+                const variantSelections = {};
 
-        // Collect all selected values
-        $('.variant-values').each(function() {
-            const variantName = $(this).data('variant');
-            const selectedValues = $(this).val();
-            if (selectedValues?.length) {
-                variantSelections[variantName] = selectedValues.map(value => ({
-                    id: value,
-                    value: $(this).find(`option[value='${value}']`).text()
-                }));
-            }
-        });
+                // Collect all selected values
+                $('.variant-values').each(function() {
+                    const variantName = $(this).data('variant');
+                    const selectedValues = $(this).val();
+                    if (selectedValues?.length) {
+                        variantSelections[variantName] = selectedValues.map(value => ({
+                            id: value,
+                            value: $(this).find(`option[value='${value}']`).text()
+                        }));
+                    }
+                });
 
-        // Generate combinations if all variants have selections
-        if (Object.keys(variantSelections).length === selectedVariants.length) {
-            const combinations = generateAllCombinations(variantSelections);
-            renderCombinationsTable(combinations, selectedVariants);
-        } else {
-            $('#combinationContainer').empty();
+                // Generate combinations if all variants have selections
+                if (Object.keys(variantSelections).length === selectedVariants.length) {
+                    const combinations = generateAllCombinations(variantSelections);
+                    renderCombinationsTable(combinations, selectedVariants);
+                } else {
+                    $('#combinationContainer').empty();
+                }
+            });
         }
-    });
-}
+
         function generateAllCombinations(variantSelections) {
             const variants = Object.keys(variantSelections);
             const combinations = [{}];
@@ -527,24 +740,24 @@ function showVariantValueSelections(selectedVariantIds) {
 
             // Global input handlers
             $('#globalPrice').on('input', function() {
-                    $('.price-input').val($(this).val());
-                });
+                $('.price-input').val($(this).val());
+            });
 
-                $('#globalPurchasePrice').on('input', function() {
-                    $('.purchase-price-input').val($(this).val());
-                });
+            $('#globalPurchasePrice').on('input', function() {
+                $('.purchase-price-input').val($(this).val());
+            });
 
-                $('#globalQuantity').on('input', function() {
-                    $('.quantity').val($(this).val());
-                });
+            $('#globalQuantity').on('input', function() {
+                $('.quantity').val($(this).val());
+            });
 
-                $('#globalQuantityAlert').on('input', function() {
-                    $('.quantity_alert').val($(this).val());
-                });
+            $('#globalQuantityAlert').on('input', function() {
+                $('.quantity_alert').val($(this).val());
+            });
 
-                $('.remove-combination').click(function() {
-                    $(this).closest('tr').remove();
-                });
+            $('.remove-combination').click(function() {
+                $(this).closest('tr').remove();
+            });
         }
     });
 </script>

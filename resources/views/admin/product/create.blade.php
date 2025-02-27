@@ -16,8 +16,8 @@
                 <!-- Product Information -->
                 <div class="form-section">
                     <div class="form-section-title">
-                        <i class="bi bi-info-circle text-primary"></i>
-                        <h5 class="mb-0">Product Information</h5>
+
+                        <h5 class="mb-0"> <i class="bi bi-info-circle text-primary"></i> Product Information</h5>
                     </div>
 
                     <div class="row g-3">
@@ -175,8 +175,8 @@
                 <!-- Pricing & Stocks -->
                 <div class="form-section">
                     <div class="form-section-title">
-                        <i class="bi bi-currency-dollar text-primary"></i>
-                        <h5 class="mb-0">Pricing & Stocks</h5>
+
+                        <h5 class="mb-0"><i class="bi bi-currency-dollar text-primary"></i> Pricing & Stocks</h5>
                     </div>
 
                     <div class="mb-4">
@@ -243,8 +243,8 @@
 
                 <div class="form-section">
                     <div class="form-section-title">
-                        <i class="bi bi-images text-primary"></i>
-                        <h5 class="mb-0">Product Images</h5>
+
+                        <h5 class="mb-0"> <i class="bi bi-images text-primary"></i> Product Images</h5>
                     </div>
 
                     <div class="mb-3">
@@ -298,6 +298,10 @@
 
                 <!-- Add these styles to your CSS -->
                 <style>
+                    .form-section-title {
+                        margin: 15px 0px;
+                    }
+
                     .cursor-pointer {
                         cursor: pointer;
                     }

@@ -375,13 +375,21 @@
             const selectedVariantIds = $(this).val() || [];
             showVariantValueSelections(selectedVariantIds);
         });
-
         function showVariantValueSelections(selectedVariantIds) {
             const valuesSection = $('#variantValuesSection');
-            valuesSection.empty();
+            // Don't empty the section if there are existing values
+            if (!valuesSection.children().length) {
+                valuesSection.empty();
+            }
 
             selectedVariantIds.forEach(variantId => {
                 const variant = variantData.find(v => v.id == variantId);
+                const existingSelect = $(`#${variant.name.toLowerCase()}Select`);
+                
+                // Skip if this variant's select already exists
+                if (existingSelect.length) {
+                    return;
+                }
 
                 // Get existing selected values from product data
                 const existingValues = productData.variants
@@ -406,38 +414,31 @@
                 </select>
             </div>`;
                 valuesSection.append(html);
+                
+                // Initialize selectpicker for the new select
+                $(`#${variant.name.toLowerCase()}Select`).selectpicker();
             });
 
-            $('.variant-values').selectpicker();
-
-            $('.variant-values').on('changed.bs.select', function() {
-                console.log("Variant value changed");
+            // Reattach change event handler
+            $('.variant-values').off('changed.bs.select').on('changed.bs.select', function() {
                 const variantSelections = {};
-
                 $('.variant-values').each(function() {
                     const variantName = $(this).data('variant');
                     const selectedValues = $(this).val();
-                    console.log("Selected values for", variantName, ":", selectedValues);
-
                     if (selectedValues?.length) {
                         variantSelections[variantName] = selectedValues.map(value => ({
                             id: value,
-                            value: $(this).find(`option[value='${value}']`).text()
-                                .trim()
+                            value: $(this).find(`option[value='${value}']`).text().trim()
                         }));
                     }
                 });
 
-                console.log("Variant selections:", variantSelections);
-
                 if (Object.keys(variantSelections).length > 0) {
                     const combinations = generateAllCombinations(variantSelections);
-                    console.log("Generated combinations:", combinations);
                     renderCombinationsTable(combinations);
                 }
             });
         }
-
         // Trigger initial load of variant values
         $(document).ready(function() {
             const initialSelectedVariants = $('#variantDropdown').val();
@@ -492,7 +493,46 @@
             return combinations;
         }
 
-        function renderCombinationsTable(combinations) {
+        function loadExistingVariantCombinations(variants) {
+            const existingCombinations = variants.map(variant => ({
+                combination: variant.variant_value_name,
+                quantity: variant.quantity,
+                quantity_alert: variant.quantity_alert,
+                price: variant.prices[0]?.price,
+                purchase_price: variant.prices[0]?.purchase_price,
+                isFromDb: true // Flag to identify combinations from database
+            }));
+            window.existingCombinations = existingCombinations; // Store globally
+            renderCombinationsTable(existingCombinations);
+        }
+
+        function renderCombinationsTable(newCombinations) {
+            const existingCombinations = window.existingCombinations || [];
+            
+            // Normalize combination names for comparison
+            const normalizeCombination = (combo) => {
+                if (combo.combination) return combo.combination;
+                return Object.entries(combo)
+                    .filter(([key]) => key !== 'isFromDb')
+                    .map(([variant, value]) => `${variant}: ${value.value}`)
+                    .sort()
+                    .join(', ');
+            };
+
+            // Create unique combinations array
+            const uniqueCombinations = [...existingCombinations];
+            
+            newCombinations.forEach(newCombo => {
+                const newComboName = normalizeCombination(newCombo);
+                const exists = uniqueCombinations.some(existing => 
+                    normalizeCombination(existing) === newComboName
+                );
+                
+                if (!exists) {
+                    uniqueCombinations.push(newCombo);
+                }
+            });
+
             let html = `
             <div class="mt-4">
                 <div class="card mb-3">
@@ -541,16 +581,14 @@
                     </thead>
                     <tbody>`;
 
-            combinations.forEach((combo, index) => {
-                const combinationName = typeof combo === 'string' ? combo :
-                    Object.entries(combo).map(([variant, value]) =>
-                        `${variant}: ${value.value}`).join(', ');
+            uniqueCombinations.forEach((combo, index) => {
+                const combinationName = combo.combination || normalizeCombination(combo);
 
                 html += `
                 <tr>
                     <td>
-                        ${combo.combination || combinationName}
-                        <input type="hidden" name="child_products[${index}][combination]" value="${combo.combination || combinationName}">
+                        ${combinationName}
+                        <input type="hidden" name="child_products[${index}][combination]" value="${combinationName}">
                         <input type="hidden" name="child_products[${index}][variant_ids]" value="${$('#variantDropdown').val().join(',')}">
                     </td>
                     <td><input type="number" class="form-control price-input" name="child_products[${index}][price]" value="${combo.price || ''}"></td>

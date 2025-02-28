@@ -274,8 +274,8 @@ class ProductController extends Controller
             ->select('id', 'name')->get();
         $brands = Brand::all();
         $units = Unit::all();
-        $variants = Variant::all();
-
+        $variants = Variant::with('variantValues')->get();
+        // dd($variants->first()->variantValues);
         return view('admin.product.edit', compact('product', 'categories', 'brands', 'units', 'variants'));
     }
 

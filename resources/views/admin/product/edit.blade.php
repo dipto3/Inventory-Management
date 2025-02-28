@@ -601,7 +601,6 @@
 
             html += '</tbody></table></div>';
             $('#combinationContainer').html(html);
-
             // Global input handlers
             $('#globalPrice').on('input', function() {
                 $('.price-input').val($(this).val());

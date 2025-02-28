@@ -261,56 +261,91 @@
 
                 <!-- Product Images -->
                 <div class="form-section">
-                    <div class="form-section-title">
-                        <h5 class="mb-0"><i class="bi bi-images text-primary"></i> Product Images</h5>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="image_type" id="regularImage"
-                                value="regular" checked>
-                            <label class="form-check-label" for="regularImage">Regular Image</label>
+                   
+                    <!-- Product Images -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <h5 class="mb-0"><i class="bi bi-images text-primary"></i> Product Images</h5>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="image_type" id="variantImage"
-                                value="variant">
-                            <label class="form-check-label" for="variantImage">Variant Image</label>
-                        </div>
-                    </div>
 
-                    <!-- Regular Image Section -->
-                    <div id="regularImageSection">
-                        <div class="image-upload-container">
-                            <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
-                                @foreach ($product->productImage as $image)
-                                    <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
-                                        <img src="{{ asset('storage/' . $image->image) }}" class="img-fluid h-100 w-100"
-                                            style="object-fit: cover">
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
-                                            style="width: 20px; height: 20px"
-                                            onclick="deleteImage({{ $image->id }}, this)">
-                                            <i class="bi bi-x"></i>
-                                        </button>
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="image_type" id="regularImage"
+                                    value="regular" checked>
+                                <label class="form-check-label" for="regularImage">Regular Image</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="image_type" id="variantImage"
+                                    value="variant">
+                                <label class="form-check-label" for="variantImage">Variant Image</label>
+                            </div>
+                        </div>
+
+                        <!-- Regular Image Section -->
+                        <div id="regularImageSection">
+                            <div class="image-upload-container">
+                                <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
+                                    @foreach ($product->productImage->where('is_variant', false) as $image)
+                                        <div class="border rounded p-2 position-relative"
+                                            style="width: 100px; height: 100px">
+                                            <img src="{{ asset('storage/' . $image->image) }}"
+                                                class="img-fluid h-100 w-100" style="object-fit: cover">
+                                            <button type="button"
+                                                class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
+                                                style="width: 20px; height: 20px"
+                                                onclick="deleteImage({{ $image->id }}, this)">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                    <div class="border rounded p-2" style="width: 100px; height: 100px">
+                                        <label for="productImages"
+                                            class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
+                                            <i class="bi bi-cloud-upload fs-3"></i>
+                                            <span class="small text-muted">Upload</span>
+                                        </label>
                                     </div>
-                                @endforeach
-                                <div class="border rounded p-2" style="width: 100px; height: 100px">
-                                    <label for="productImages"
-                                        class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
-                                        <i class="bi bi-cloud-upload fs-3"></i>
-                                        <span class="small text-muted">Upload</span>
-                                    </label>
+                                </div>
+                                <input type="file" id="productImages" multiple class="d-none" name="image[]"
+                                    accept="image/*">
+                            </div>
+                        </div>
+
+                        <!-- Variant Image Section -->
+                        <!-- Variant Image Section -->
+                        <!-- Variant Image Section -->
+                        <div id="variantImageOptions" style="display: none;">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Select Variant</label>
+                                    <select class="form-select" id="imageVariantSelect">
+                                        <option value="">Choose Variant</option>
+                                        @foreach ($variants as $variant)
+                                            @php
+                                                $hasImages =
+                                                    $product->productImage
+                                                        ->where('is_variant', true)
+                                                        ->where('variant_id', $variant->id)
+                                                        ->count() > 0;
+                                            @endphp
+                                            <option value="{{ $variant->id }}" {{ $hasImages ? 'selected' : '' }}>
+                                                {{ $variant->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-                            <input type="file" id="productImages" multiple class="d-none" name="image[]"
-                                accept="image/*">
+                            <div id="variantValueImageTable" class="mt-4">
+                                <!-- Variant value images will be loaded here dynamically -->
+                            </div>
                         </div>
+
+
                     </div>
 
-                    <!-- Variant Image Section -->
-                    <div id="variantImageOptions" style="display: none;">
-                        <!-- Variant image upload section -->
-                    </div>
+
+
+
                 </div>
 
                 <!-- Submit Buttons -->
@@ -327,6 +362,119 @@
     @include('admin.brand.create')
     @include('admin.variant.create')
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const productData = @json($product);
+        const variantData = @json($variants);
+
+        // Image type toggle handlers
+        const regularImage = document.getElementById('regularImage');
+        const variantImage = document.getElementById('variantImage');
+        const regularImageSection = document.getElementById('regularImageSection');
+        const variantImageOptions = document.getElementById('variantImageOptions');
+
+        function toggleImageSections() {
+            regularImageSection.style.display = regularImage.checked ? 'block' : 'none';
+            variantImageOptions.style.display = variantImage.checked ? 'block' : 'none';
+        }
+
+        regularImage.addEventListener('change', toggleImageSections);
+        variantImage.addEventListener('change', toggleImageSections);
+
+        // Initialize image sections based on existing data
+        if (productData.product_image.some(img => img.is_variant)) {
+            variantImage.checked = true;
+            toggleImageSections();
+        }
+
+        $('#imageVariantSelect').on('change', function() {
+            const variantId = $(this).val();
+            if (variantId) {
+                showVariantValuesTable(variantId);
+            }
+        });
+
+        function showVariantValuesTable(variantId) {
+    // Get the selected variant's values that are actually associated with the product
+    const productVariant = productData.variants.find(v => 
+        v.variant_values.some(vv => vv.variant_id === parseInt(variantId))
+    );
+    
+    const variant = variantData.find(v => v.id == variantId);
+    let html = `
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Value</th>
+                <th>Images</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+    // Only show variant values that are associated with the product
+    const selectedVariantValues = productVariant.variant_values.filter(vv => 
+        vv.variant_id === parseInt(variantId)
+    );
+
+    selectedVariantValues.forEach(value => {
+        const existingImages = productData.product_image.filter(img =>
+            img.is_variant &&
+            img.variant_id === variant.id &&
+            img.variant_value_id === value.id
+        );
+
+        html += `
+        <tr>
+            <td>${value.value}</td>
+            <td>
+                <div class="d-flex flex-wrap gap-2" id="variant_images_${value.id}">
+                    ${existingImages.map(img => `
+                        <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
+                            <img src="${asset('storage/' + img.image)}" class="img-fluid h-100 w-100" style="object-fit: cover">
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
+                                style="width: 20px; height: 20px" 
+                                onclick="deleteVariantImage(${img.id}, this)">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    `).join('')}
+                    <div class="border rounded p-2" style="width: 100px; height: 100px">
+                        <label for="variant_image_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
+                            <i class="bi bi-cloud-upload fs-3"></i>
+                            <span class="small text-muted">Upload</span>
+                        </label>
+                    </div>
+                </div>
+                <input type="file" 
+                    id="variant_image_${value.id}" 
+                    class="variant-image-input d-none" 
+                    name="variant_images[${variant.id}][${value.id}][]" 
+                    multiple 
+                    accept="image/*"
+                    data-variant="${variant.id}"
+                    data-value="${value.id}">
+            </td>
+        </tr>`;
+    });
+
+    html += '</tbody></table>';
+    $('#variantValueImageTable').html(html);
+
+    document.querySelectorAll('.variant-image-input').forEach(input => {
+        input.addEventListener('change', handleVariantImageUpload);
+    });
+}
+
+
+
+        // Initialize variant images if they exist
+        const initialVariantId = productData.product_image.find(img => img.is_variant)?.variant_id;
+        if (initialVariantId) {
+            $('#imageVariantSelect').val(initialVariantId).trigger('change');
+        }
+    });
+</script>
 
 
 <script>
@@ -375,6 +523,7 @@
             const selectedVariantIds = $(this).val() || [];
             showVariantValueSelections(selectedVariantIds);
         });
+
         function showVariantValueSelections(selectedVariantIds) {
             const valuesSection = $('#variantValuesSection');
             // Don't empty the section if there are existing values
@@ -385,7 +534,7 @@
             selectedVariantIds.forEach(variantId => {
                 const variant = variantData.find(v => v.id == variantId);
                 const existingSelect = $(`#${variant.name.toLowerCase()}Select`);
-                
+
                 // Skip if this variant's select already exists
                 if (existingSelect.length) {
                     return;
@@ -414,7 +563,7 @@
                 </select>
             </div>`;
                 valuesSection.append(html);
-                
+
                 // Initialize selectpicker for the new select
                 $(`#${variant.name.toLowerCase()}Select`).selectpicker();
             });
@@ -428,7 +577,8 @@
                     if (selectedValues?.length) {
                         variantSelections[variantName] = selectedValues.map(value => ({
                             id: value,
-                            value: $(this).find(`option[value='${value}']`).text().trim()
+                            value: $(this).find(`option[value='${value}']`).text()
+                                .trim()
                         }));
                     }
                 });
@@ -508,7 +658,7 @@
 
         function renderCombinationsTable(newCombinations) {
             const existingCombinations = window.existingCombinations || [];
-            
+
             // Normalize combination names for comparison
             const normalizeCombination = (combo) => {
                 if (combo.combination) return combo.combination;
@@ -521,13 +671,13 @@
 
             // Create unique combinations array
             const uniqueCombinations = [...existingCombinations];
-            
+
             newCombinations.forEach(newCombo => {
                 const newComboName = normalizeCombination(newCombo);
-                const exists = uniqueCombinations.some(existing => 
+                const exists = uniqueCombinations.some(existing =>
                     normalizeCombination(existing) === newComboName
                 );
-                
+
                 if (!exists) {
                     uniqueCombinations.push(newCombo);
                 }

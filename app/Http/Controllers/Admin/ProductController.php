@@ -118,6 +118,7 @@ class ProductController extends Controller
                             'image' => $imagePath,
                             'variant_id' => $request->imageVariant_id,
                             'variant_value_id' => $variant_value_id,
+                            'is_variant' => true,
                         ]);
                     }
                 }
@@ -126,6 +127,7 @@ class ProductController extends Controller
                     foreach ($request->file('image') as $image) {
                         $product->productImage()->create([
                             'image' => $image->store('product_images', 'public'),
+                            'is_variant' => false,
                         ]);
                     }
                 }

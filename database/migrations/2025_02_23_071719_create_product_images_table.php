@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('variant_id')->nullable()->constrained('variants')->onDelete('cascade');
             $table->foreignId('variant_value_id')->nullable()->constrained('variant_values')->onDelete('cascade');
             $table->string('image');
-
+            $table->boolean('is_variant');
             $table->timestamps();
         });
     }

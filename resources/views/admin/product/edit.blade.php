@@ -382,7 +382,7 @@
 
             selectedVariantIds.forEach(variantId => {
                 const variant = variantData.find(v => v.id == variantId);
-                
+
                 // Get existing selected values from product data
                 const existingValues = productData.variants
                     .filter(v => v.variant_values.some(vv => vv.variant_id === variant.id))
@@ -409,7 +409,33 @@
             });
 
             $('.variant-values').selectpicker();
-            $('.variant-values').trigger('changed.bs.select');
+
+            $('.variant-values').on('changed.bs.select', function() {
+                console.log("Variant value changed");
+                const variantSelections = {};
+
+                $('.variant-values').each(function() {
+                    const variantName = $(this).data('variant');
+                    const selectedValues = $(this).val();
+                    console.log("Selected values for", variantName, ":", selectedValues);
+
+                    if (selectedValues?.length) {
+                        variantSelections[variantName] = selectedValues.map(value => ({
+                            id: value,
+                            value: $(this).find(`option[value='${value}']`).text()
+                                .trim()
+                        }));
+                    }
+                });
+
+                console.log("Variant selections:", variantSelections);
+
+                if (Object.keys(variantSelections).length > 0) {
+                    const combinations = generateAllCombinations(variantSelections);
+                    console.log("Generated combinations:", combinations);
+                    renderCombinationsTable(combinations);
+                }
+            });
         }
 
         // Trigger initial load of variant values

@@ -41,4 +41,14 @@ class Product extends Model implements HasMedia
     {
         return $this->hasMany(ProductImage::class);
     }
+
+    public function singleProduct()
+{
+    return $this->hasOne(ProductPrice::class);
+}
+
+public function variantProducts()
+{
+    return $this->hasMany(ProductVariant::class)->with(['prices', 'variantValues']);
+}
 }

@@ -10,9 +10,9 @@
     <meta charset="utf-8" />
     <title>Dashboard </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('admin.partials.assets.css')
-    
+
 </head>
 
 <body class="dark-mode">
@@ -32,7 +32,7 @@
     <!--preloader-->
 
     @include('admin.partials.assets.js')
-    
+
 </body>
 
 </html>

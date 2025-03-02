@@ -198,26 +198,28 @@
                     <!-- Single Product Section -->
                     <div class="single-product-section" style="{{ !$product->is_variable ? '' : 'display: none;' }}">
                         <div class="row g-3">
+                            @foreach ($product->variants as $variant)
                             <div class="col-md-4">
                                 <label class="form-label">Quantity</label>
                                 <input type="number" class="form-control" name="quantity"
-                                    value="{{ $product->quantity }}" />
+                                    value="{{ $variant->quantity }}" />
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Price</label>
                                 <input type="number" class="form-control" name="price"
-                                    value="{{ $product->price }}" />
+                                    value="{{ $variant->prices->first()->price }}" />
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Purchase Price</label>
                                 <input type="number" class="form-control" name="purchase_price"
-                                    value="{{ $product->purchase_price }}" />
+                                    value="{{ $variant->prices?->first()->purchase_price }}" />
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Quantity Alert</label>
                                 <input type="number" class="form-control" name="quantity_alert"
-                                    value="{{ $product->quantity_alert }}" />
+                                    value="{{ $variant->quantity_alert }}" />
                             </div>
+                            @endforeach
                         </div>
                     </div>
 
@@ -517,16 +519,18 @@
     });
 
     function deleteImage(imageId, element) {
+        if (!confirm("Are you sure you want to delete this image?")) {
+            return;
+        }
+
         console.log('Deleting Regular Image ID:', imageId);
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
 
         $.ajax({
             url: `/product/image/${imageId}`,
             type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             success: function(response) {
                 console.log('Successfully deleted image:', imageId);
                 if (response.success) {
@@ -541,27 +545,30 @@
         });
     }
 
+
     function deleteVariantImage(imageId, element) {
-        console.log('Deleting Variant Image ID:', imageId);
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        if (!confirm("Are you sure you want to delete this image?")) {
+            return;
+        }
+
+        console.log('Deleting Regular Image ID:', imageId);
 
         $.ajax({
             url: `/product/image/${imageId}`,
             type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             success: function(response) {
-                console.log('Successfully deleted variant image:', imageId);
+                console.log('Successfully deleted image:', imageId);
                 if (response.success) {
                     $(element).closest('.border.rounded').remove();
-                    toastr.success('Variant image deleted successfully');
+                    toastr.success('Image deleted successfully');
                 }
             },
             error: function(error) {
-                console.log('Error deleting variant image:', imageId, error);
-                toastr.error('Error deleting variant image');
+                console.log('Error deleting image:', imageId, error);
+                toastr.error('Error deleting image');
             }
         });
     }

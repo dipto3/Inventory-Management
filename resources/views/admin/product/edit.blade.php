@@ -353,206 +353,6 @@
     @include('admin.variant.create')
 @endsection
 
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const productData = @json($product);
-        const variantData = @json($variants);
-
-        // Image type toggle handlers
-        const regularImage = document.getElementById('regularImage');
-        const variantImage = document.getElementById('variantImage');
-        const regularImageSection = document.getElementById('regularImageSection');
-        const variantImageOptions = document.getElementById('variantImageOptions');
-        const regularImageInput = document.getElementById("productImages");
-        const regularPreviewContainer = document.getElementById("imagePreviewContainer");
-
-        function toggleImageSections() {
-            regularImageSection.style.display = regularImage.checked ? 'block' : 'none';
-            variantImageOptions.style.display = variantImage.checked ? 'block' : 'none';
-        }
-
-        regularImage.addEventListener('change', toggleImageSections);
-        variantImage.addEventListener('change', toggleImageSections);
-
-        // Handle regular image uploads
-        regularImageInput.addEventListener("change", function(event) {
-            const files = event.target.files;
-            for (let file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgContainer = createImagePreviewElement(e.target.result);
-                    regularPreviewContainer.insertBefore(imgContainer, regularPreviewContainer
-                        .lastElementChild);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Initialize image sections based on existing data
-        if (productData.product_image.some(img => img.is_variant)) {
-            variantImage.checked = true;
-            toggleImageSections();
-        }
-
-        $('#imageVariantSelect').on('change', function() {
-            const variantId = $(this).val();
-            if (variantId) {
-                showVariantValuesTable(variantId);
-            }
-        });
-
-        function showVariantValuesTable(variantId) {
-            const variant = variantData.find(v => v.id == variantId);
-            const variantValues = variant.variant_values;
-
-            let html = `
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Value</th>
-                    <th>Images</th>
-                </tr>
-            </thead>
-            <tbody>`;
-
-            variantValues.forEach(value => {
-                const existingImages = productData.product_image.filter(img =>
-                    img.is_variant &&
-                    img.variant_id === parseInt(variantId) &&
-                    img.variant_value_id === value.id
-                );
-
-                html += `
-            <tr>
-                <td>${value.value}</td>
-                <td>
-                    <div class="d-flex flex-wrap gap-2" id="variant_images_${value.id}">
-                        ${existingImages.map(img => `
-                            <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
-                                <img src="/storage/${img.image}" class="img-fluid h-100 w-100" style="object-fit: cover">
-                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
-                                    style="width: 20px; height: 20px" 
-                                    onclick="deleteVariantImage(${img.id}, this)">
-                                    <i class="bi bi-x"></i>
-                                </button>
-                            </div>
-                        `).join('')}
-                        <div class="border rounded p-2" style="width: 100px; height: 100px">
-                            <label for="variant_image_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
-                                <i class="bi bi-cloud-upload fs-3"></i>
-                                <span class="small text-muted">Upload</span>
-                            </label>
-                        </div>
-                    </div>
-                    <input type="file" 
-                        id="variant_image_${value.id}" 
-                        class="variant-image-input d-none" 
-                        name="variant_images[${variantId}][${value.id}][]" 
-                        multiple 
-                        accept="image/*"
-                        data-variant="${variantId}"
-                        data-value="${value.id}">
-                </td>
-            </tr>`;
-            });
-
-            html += '</tbody></table>';
-            $('#variantValueImageTable').html(html);
-
-            document.querySelectorAll('.variant-image-input').forEach(input => {
-                input.addEventListener('change', handleVariantImageUpload);
-            });
-        }
-
-        function createImagePreviewElement(imageSrc) {
-            const container = document.createElement("div");
-            container.classList.add("border", "rounded", "p-2", "position-relative");
-            container.style.width = "100px";
-            container.style.height = "100px";
-
-            const img = document.createElement("img");
-            img.src = imageSrc;
-            img.classList.add("img-fluid", "h-100", "w-100");
-            img.style.objectFit = "cover";
-
-            const removeBtn = document.createElement("button");
-            removeBtn.innerHTML = '<i class="bi bi-x"></i>';
-            removeBtn.classList.add("btn", "btn-sm", "btn-danger", "position-absolute", "top-0", "end-0", "p-0",
-                "m-1");
-            removeBtn.style.width = "20px";
-            removeBtn.style.height = "20px";
-            removeBtn.onclick = (e) => {
-                e.preventDefault();
-                container.remove();
-            };
-
-            container.appendChild(img);
-            container.appendChild(removeBtn);
-            return container;
-        }
-
-        function handleVariantImageUpload(event) {
-            const input = event.target;
-            const valueId = input.dataset.value;
-            const files = input.files;
-            const container = document.getElementById(`variant_images_${valueId}`);
-
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imageDiv = createImagePreviewElement(e.target.result);
-                    container.insertBefore(imageDiv, container.lastElementChild);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // Initialize variant images if they exist
-        const initialVariantId = productData.product_image.find(img => img.is_variant)?.variant_id;
-        if (initialVariantId) {
-            $('#imageVariantSelect').val(initialVariantId).trigger('change');
-        }
-
-        function deleteVariantImage(imageId, element) {
-            if (confirm('Are you sure you want to delete this variant image?')) {
-                fetch(`/product/image/${imageId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            element.closest('.border.rounded').remove();
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        }
-
-        function deleteImage(imageId, element) {
-            if (confirm('Are you sure you want to delete this image?')) {
-                fetch(`/product/image/${imageId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            element.closest('.border.rounded').remove();
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        }
-
-    });
-</script> --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const productData = @json($product);
@@ -717,46 +517,55 @@
     });
 
     function deleteImage(imageId, element) {
+        console.log('Deleting Regular Image ID:', imageId);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $.ajax({
             url: `/product/image/${imageId}`,
             type: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
             success: function(response) {
+                console.log('Successfully deleted image:', imageId);
                 if (response.success) {
                     $(element).closest('.border.rounded').remove();
                     toastr.success('Image deleted successfully');
                 }
             },
-            error: function() {
+            error: function(error) {
+                console.log('Error deleting image:', imageId, error);
                 toastr.error('Error deleting image');
             }
         });
     }
 
     function deleteVariantImage(imageId, element) {
+        console.log('Deleting Variant Image ID:', imageId);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $.ajax({
             url: `/product/image/${imageId}`,
             type: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
             success: function(response) {
+                console.log('Successfully deleted variant image:', imageId);
                 if (response.success) {
                     $(element).closest('.border.rounded').remove();
                     toastr.success('Variant image deleted successfully');
                 }
             },
-            error: function() {
+            error: function(error) {
+                console.log('Error deleting variant image:', imageId, error);
                 toastr.error('Error deleting variant image');
             }
         });
     }
 </script>
-
-
-
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

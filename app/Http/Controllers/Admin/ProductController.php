@@ -9,6 +9,7 @@ use App\Models\Variant;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductCategory;
+use App\Models\ProductImage;
 use App\Models\ProductPrice;
 use App\Models\Subcategory;
 use App\Models\Unit;
@@ -19,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
@@ -64,6 +66,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         DB::beginTransaction();
         try {
             $validatedData = $request->validate([
@@ -287,6 +290,7 @@ class ProductController extends Controller
 
     public function update(Request $request, string $id)
     {
+        dd($request->all());
         // dd($request->category_id);
         $product = Product::findOrFail($id);
 
@@ -377,5 +381,20 @@ class ProductController extends Controller
         $product->clearMediaCollection();
         $product->delete();
         return redirect()->back()->with('info', 'Product Deleted successfully.');
+    }
+
+    public function deleteImage($id)
+    {
+        $image = ProductImage::findOrFail($id);
+
+        // Delete file from storage
+        if (Storage::exists('public/' . $image->image)) {
+            Storage::delete('public/' . $image->image);
+        }
+
+        // Delete record from database
+        $image->delete();
+
+        return response()->json(['success' => true]);
     }
 }

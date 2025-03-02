@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/category/update-ordering', 'updateOrdering')->name('category.updateOrdering');
 
     });
+
+    Route::delete('/product/image/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteImage'])->name('product.image.delete');
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
     Route::resource('unit', App\Http\Controllers\Admin\UnitController::class);
     Route::resource('variant', App\Http\Controllers\Admin\VariantController::class);

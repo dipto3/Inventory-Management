@@ -273,7 +273,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::with('variants', 'variants.variantValues', 'variants.prices', 'categories','singleProduct','variantProducts', 'variantProducts.variantValues.variant','variantProducts.prices')->findOrFail($id);
+        $product = Product::with('variants', 'variants.variantValues', 'variants.prices', 'categories', 'singleProduct', 'variantProducts', 'variantProducts.variantValues.variant', 'variantProducts.prices')->findOrFail($id);
         // $product = Product::with([
         //     'singleProduct',
         //     'variantProducts',
@@ -296,149 +296,72 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      */
 
-    // public function update(Request $request, string $id)
-    // {
-    //     dd($request->all());
-    //     // dd($request->category_id);
-    //     $product = Product::findOrFail($id);
-
-    //     $product->update([
-    //         'name' => $request->name,
-    //         'store' => $request->store,
-    //         'warehouse' => $request->warehouse,
-    //         'sku' => $request->sku ?? $product->sku,
-    //         'slug' => $request->slug ?? Str::slug($request->name),
-    //         'item_code' => $request->item_code,
-    //         'manufactured_date' => $request->manufactured_date ? Carbon::parse($request->manufactured_date) : null,
-    //         'expired_date' => $request->expired_date ? Carbon::parse($request->expired_date) : null,
-    //         'unit' => $request->unit,
-    //         'brand' => $request->brand,
-    //         'selling_type' => $request->selling_type,
-    //         'description' => $request->description,
-    //         'discount_type' => $request->discount_type,
-    //         'discount_value' => $request->discount_value,
-    //         'tax_type' => $request->tax_type,
-    //         'product_type' => $request->productType,
-    //     ]);
-
-
-
-    //     foreach ($request->category_id as $categoryId) {
-    //         $product->productCategories()->update([
-    //             'category_id' => $categoryId,
-    //         ]);
-    //     }
-
-    //     if ($product->product_type === 'single') {
-    //         $this->updateSingleProduct($product, $request);
-    //     } else {
-    //         $this->updateVariableProduct($product, $request);
-    //     }
-
-    //     return redirect()->route('product.index')->with('success', 'Product updated successfully.');
-    // }
-
-    // private function updateSingleProduct(Product $product, Request $request)
-    // {
-    //     $variant = $product->variants?->first();
-    //     $variant->update([
-    //         'quantity' => $request->quantity,
-    //         'quantity_alert' => $request->quantity_alert,
-    //     ]);
-
-    //     $product->prices()->where('product_variant_id', $variant->id)->update([
-    //         'price' => $request->price,
-    //         'purchase_price' => $request->purchase_price,
-    //     ]);
-    // }
-
-
-    // private function updateVariableProduct(Product $product, Request $request)
-    // {
-    //     foreach ($request->child_products as $childProduct) {
-    //         if (!isset($childProduct['id'])) {
-    //             continue;
-    //         }
-
-    //         $variant = ProductVariant::findOrFail($childProduct['id']);
-    //         $variant->update([
-    //             'quantity' => $childProduct['quantity'],
-    //             'quantity_alert' => $childProduct['quantity_alert'],
-    //         ]);
-
-    //         ProductPrice::where('product_variant_id', $variant->id)->update([
-    //             'price' => $childProduct['price'],
-    //             'purchase_price' => $childProduct['purchase_price'],
-    //         ]);
-    //     }
-    // }
     public function update(Request $request, string $id)
     {
         // dd($request->all()); 
         DB::beginTransaction();
         try {
-            $product = Product::findOrFail($id);
+        $product = Product::findOrFail($id);
 
-            $product->update([
-                'name' => $request->name,
-                'store' => $request->store,
-                'warehouse' => $request->warehouse,
-                'sku' => $request->sku ?? $product->sku,
-                'slug' => $request->slug ?? Str::slug($request->name),
-                'item_code' => $request->item_code,
-                'manufactured_date' => $request->manufactured_date ? Carbon::parse($request->manufactured_date) : null,
-                'expired_date' => $request->expired_date ? Carbon::parse($request->expired_date) : null,
-                'unit' => $request->unit,
-                'brand' => $request->brand,
-                'selling_type' => $request->selling_type,
-                'description' => $request->description,
-                'discount_type' => $request->discount_type,
-                'discount_value' => $request->discount_value,
-                'tax_type' => $request->tax_type,
-                'product_type' => $request->productType,
+        $product->update([
+            'name' => $request->name,
+            'store' => $request->store,
+            'warehouse' => $request->warehouse,
+            'sku' => $request->sku ?? $product->sku,
+            'slug' => $request->slug ?? Str::slug($request->name),
+            'item_code' => $request->item_code,
+            'manufactured_date' => $request->manufactured_date ? Carbon::parse($request->manufactured_date) : null,
+            'expired_date' => $request->expired_date ? Carbon::parse($request->expired_date) : null,
+            'unit' => $request->unit,
+            'brand' => $request->brand,
+            'selling_type' => $request->selling_type,
+            'description' => $request->description,
+            'discount_type' => $request->discount_type,
+            'discount_value' => $request->discount_value,
+            'tax_type' => $request->tax_type,
+            'product_type' => $request->productType,
+        ]);
 
+        // Update categories
+        $product->productCategories()->delete(); // Remove old categories
+        foreach ($request->category_id as $categoryId) {
+            ProductCategory::create([
+                'product_id' => $product->id,
+                'category_id' => $categoryId,
             ]);
+        }
 
-            // Update categories
-            // $product->productCategories()->delete(); // Remove old categories
-            foreach ($request->category_id as $categoryId) {
-                ProductCategory::create([
-                    'product_id' => $product->id,
-                    'category_id' => $categoryId,
-                ]);
-            }
-
-            // Handle images if present
-            if ($request->image_type === 'variant' && $request->hasFile('variant_images')) {
-                foreach ($request->file('variant_images') as $variant_value_id => $imageArray) {
-                    foreach ($imageArray as $image) {
-                        $imagePath = $image->store('product_images', 'public');
-                        $product->productImage()->create([
-                            'image' => $imagePath,
-                            'variant_id' => $request->imageVariant_id,
-                            'variant_value_id' => $variant_value_id,
-                            'is_variant' => true,
-                        ]);
-                    }
-                }
-            } elseif ($request->hasFile('image')) {
-                foreach ($request->file('image') as $image) {
+        // Handle images if present
+        if ($request->image_type === 'variant' && $request->hasFile('variant_images')) {
+            foreach ($request->file('variant_images') as $variant_value_id => $imageArray) {
+                foreach ($imageArray as $image) {
+                    $imagePath = $image->store('product_images', 'public');
                     $product->productImage()->create([
-                        'image' => $image->store('product_images', 'public'),
-                        'is_variant' => false,
+                        'image' => $imagePath,
+                        'variant_id' => $request->imageVariant_id,
+                        'variant_value_id' => $variant_value_id,
+                        'is_variant' => true,
                     ]);
                 }
             }
-
-            // Update product variants based on type
-            if ($product->productType === 'single') {
-                $this->updateSingleProduct($product, $request);
-            } else {
-                $this->updateVariableProduct($product, $request);
+        } elseif ($request->hasFile('image')) {
+            foreach ($request->file('image') as $image) {
+                $product->productImage()->create([
+                    'image' => $image->store('product_images', 'public'),
+                    'is_variant' => false,
+                ]);
             }
+        }
 
-            DB::commit();
-            return redirect()->route('product.index')->with('success', 'Product updated successfully.');
+        // Update product variants based on type
+        if ($product->product_type === 'single') {
+            $this->updateSingleProduct($product, $request);
+        } else {
+            $this->updateVariableProduct($product, $request);
+        }
+
+        DB::commit();
+        return redirect()->route('product.index')->with('success', 'Product updated successfully.');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()
@@ -470,6 +393,10 @@ class ProductController extends Controller
 
     private function updateVariableProduct(Product $product, Request $request)
     {
+        // if (!$request->has('child_products')) {
+        //     return;
+        // }
+        // dd($request->child_products['0']['combination']);
         $validatedData = $request->validate([
             'child_products' => 'nullable|array',
             'child_products.*.id' => 'nullable|exists:product_variants,id',
@@ -480,12 +407,13 @@ class ProductController extends Controller
         ]);
 
         foreach ($validatedData['child_products'] as $childProduct) {
-            $variant = ProductVariant::findOrFail($childProduct['id']);
-
-            $variant->update([
-                'quantity' => $childProduct['quantity'],
-                'quantity_alert' => $childProduct['quantity_alert'],
-            ]);
+            $variant = $product->variants()->updateOrCreate(
+                ['variant_value_name' => $childProduct['combination']],
+                [
+                    'quantity' => $childProduct['quantity'],
+                    'quantity_alert' => $childProduct['quantity_alert']
+                ]
+            );
 
             ProductPrice::where('product_variant_id', $variant->id)->update([
                 'price' => $childProduct['price'],

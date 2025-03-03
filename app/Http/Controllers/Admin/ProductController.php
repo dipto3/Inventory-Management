@@ -299,8 +299,8 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         // dd($request->all()); 
-        // DB::beginTransaction();
-        // try {
+        DB::beginTransaction();
+        try {
         $product = Product::findOrFail($id);
 
         $product->update([
@@ -330,9 +330,10 @@ class ProductController extends Controller
                 'category_id' => $categoryId,
             ]);
         }
-
+        // dd($request->all(),$request->file('variant_images'));
+        
         // Handle images if present
-        if ($request->image_type === 'variant' && $request->hasFile('variant_images')) {
+        if ($request->image_type === 'variant' && $request->file('variant_images')) {
             foreach ($request->file('variant_images') as $variant_value_id => $imageArray) {
                 foreach ($imageArray as $image) {
                     $imagePath = $image->store('product_images', 'public');
@@ -360,14 +361,14 @@ class ProductController extends Controller
             $this->updateVariableProduct($product, $request);
         }
 
-        // DB::commit();
+        DB::commit();
         return redirect()->route('product.index')->with('success', 'Product updated successfully.');
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     return redirect()->back()
-        //         ->with('error', 'Failed to update product. ' . $e->getMessage())
-        //         ->withInput();
-        // }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Failed to update product. ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     private function updateSingleProduct(Product $product, Request $request)
@@ -418,7 +419,7 @@ class ProductController extends Controller
             );
             // dd($variant);
             ProductPrice::updateOrCreate(
-                ['product_variant_id' => $variant->id], // যদি এই variant_id থাকে, তাহলে update করবে
+                ['product_variant_id' => $variant->id],
                 [
                     'product_id' => $product->id,
                     'price' => $childProduct['price'],

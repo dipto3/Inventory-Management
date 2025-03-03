@@ -195,30 +195,37 @@
                         </select>
                     </div>
 
+
                     <!-- Single Product Section -->
                     <div class="single-product-section" style="{{ !$product->is_variable ? '' : 'display: none;' }}">
                         <div class="row g-3">
                             @foreach ($product->variants as $variant)
-                            <div class="col-md-4">
-                                <label class="form-label">Quantity</label>
-                                <input type="number" class="form-control" name="quantity"
-                                    value="{{ $variant->quantity }}" />
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Price</label>
-                                <input type="number" class="form-control" name="price"
-                                    value="{{ $variant->prices->first()->price }}" />
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Purchase Price</label>
-                                <input type="number" class="form-control" name="purchase_price"
-                                    value="{{ $variant->prices?->first()->purchase_price }}" />
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Quantity Alert</label>
-                                <input type="number" class="form-control" name="quantity_alert"
-                                    value="{{ $variant->quantity_alert }}" />
-                            </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="number" class="form-control" name="quantity"
+                                        value="{{ $variant->quantity }}" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Price</label>
+                                    @foreach ($variant->prices as $price)
+                                        <input type="number" class="form-control" name="price"
+                                            value="{{ $price->price }}" />
+                                    @endforeach
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Purchase Price</label>
+                                    @foreach ($variant->prices as $price)
+                                        <input type="number" class="form-control" name="purchase_price[]"
+                                            value="{{ $price->purchase_price }}" />
+                                    @endforeach
+
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Quantity Alert</label>
+                                    <input type="number" class="form-control" name="quantity_alert"
+                                        value="{{ $variant->quantity_alert }}" />
+                                </div>
                             @endforeach
                         </div>
                     </div>

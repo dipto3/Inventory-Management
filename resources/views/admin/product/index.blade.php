@@ -89,7 +89,10 @@
                                                                                             {{ $variant->quantity }}</span><br>
                                                                                         <!-- Added <br> for new line -->
                                                                                         <span>Price: &#2547;
-                                                                                            {{ $variant->prices?->first()->price }}</span>
+                                                                                            @foreach ($variant->prices as $price)
+                                                                                            {{ $price->price }}
+                                                                                            @endforeach
+                                                                                        </span>
                                                                                     </p>
                                                                                 </div>
                                                                             </div>

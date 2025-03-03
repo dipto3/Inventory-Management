@@ -299,8 +299,8 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         // dd($request->all()); 
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
         $product = Product::findOrFail($id);
 
         $product->update([
@@ -360,14 +360,14 @@ class ProductController extends Controller
             $this->updateVariableProduct($product, $request);
         }
 
-        DB::commit();
+        // DB::commit();
         return redirect()->route('product.index')->with('success', 'Product updated successfully.');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect()->back()
-                ->with('error', 'Failed to update product. ' . $e->getMessage())
-                ->withInput();
-        }
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     return redirect()->back()
+        //         ->with('error', 'Failed to update product. ' . $e->getMessage())
+        //         ->withInput();
+        // }
     }
 
     private function updateSingleProduct(Product $product, Request $request)
@@ -393,18 +393,20 @@ class ProductController extends Controller
 
     private function updateVariableProduct(Product $product, Request $request)
     {
-        // if (!$request->has('child_products')) {
-        //     return;
-        // }
+        if (!$request->has('child_products')) {
+            return;
+        }
         // dd($request->child_products['0']['combination']);
         $validatedData = $request->validate([
             'child_products' => 'nullable|array',
             'child_products.*.id' => 'nullable|exists:product_variants,id',
+            'child_products.*.combination' => 'required|string',
             'child_products.*.quantity' => 'nullable|integer|min:0',
             'child_products.*.price' => 'nullable|numeric|min:0',
             'child_products.*.purchase_price' => 'nullable|numeric|min:0',
             'child_products.*.quantity_alert' => 'nullable|integer|min:0',
         ]);
+        // dd($validatedData['child_products']);
 
         foreach ($validatedData['child_products'] as $childProduct) {
             $variant = $product->variants()->updateOrCreate(
@@ -414,18 +416,17 @@ class ProductController extends Controller
                     'quantity_alert' => $childProduct['quantity_alert']
                 ]
             );
-
-            ProductPrice::where('product_variant_id', $variant->id)->update([
-                'price' => $childProduct['price'],
-                'purchase_price' => $childProduct['purchase_price'],
-            ]);
+            // dd($variant);
+            ProductPrice::updateOrCreate(
+                ['product_variant_id' => $variant->id], // যদি এই variant_id থাকে, তাহলে update করবে
+                [
+                    'product_id' => $product->id,
+                    'price' => $childProduct['price'],
+                    'purchase_price' => $childProduct['purchase_price'],
+                ]
+            );
         }
     }
-
-
-
-
-
 
     /**
      * Remove the specified resource from storage.

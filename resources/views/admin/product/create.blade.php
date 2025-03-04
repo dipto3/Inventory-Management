@@ -521,38 +521,38 @@
         initializeProductType();
 
         // Image Preview Handler
-        imageInput.addEventListener("change", function(event) {
-            const files = event.target.files;
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const reader = new FileReader();
+        // imageInput.addEventListener("change", function(event) {
+        //     const files = event.target.files;
+        //     for (let i = 0; i < files.length; i++) {
+        //         const file = files[i];
+        //         const reader = new FileReader();
 
-                reader.onload = function(e) {
-                    const imgContainer = document.createElement("div");
-                    imgContainer.classList.add("d-flex", "flex-column", "align-items-center",
-                        "m-2");
+        //         reader.onload = function(e) {
+        //             const imgContainer = document.createElement("div");
+        //             imgContainer.classList.add("d-flex", "flex-column", "align-items-center",
+        //                 "m-2");
 
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    img.classList.add("img-thumbnail");
-                    img.style.width = "100px";
-                    img.style.height = "100px";
-                    img.style.objectFit = "cover";
+        //             const img = document.createElement("img");
+        //             img.src = e.target.result;
+        //             img.classList.add("img-thumbnail");
+        //             img.style.width = "100px";
+        //             img.style.height = "100px";
+        //             img.style.objectFit = "cover";
 
-                    const removeButton = document.createElement("button");
-                    removeButton.textContent = "Removeeeee";
-                    removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
-                    removeButton.onclick = () => imgContainer.remove();
+        //             const removeButton = document.createElement("button");
+        //             removeButton.textContent = "Removeeeee";
+        //             removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
+        //             removeButton.onclick = () => imgContainer.remove();
 
-                    imgContainer.appendChild(img);
-                    imgContainer.appendChild(removeButton);
-                    imagePreviewContainer.insertBefore(imgContainer, imagePreviewContainer
-                        .lastElementChild);
-                };
+        //             imgContainer.appendChild(img);
+        //             imgContainer.appendChild(removeButton);
+        //             imagePreviewContainer.insertBefore(imgContainer, imagePreviewContainer
+        //                 .lastElementChild);
+        //         };
 
-                reader.readAsDataURL(file);
-            }
-        });
+        //         reader.readAsDataURL(file);
+        //     }
+        // });
 
         // Product Type Handler
         productTypeSelect.addEventListener("change", function() {

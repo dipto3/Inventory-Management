@@ -27,9 +27,8 @@ class PurchaseController extends Controller
     {
         $suppliers = Supplier::where('status', 1)->select('id', 'name')->get();
         // dd($suppliers);
-        $productVariants = ProductVariant::with('product','prices')->get();
+        $productVariants = ProductVariant::with('product', 'prices')->get();
         // dd($products);
-
         return view('admin.purchase.create', compact('suppliers', 'productVariants'));
     }
 

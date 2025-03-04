@@ -274,14 +274,6 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::with('variants', 'variants.variantValues', 'variants.prices', 'categories', 'singleProduct', 'variantProducts', 'variantProducts.variantValues.variant', 'variantProducts.prices')->findOrFail($id);
-        // $product = Product::with([
-        //     'singleProduct',
-        //     'variantProducts',
-        //     'variantProducts.variantValues.variant',
-        //     'variantProducts.prices',
-        //     'categories',
-        //     'productImage'
-        // ])->findOrFail($id);
         $categories = Category::where('parent_id', 0)
             ->with('childrenCategories')
             ->select('id', 'name')->get();
@@ -322,7 +314,6 @@ class ProductController extends Controller
             'product_type' => $request->productType,
         ]);
 
-        // Update categories
         $product->productCategories()->delete(); // Remove old categories
         foreach ($request->category_id as $categoryId) {
             ProductCategory::create([
@@ -331,7 +322,6 @@ class ProductController extends Controller
             ]);
         }
 
-        // Handle images if present
         if ($request->image_type === 'variant' && $request->file('variant_images')) {
             foreach ($request->file('variant_images') as $variant_value_id => $imageArray) {
                 foreach ($imageArray as $image) {

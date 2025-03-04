@@ -39,4 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('supplier', App\Http\Controllers\Admin\SupplierController::class);
     Route::get('/product-details/{productID}/{variantID}', [App\Http\Controllers\Admin\ProductController::class, 'viewDetails'])->name('view.details');
     Route::get('/expired-products', [App\Http\Controllers\Admin\ProductController::class, 'expiredProducts'])->name('expired.products');
+
+    Route::resource('purchase', App\Http\Controllers\Admin\PurchaseController::class);
 });

@@ -215,7 +215,7 @@
                                 <div class="col-md-4">
                                     <label class="form-label">Purchase Price</label>
                                     @foreach ($variant->prices as $price)
-                                        <input type="number" class="form-control" name="purchase_price[]"
+                                        <input type="number" class="form-control" name="purchase_price"
                                             value="{{ $price->purchase_price }}" />
                                     @endforeach
 

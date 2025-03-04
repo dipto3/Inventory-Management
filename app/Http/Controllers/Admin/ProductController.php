@@ -299,8 +299,8 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         // dd($request->all()); 
-        // DB::beginTransaction();
-        // try {
+        DB::beginTransaction();
+        try {
         $product = Product::findOrFail($id);
 
         $product->update([
@@ -354,40 +354,54 @@ class ProductController extends Controller
         }
 
         // Update product variants based on type
-        if ($product->productType === 'single') {
+        if ($product->product_type === 'single') {
+
             $this->updateSingleProduct($product, $request);
         } else {
             $this->updateVariableProduct($product, $request);
         }
 
-        // DB::commit();
+        DB::commit();
         return redirect()->route('product.index')->with('success', 'Product updated successfully.');
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     return redirect()->back()
-        //         ->with('error', 'Failed to update product. ' . $e->getMessage())
-        //         ->withInput();
-        // }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Failed to update product. ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     private function updateSingleProduct(Product $product, Request $request)
     {
+        // dd([
+        //     'quantity' => gettype($request->quantity),
+        //     'price' => gettype($request->price),
+        //     'purchase_price' => gettype($request->purchase_price),
+        //     'quantity_alert' => gettype($request->quantity_alert),
+        // ]);
+
         $validatedData = $request->validate([
             'quantity' => 'nullable|integer|min:0',
             'price' => 'nullable|numeric|min:0',
             'purchase_price' => 'nullable|numeric|min:0',
             'quantity_alert' => ['nullable', 'numeric', new QuantityAlertRule()],
         ]);
-
+        if (!$validatedData) {
+            return response()->json(['error' => 'Validation failed'], 422);
+        }
+        // dd(123444);
+        // dd($validatedData);
+        // dd($product);
         $variant = $product->variants()->first();
+
         $variant->update([
-            'quantity' => $validatedData['quantity'],
-            'quantity_alert' => $validatedData['quantity_alert'],
+            'quantity' => (int) $validatedData['quantity'],
+            'quantity_alert' => (int)$validatedData['quantity_alert'],
         ]);
 
         ProductPrice::where('product_variant_id', $variant->id)->update([
-            'price' => $validatedData['price'],
-            'purchase_price' => $validatedData['purchase_price'],
+            'price' => (int)$validatedData['price'],
+            'purchase_price' => (int)$validatedData['purchase_price'],
         ]);
     }
 
@@ -438,7 +452,6 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
-        $product->clearMediaCollection();
         $product->delete();
         return redirect()->back()->with('info', 'Product Deleted successfully.');
     }

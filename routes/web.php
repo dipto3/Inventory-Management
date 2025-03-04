@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [App\Http\Controllers\Admin\Auth\AuthController::class, 'loginPage'])->name('login');
+Route::get('/login', [App\Http\Controllers\Admin\Auth\AuthController::class, 'login'])->name('login');
 Route::post('/authenticate', [App\Http\Controllers\Admin\Auth\AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('/logout', [App\Http\Controllers\Admin\Auth\AuthController::class, 'logout'])->name('logout');
 

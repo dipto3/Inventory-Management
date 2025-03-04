@@ -62,23 +62,17 @@
                                                         <button type="button"
                                                             data-bs-target="#qoutescarouselIndicators"
                                                             data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                                        <button type="button"
-                                                            data-bs-target="#qoutescarouselIndicators"
-                                                            data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                
                                                     </div>
                                                     <div class="carousel-inner text-center text-white-50 pb-5">
                                                         <div class="carousel-item active">
-                                                            <p class="fs-15 fst-italic">" Great! Clean code, clean
-                                                                design, easy for customization. Thanks very much! "</p>
-                                                        </div>
-                                                        <div class="carousel-item">
-                                                            <p class="fs-15 fst-italic">" The theme is really great with
-                                                                an amazing customer support."</p>
+                                                            <p class="fs-15 fst-italic">" Welcome to our inventory system"</p>
                                                         </div>
                                                         <div class="carousel-item">
                                                             <p class="fs-15 fst-italic">" Great! Clean code, clean
                                                                 design, easy for customization. Thanks very much! "</p>
                                                         </div>
+
                                                     </div>
                                                 </div>
                                                 <!-- end carousel -->
@@ -92,7 +86,6 @@
                                     <div class="p-lg-5 p-4">
                                         <div>
                                             <h5 class="text-primary">Welcome Back !</h5>
-                                            <p class="text-muted">Sign in to continue to Velzon.</p>
                                         </div>
 
                                         <div class="mt-4">
@@ -134,7 +127,7 @@
                                                         In</button>
                                                 </div>
 
-                                                <div class="mt-4 text-center">
+                                                {{--  <div class="mt-4 text-center">
                                                     <div class="signin-other-title">
                                                         <h5 class="fs-13 mb-4 title">Sign In with</h5>
                                                     </div>
@@ -153,16 +146,16 @@
                                                             class="btn btn-info btn-icon waves-effect waves-light"><i
                                                                 class="ri-twitter-fill fs-16"></i></button>
                                                     </div>
-                                                </div>
+                                                </div>  --}}
 
                                             </form>
                                         </div>
 
-                                        <div class="mt-5 text-center">
+                                        {{--  <div class="mt-5 text-center">
                                             <p class="mb-0">Don't have an account ? <a href="auth-signup-cover.html"
                                                     class="fw-semibold text-primary text-decoration-underline">
                                                     Signup</a> </p>
-                                        </div>
+                                        </div>  --}}
                                     </div>
                                 </div>
                                 <!-- end col -->

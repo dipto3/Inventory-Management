@@ -86,8 +86,8 @@
                                         @endphp
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button" data-bs-toggle="modal" id="create-btn"
-                                    data-bs-target="#showCategoryModal">Add New</button>
+                                {{--  <button class="add-new-btn" type="button" data-bs-toggle="modal" id="create-btn"
+                                    data-bs-target="#showCategoryModal">Add New</button>  --}}
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -120,8 +120,8 @@
                                         <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#showBrandModal">Add New</button>
+                                {{--  <button class="add-new-btn" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#showBrandModal">Add New</button>  --}}
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -133,8 +133,8 @@
                                         <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
                                     @endforeach
                                 </select>
-                                <button class="add-new-btn" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#showUnitModal">Add New</button>
+                                {{--  <button class="add-new-btn" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#showUnitModal">Add New</button>  --}}
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -433,11 +433,11 @@
                                     </label>
                                 </div>
                             </div>
-                            <input type="file" 
-                                id="variantImage_${value.id}" 
+                            <input type="file"
+                                id="variantImage_${value.id}"
                                 class="variant-image-input d-none"
                                 name="variant_images[${value.id}][]"
-                                multiple 
+                                multiple
                                 accept="image/*"
                                 data-value-id="${value.id}">
                         </td>

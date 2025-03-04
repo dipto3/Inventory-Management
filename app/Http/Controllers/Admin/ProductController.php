@@ -267,7 +267,6 @@ class ProductController extends Controller
         return view('admin.product.view-details', compact('variant', 'product', 'barcodeImage'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -363,13 +362,6 @@ class ProductController extends Controller
 
     private function updateSingleProduct(Product $product, Request $request)
     {
-        // dd([
-        //     'quantity' => gettype($request->quantity),
-        //     'price' => gettype($request->price),
-        //     'purchase_price' => gettype($request->purchase_price),
-        //     'quantity_alert' => gettype($request->quantity_alert),
-        // ]);
-
         $validatedData = $request->validate([
             'quantity' => 'nullable|integer|min:0',
             'price' => 'nullable|numeric|min:0',
@@ -379,9 +371,7 @@ class ProductController extends Controller
         if (!$validatedData) {
             return response()->json(['error' => 'Validation failed'], 422);
         }
-        // dd(123444);
-        // dd($validatedData);
-        // dd($product);
+
         $variant = $product->variants()->first();
 
         $variant->update([

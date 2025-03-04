@@ -43,12 +43,17 @@ class Product extends Model implements HasMedia
     }
 
     public function singleProduct()
-{
-    return $this->hasOne(ProductPrice::class);
-}
+    {
+        return $this->hasOne(ProductPrice::class);
+    }
 
-public function variantProducts()
-{
-    return $this->hasMany(ProductVariant::class)->with(['prices', 'variantValues']);
-}
+    public function variantProducts()
+    {
+        return $this->hasMany(ProductVariant::class)->with(['prices', 'variantValues']);
+    }
+
+    public function purchaseItems()
+    {
+        return $this->hasMany(PurchaseItem::class);
+    }
 }

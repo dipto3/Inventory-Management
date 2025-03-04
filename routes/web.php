@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use Database\Seeders\AdminSeeder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,4 +43,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/expired-products', [App\Http\Controllers\Admin\ProductController::class, 'expiredProducts'])->name('expired.products');
 
     Route::resource('purchase', App\Http\Controllers\Admin\PurchaseController::class);
+    Route::get('/insert-table-column', [App\Http\Controllers\Admin\AdminController::class, 'insertData'])->name('insert-data');
 });

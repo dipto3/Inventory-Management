@@ -299,8 +299,8 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         // dd($request->all()); 
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
         $product = Product::findOrFail($id);
 
         $product->update([
@@ -330,8 +330,7 @@ class ProductController extends Controller
                 'category_id' => $categoryId,
             ]);
         }
-        // dd($request->all(),$request->file('variant_images'));
-        
+
         // Handle images if present
         if ($request->image_type === 'variant' && $request->file('variant_images')) {
             foreach ($request->file('variant_images') as $variant_value_id => $imageArray) {
@@ -345,7 +344,7 @@ class ProductController extends Controller
                     ]);
                 }
             }
-        } elseif ($request->hasFile('image')) {
+        } elseif ($request->file('image')) {
             foreach ($request->file('image') as $image) {
                 $product->productImage()->create([
                     'image' => $image->store('product_images', 'public'),
@@ -355,20 +354,20 @@ class ProductController extends Controller
         }
 
         // Update product variants based on type
-        if ($product->product_type === 'single') {
+        if ($product->productType === 'single') {
             $this->updateSingleProduct($product, $request);
         } else {
             $this->updateVariableProduct($product, $request);
         }
 
-        DB::commit();
+        // DB::commit();
         return redirect()->route('product.index')->with('success', 'Product updated successfully.');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect()->back()
-                ->with('error', 'Failed to update product. ' . $e->getMessage())
-                ->withInput();
-        }
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     return redirect()->back()
+        //         ->with('error', 'Failed to update product. ' . $e->getMessage())
+        //         ->withInput();
+        // }
     }
 
     private function updateSingleProduct(Product $product, Request $request)
@@ -428,6 +427,7 @@ class ProductController extends Controller
             );
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

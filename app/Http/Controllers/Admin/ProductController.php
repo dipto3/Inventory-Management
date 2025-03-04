@@ -293,66 +293,66 @@ class ProductController extends Controller
         // dd($request->all()); 
         DB::beginTransaction();
         try {
-        $product = Product::findOrFail($id);
+            $product = Product::findOrFail($id);
 
-        $product->update([
-            'name' => $request->name,
-            'store' => $request->store,
-            'warehouse' => $request->warehouse,
-            'sku' => $request->sku ?? $product->sku,
-            'slug' => $request->slug ?? Str::slug($request->name),
-            'item_code' => $request->item_code,
-            'manufactured_date' => $request->manufactured_date ? Carbon::parse($request->manufactured_date) : null,
-            'expired_date' => $request->expired_date ? Carbon::parse($request->expired_date) : null,
-            'unit' => $request->unit,
-            'brand' => $request->brand,
-            'selling_type' => $request->selling_type,
-            'description' => $request->description,
-            'discount_type' => $request->discount_type,
-            'discount_value' => $request->discount_value,
-            'tax_type' => $request->tax_type,
-            'product_type' => $request->productType,
-        ]);
-
-        $product->productCategories()->delete(); // Remove old categories
-        foreach ($request->category_id as $categoryId) {
-            ProductCategory::create([
-                'product_id' => $product->id,
-                'category_id' => $categoryId,
+            $product->update([
+                'name' => $request->name,
+                'store' => $request->store,
+                'warehouse' => $request->warehouse,
+                'sku' => $request->sku ?? $product->sku,
+                'slug' => $request->slug ?? Str::slug($request->name),
+                'item_code' => $request->item_code,
+                'manufactured_date' => $request->manufactured_date ? Carbon::parse($request->manufactured_date) : null,
+                'expired_date' => $request->expired_date ? Carbon::parse($request->expired_date) : null,
+                'unit' => $request->unit,
+                'brand' => $request->brand,
+                'selling_type' => $request->selling_type,
+                'description' => $request->description,
+                'discount_type' => $request->discount_type,
+                'discount_value' => $request->discount_value,
+                'tax_type' => $request->tax_type,
+                'product_type' => $request->productType,
             ]);
-        }
 
-        if ($request->image_type === 'variant' && $request->file('variant_images')) {
-            foreach ($request->file('variant_images') as $variant_value_id => $imageArray) {
-                foreach ($imageArray as $image) {
-                    $imagePath = $image->store('product_images', 'public');
+            $product->productCategories()->delete(); // Remove old categories
+            foreach ($request->category_id as $categoryId) {
+                ProductCategory::create([
+                    'product_id' => $product->id,
+                    'category_id' => $categoryId,
+                ]);
+            }
+
+            if ($request->image_type === 'variant' && $request->file('variant_images')) {
+                foreach ($request->file('variant_images') as $variant_value_id => $imageArray) {
+                    foreach ($imageArray as $image) {
+                        $imagePath = $image->store('product_images', 'public');
+                        $product->productImage()->create([
+                            'image' => $imagePath,
+                            'variant_id' => $request->imageVariant_id,
+                            'variant_value_id' => $variant_value_id,
+                            'is_variant' => true,
+                        ]);
+                    }
+                }
+            } elseif ($request->file('image')) {
+                foreach ($request->file('image') as $image) {
                     $product->productImage()->create([
-                        'image' => $imagePath,
-                        'variant_id' => $request->imageVariant_id,
-                        'variant_value_id' => $variant_value_id,
-                        'is_variant' => true,
+                        'image' => $image->store('product_images', 'public'),
+                        'is_variant' => false,
                     ]);
                 }
             }
-        } elseif ($request->file('image')) {
-            foreach ($request->file('image') as $image) {
-                $product->productImage()->create([
-                    'image' => $image->store('product_images', 'public'),
-                    'is_variant' => false,
-                ]);
+
+            // Update product variants based on type
+            if ($product->product_type === 'single') {
+
+                $this->updateSingleProduct($product, $request);
+            } else {
+                $this->updateVariableProduct($product, $request);
             }
-        }
 
-        // Update product variants based on type
-        if ($product->product_type === 'single') {
-
-            $this->updateSingleProduct($product, $request);
-        } else {
-            $this->updateVariableProduct($product, $request);
-        }
-
-        DB::commit();
-        return redirect()->route('product.index')->with('success', 'Product updated successfully.');
+            DB::commit();
+            return redirect()->route('product.index')->with('success', 'Product updated successfully.');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()
@@ -442,7 +442,20 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
+
+        // $product->productCategories()->delete();
+
+        // $product->variants()->delete();
+
+        
+        // $product->prices()->delete();
+
+        foreach ($product->productImage as $image) {
+            Storage::disk('public')->delete($image->image);
+            $image->delete();
+        }
         $product->delete();
+
         return redirect()->back()->with('info', 'Product Deleted successfully.');
     }
 
@@ -455,7 +468,6 @@ class ProductController extends Controller
             Storage::delete('public/' . $image->image);
         }
 
-        // Delete record from database
         $image->delete();
 
         return response()->json(['success' => true]);

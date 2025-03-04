@@ -408,6 +408,7 @@ class ProductController extends Controller
         ]);
         // dd($validatedData['child_products']);
 
+        $newVariantIds = [];
         foreach ($validatedData['child_products'] as $childProduct) {
             $variant = $product->variants()->updateOrCreate(
                 ['variant_value_name' => $childProduct['combination']],
@@ -417,6 +418,7 @@ class ProductController extends Controller
                 ]
             );
             // dd($variant);
+            $newVariantIds[] = $variant->id;
             ProductPrice::updateOrCreate(
                 ['product_variant_id' => $variant->id],
                 [
@@ -426,6 +428,7 @@ class ProductController extends Controller
                 ]
             );
         }
+        $product->variants()->whereNotIn('id', $newVariantIds)->delete();
     }
 
 

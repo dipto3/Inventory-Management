@@ -19,6 +19,7 @@
               liveSearch: true,
               actionsBox: true,
               size: 5
+            
           });
       });
 

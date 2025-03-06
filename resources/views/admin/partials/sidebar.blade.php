@@ -109,11 +109,9 @@
                                 <a href="{{ route('variant.index') }}" class="nav-link">Variant Attributes</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('purchase.index') }}" class="nav-link">Purchase Order</a>
+                                <a href="{{ route('purchase-order.index') }}" class="nav-link">Purchase Order</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('insert-data') }}" class="nav-link">Insert Column In Database</a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </li> <!-- end Dashboard Menu -->

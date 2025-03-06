@@ -56,6 +56,11 @@
                                 <!--end col-->
                             </div>
                             <!--end row-->
+                            <button class="btn btn-info">
+
+                                <a href="{{ route('insert-data') }}" class="nav-link">Insert Column In Database</a>
+
+                            </button>
 
                             <div class="row">
                                 <div class="col-xl-3 col-md-6">

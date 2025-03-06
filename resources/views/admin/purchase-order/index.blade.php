@@ -28,7 +28,7 @@
                             <div class="card-header">
                                 <h4 class="card-title mb-0">Add, Edit & Remove</h4>
                                 <div class="d-flex justify-content-sm-end">
-                                    <a class="btn btn-success add-btn" href="{{ route('purchase.create') }}"><i
+                                    <a class="btn btn-success add-btn" href="{{ route('purchase-order.create') }}"><i
                                             class="ri-add-line align-bottom me-1"></i> Create</a>
                                 </div>
                             </div><!-- end card header -->

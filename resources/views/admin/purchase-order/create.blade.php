@@ -3,12 +3,12 @@
     <div class="main-content">
         <div class="top-bar">
             <h4 class="mb-0">New Purchase</h4>
-            <a href="{{ route('purchase.index') }}" class="btn btn-primary">
+            <a href="{{ route('purchase-order.index') }}" class="btn btn-primary">
                 <i class="bi bi-arrow-left"></i> Back to Purchases
             </a>
         </div>
         <div class="container-fluid py-4">
-            <form id="purchaseForm" action="{{ route('purchase.store') }}" method="post" enctype="multipart/form-data">
+            <form id="purchaseForm" action="{{ route('purchase-order.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Purchase Information -->
@@ -85,16 +85,37 @@
                     </table>
                 </div>
                 <!-- Summary Section -->
-                <div class="mt-4">
-                    <h5><i class="bi bi-receipt text-primary"></i> Summary</h5>
-                    <p><strong>Supplier:</strong> <span id="summarySupplier">None</span></p>
-                    <p><strong>Total Quantity:</strong> <span id="totalQuantity">0</span></p>
-                    <p><strong>Total Price:</strong> <span id="totalPrice">0.00</span></p>
+                <!-- Summary Section -->
+                <div class="form-section mt-4">
+                    <div class="row">
+                        <div class="col-md-4"> <!-- Left side small table -->
+                            <div class="form-section-title">
+                                <h5 class="mb-0"><i class="bi bi-receipt text-primary"></i> Summary</h5>
+                            </div>
+                            <table class="table table-sm table-bordered mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Supplier</th>
+                                        <th>Total Qty</th>
+                                        <th>Total Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="summarySupplier">None</td>
+                                        <td id="totalQuantity">0</td>
+                                        <td id="totalPrice">0.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                    <!-- Hidden Input Fields for Summary -->
-                    <input type="hidden" name="total_quantity" id="totalQuantityInput" value="0">
-                    <input type="hidden" name="total_price" id="totalPriceInput" value="0.00">
+                            <!-- Hidden Input Fields for Summary -->
+                            <input type="hidden" name="total_quantity" id="totalQuantityInput" value="0">
+                            <input type="hidden" name="total_price" id="totalPriceInput" value="0.00">
+                        </div>
+                    </div>
                 </div>
+
 
 
                 <!-- Submit Buttons -->

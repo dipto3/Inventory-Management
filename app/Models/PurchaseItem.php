@@ -13,8 +13,8 @@ class PurchaseItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
-    public function purchase()
+    public function purchaseOrder()
     {
-        return $this->belongsTo(Purchase::class);
+        return $this->belongsTo(PurchaseOrder::class);
     }
 }

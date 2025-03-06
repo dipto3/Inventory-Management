@@ -42,6 +42,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/product-details/{productID}/{variantID}', [App\Http\Controllers\Admin\ProductController::class, 'viewDetails'])->name('view.details');
     Route::get('/expired-products', [App\Http\Controllers\Admin\ProductController::class, 'expiredProducts'])->name('expired.products');
 
-    Route::resource('purchase', App\Http\Controllers\Admin\PurchaseController::class);
+    Route::resource('purchase-order', App\Http\Controllers\Admin\PurchaseOrderController::class);
     Route::get('/insert-table-column', [App\Http\Controllers\Admin\AdminController::class, 'insertData'])->name('insert-data');
 });

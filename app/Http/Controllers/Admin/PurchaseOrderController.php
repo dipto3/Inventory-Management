@@ -5,19 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductVariant;
-use App\Models\Purchase;
+use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
-class PurchaseController extends Controller
+class PurchaseOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $purchases = Purchase::all();
-        return view('admin.purchase.index', compact('purchases'));
+        $purchases = PurchaseOrder::all();
+        return view('admin.purchase-order.index', compact('purchases'));
     }
 
     /**
@@ -29,7 +29,7 @@ class PurchaseController extends Controller
         // dd($suppliers);
         $productVariants = ProductVariant::with('product', 'prices')->get();
         // dd($products);
-        return view('admin.purchase.create', compact('suppliers', 'productVariants'));
+        return view('admin.purchase-order.create', compact('suppliers', 'productVariants'));
     }
 
     /**

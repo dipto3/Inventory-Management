@@ -52,8 +52,8 @@ class Product extends Model implements HasMedia
         return $this->hasMany(ProductVariant::class)->with(['prices', 'variantValues']);
     }
 
-    public function purchaseItems()
+    public function purchaseOrderItems()
     {
-        return $this->hasMany(PurchaseItem::class);
+        return $this->hasMany(PurchaseOrderItem::class);
     }
 }

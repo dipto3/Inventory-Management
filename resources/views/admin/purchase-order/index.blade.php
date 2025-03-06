@@ -17,7 +17,6 @@
                                     <li class="breadcrumb-item active">purchase</li>
                                 </ol>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -49,12 +48,14 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($purchases as $purchase)
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <tr>
+                                                        <td>{{ $purchase->purchase_code }}</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>

@@ -17,7 +17,8 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $purchases = PurchaseOrder::all();
+        $purchases = PurchaseOrder::orderBy('id', 'desc')->get();
+        // dd($purchases);
 
         return view('admin.purchase-order.index', compact('purchases'));
     }
@@ -43,31 +44,32 @@ class PurchaseOrderController extends Controller
         // dd($request->all());
         DB::beginTransaction();
         try {
-        $purchaseOrder = PurchaseOrder::create([
-            'supplier_id' => $request->supplier,
-            'purchase_date' => $request->purchase_date,
-            'purchase_code' => $request->purchase_code,
-            'total_quantity' => $request->total_quantity,
-            'total_price' => $request->total_price,
-            'purchase_status' => 'pending',
-            'user_id' => auth()->user()->id,
-        ]);
+            $purchaseCode = 'PO-' . date('Ymd') . '-' . str_pad(PurchaseOrder::count() + 1, 4, '0', STR_PAD_LEFT);
+            $purchaseOrder = PurchaseOrder::create([
+                'supplier_id' => $request->supplier,
+                'purchase_date' => $request->purchase_date,
+                'purchase_code' => $purchaseCode,
+                'total_quantity' => $request->total_quantity,
+                'total_price' => $request->total_price,
+                'purchase_status' => 'pending',
+                'user_id' => auth()->user()->id,
+            ]);
 
-        if ($request->has('products')) {
-            foreach ($request->products as $variantId => $product) {
-                // dd($variantId);
-                $findProduct = ProductVariant::find($variantId);
-                $purchaseOrder->purchaseOrderItems()->create([
-                    'product_id' => $findProduct->product_id,
-                    'product_variant_id' => $variantId,
-                    'purchase_quantity' => $product['quantity'],
-                    'purchase_price' => $product['purchase_price'],
-                    'subtotal' => $product['subtotal'],
-                ]);
+            if ($request->has('products')) {
+                foreach ($request->products as $variantId => $product) {
+                    // dd($variantId);
+                    $findProduct = ProductVariant::find($variantId);
+                    $purchaseOrder->purchaseOrderItems()->create([
+                        'product_id' => $findProduct->product_id,
+                        'product_variant_id' => $variantId,
+                        'purchase_quantity' => $product['quantity'],
+                        'purchase_price' => $product['purchase_price'],
+                        'subtotal' => $product['subtotal'],
+                    ]);
+                }
             }
-        }
-        DB::commit();
-        return redirect()->route('purchase-order.index')->with('success', 'Purchase order created successfully');
+            DB::commit();
+            return redirect()->route('purchase-order.index')->with('success', 'Purchase order created successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());
@@ -79,7 +81,9 @@ class PurchaseOrderController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $purchaseOrder = PurchaseOrder::with('purchaseOrderItems', 'supplier', 'user')->find($id);
+
+        return view('admin.purchase-order.order-details', compact('purchaseOrder'));
     }
 
     /**

@@ -38,23 +38,48 @@
                                         <table class="table table-striped" id="example">
                                             <thead>
                                                 <tr>
-                                                    <th width="20%">Purchase Code</th>
-                                                    <th width="20%">Purchase Quantity</th>
-                                                    <th width="10%">Purchase Date</th>
-                                                    <th width="10%">Purchase Status</th>
-                                                    <th width="20%">Supplier</th>
+                                                    {{-- <th width="">ID</th> --}}
+                                                    <th width="10%">Purchase Code</th>
+                                                    <th width="20%">Purchase Status</th>
+                                                    <th width="5%">Purchase Date</th>
+                                                    <th width="5%">Quantity</th>
                                                     <th width="20%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($purchases as $purchase)
                                                     <tr>
-                                                        <td>{{ $purchase->purchase_code }}</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        {{-- <td>{{ $purchase->id }}</td> --}}
+                                                        <td>
+                                                            <strong>
+                                                                <a href="" style="color: rgb(32, 104, 212)">
+                                                                    {{ $purchase->purchase_code }}
+                                                                </a>
+                                                            </strong>
+
+                                                        </td>
+                                                        <td class="status">
+                                                            {{ $purchase->purchase_status }}
+                                                        </td>
+                                                        <td>
+                                                            {{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d-m-Y') }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $purchase->total_quantity }}
+                                                        </td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <a href="{{ route('purchase-order.show', $purchase->id) }}"
+                                                                        class="btn btn-primary btn-sm">
+                                                                        <i class="ri-edit-2-line"></i>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    Duplicate
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

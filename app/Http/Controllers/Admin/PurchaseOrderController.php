@@ -8,6 +8,7 @@ use App\Models\ProductVariant;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderController extends Controller
 {
@@ -17,6 +18,7 @@ class PurchaseOrderController extends Controller
     public function index()
     {
         $purchases = PurchaseOrder::all();
+
         return view('admin.purchase-order.index', compact('purchases'));
     }
 
@@ -37,7 +39,39 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd(auth()->user()->id);
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+        $purchaseOrder = PurchaseOrder::create([
+            'supplier_id' => $request->supplier,
+            'purchase_date' => $request->purchase_date,
+            'purchase_code' => $request->purchase_code,
+            'total_quantity' => $request->total_quantity,
+            'total_price' => $request->total_price,
+            'purchase_status' => 'pending',
+            'user_id' => auth()->user()->id,
+        ]);
+
+        if ($request->has('products')) {
+            foreach ($request->products as $variantId => $product) {
+                // dd($variantId);
+                $findProduct = ProductVariant::find($variantId);
+                $purchaseOrder->purchaseOrderItems()->create([
+                    'product_id' => $findProduct->product_id,
+                    'product_variant_id' => $variantId,
+                    'purchase_quantity' => $product['quantity'],
+                    'purchase_price' => $product['purchase_price'],
+                    'subtotal' => $product['subtotal'],
+                ]);
+            }
+        }
+        DB::commit();
+        return redirect()->route('purchase-order.index')->with('success', 'Purchase order created successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     /**

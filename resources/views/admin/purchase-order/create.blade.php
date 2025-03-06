@@ -84,8 +84,7 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- Summary Section -->
-                <!-- Summary Section -->
+
                 <div class="form-section mt-4">
                     <div class="row">
                         <div class="col-md-4"> <!-- Left side small table -->
@@ -115,13 +114,10 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <!-- Submit Buttons -->
                 <div class="text-end mt-4">
                     <button type="button" class="btn btn-secondary me-2">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Purchase</button>
+                    <button type="submit" class="btn btn-primary">Save Product</button>
                 </div>
             </form>
         </div>
@@ -154,17 +150,20 @@
                 if ($(`tr[data-product-id="${productId}"]`).length === 0) {
                     // Append new row to the table
                     const newRow = `
-                    <tr data-product-id="${productId}">
-                        <td>${productName}</td>
-                        <td><input type="text" class="form-control" name="products[${productId}][barcode]" value="${barcode}" readonly></td>
-                        <td><input type="number" class="form-control quantity" name="products[${productId}][quantity]" value="1" min="1"></td>
-                        <td><input type="number" class="form-control selling-price" name="products[${productId}][selling_price]" value="${sellingPrice}" step="0.01"></td>
-                        <td><input type="number" class="form-control purchase-price" name="products[${productId}][purchase_price]" value="${purchasePrice}" step="0.01"></td>
-                        <td class="subtotal">${purchasePrice}</td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm remove-product"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>`;
+            <tr data-product-id="${productId}">
+                <td>${productName}</td>
+                <td><input type="text" class="form-control" name="products[${productId}][barcode]" value="${barcode}" readonly></td>
+                <td><input type="number" class="form-control quantity" name="products[${productId}][quantity]" value="1" min="1"></td>
+                <td><input type="number" class="form-control selling-price" name="products[${productId}][selling_price]" value="${sellingPrice}" step="0.01"></td>
+                <td><input type="number" class="form-control purchase-price" name="products[${productId}][purchase_price]" value="${purchasePrice}" step="0.01"></td>
+                
+                <td class="subtotal">${purchasePrice}</td>
+                <input type="hidden" class="subtotal-input" name="products[${productId}][subtotal]" value="${purchasePrice}">
+                
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm remove-product"><i class="bi bi-trash"></i></button>
+                </td>
+            </tr>`;
 
                     $('#selectedProductsTable tbody').append(newRow);
                     calculateSubtotal();
@@ -174,12 +173,6 @@
             }
 
             $(this).val(''); // Reset dropdown after selection
-        });
-
-        // Remove product from table
-        $(document).on('click', '.remove-product', function() {
-            $(this).closest('tr').remove();
-            calculateSubtotal();
         });
 
         // Update subtotal when quantity or purchase price is changed
@@ -198,6 +191,8 @@
                 const subtotal = (quantity * purchasePrice).toFixed(2);
 
                 $(this).find('.subtotal').text(subtotal);
+                $(this).find('.subtotal-input').val(subtotal); // Hidden input update
+
                 totalAmount += parseFloat(subtotal);
                 totalQuantity += quantity;
             });
@@ -209,5 +204,6 @@
             $('#totalQuantityInput').val(totalQuantity);
             $('#totalPriceInput').val(totalAmount.toFixed(2));
         }
+
     });
 </script>

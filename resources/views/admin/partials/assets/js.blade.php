@@ -50,7 +50,8 @@
           if (localStorage.getItem("darkMode") === "enabled") {
               html.setAttribute("data-bs-theme", "dark");
               document.body.classList.add("dark-mode"); // Dark mode class add
-              icon.classList.replace("bx-sun", "bx-moon"); // আইকন পরিবর্তন
+              icon.classList.remove("bx-sun"); //  Remove sun icon
+              icon.classList.add("bx-moon"); //  Add moon icon
           }
 
           // Button click করলে dark mode toggle করা
@@ -59,12 +60,14 @@
                   document.body.classList.remove("dark-mode"); // Dark mode off
                   html.setAttribute("data-bs-theme", "light");
                   localStorage.removeItem("darkMode");
-                  icon.classList.replace("bx-moon", "bx-sun"); // আইকন পরিবর্তন
+                  icon.classList.remove("bx-moon"); //  Remove moon icon
+                  icon.classList.add("bx-sun"); //  Add sun icon
               } else {
                   document.body.classList.add("dark-mode"); // Dark mode on
                   html.setAttribute("data-bs-theme", "dark");
                   localStorage.setItem("darkMode", "enabled");
-                  icon.classList.replace("bx-sun", "bx-moon"); // আইকন পরিবর্তন
+                  icon.classList.remove("bx-sun"); // Remove sun icon
+                  icon.classList.add("bx-moon"); // Add moon icon
               }
           });
       });

@@ -64,9 +64,9 @@
                 </div>
 
                 <div class="ms-1 header-item d-none d-sm-flex">
-                    <button type="button"
+                    <button type="button" id="darkModeToggle"
                         class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle light-dark-mode">
-                        <i class='bx bx-sun fs-22'></i>
+                        <i class='bx bx-sun fs-22' id="darkModeIcon"></i>
                     </button>
                 </div>
                 {{-- <div class="ms-1 header-item d-none d-sm-flex">
@@ -161,8 +161,8 @@
 
                                     <div class="text-reset notification-item d-block dropdown-item position-relative">
                                         <div class="d-flex">
-                                            <img src=""
-                                                class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
+                                            <img src="" class="me-3 rounded-circle avatar-xs flex-shrink-0"
+                                                alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
                                                     <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
@@ -219,8 +219,8 @@
 
                                     <div class="text-reset notification-item d-block dropdown-item position-relative">
                                         <div class="d-flex">
-                                            <img src=""
-                                                class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
+                                            <img src="" class="me-3 rounded-circle avatar-xs flex-shrink-0"
+                                                alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
                                                     <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
@@ -257,8 +257,7 @@
                                 <div data-simplebar style="max-height: 300px;" class="pe-2">
                                     <div class="text-reset notification-item d-block dropdown-item">
                                         <div class="d-flex">
-                                            <img src=""
-                                                class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <img src="" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
                                                     <h6 class="mt-0 mb-1 fs-13 fw-semibold">James Lemire</h6>
@@ -283,8 +282,7 @@
 
                                     <div class="text-reset notification-item d-block dropdown-item">
                                         <div class="d-flex">
-                                            <img src=""
-                                                class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <img src="" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
                                                     <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
@@ -311,8 +309,7 @@
 
                                     <div class="text-reset notification-item d-block dropdown-item">
                                         <div class="d-flex">
-                                            <img src=""
-                                                class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <img src="" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
                                                     <h6 class="mt-0 mb-1 fs-13 fw-semibold">Kenneth Brown</h6>
@@ -339,8 +336,7 @@
 
                                     <div class="text-reset notification-item d-block dropdown-item">
                                         <div class="d-flex">
-                                            <img src=""
-                                                class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                            <img src="" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                             <div class="flex-grow-1">
                                                 <a href="#!" class="stretched-link">
                                                     <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>

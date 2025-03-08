@@ -19,7 +19,7 @@
               liveSearch: true,
               actionsBox: true,
               size: 5
-            
+
           });
       });
 
@@ -40,3 +40,32 @@
   </script>
 
   {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
+  <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const toggleButton = document.getElementById("darkModeToggle");
+          const icon = document.getElementById("darkModeIcon");
+          const html = document.documentElement;
+
+          // Page reload হলে dark mode check করে সেট করা
+          if (localStorage.getItem("darkMode") === "enabled") {
+              html.setAttribute("data-bs-theme", "dark");
+              document.body.classList.add("dark-mode"); // Dark mode class add
+              icon.classList.replace("bx-sun", "bx-moon"); // আইকন পরিবর্তন
+          }
+
+          // Button click করলে dark mode toggle করা
+          toggleButton.addEventListener("click", function() {
+              if (document.body.classList.contains("dark-mode")) {
+                  document.body.classList.remove("dark-mode"); // Dark mode off
+                  html.setAttribute("data-bs-theme", "light");
+                  localStorage.removeItem("darkMode");
+                  icon.classList.replace("bx-moon", "bx-sun"); // আইকন পরিবর্তন
+              } else {
+                  document.body.classList.add("dark-mode"); // Dark mode on
+                  html.setAttribute("data-bs-theme", "dark");
+                  localStorage.setItem("darkMode", "enabled");
+                  icon.classList.replace("bx-sun", "bx-moon"); // আইকন পরিবর্তন
+              }
+          });
+      });
+  </script>

@@ -49,14 +49,7 @@
                             <label class="form-label">Purchase Date</label>
                             <input type="date" class="form-control" name="purchase_date">
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Purchase Code</label>
-                            <input type="text" class="form-control" name="purchase_code"
-                                value="{{ old('purchase_code') }}" placeholder="Enter Purchase Code" />
-                            @error('purchase_code')
-                                <div class="text-danger small">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        
                     </div>
 
                 </div>

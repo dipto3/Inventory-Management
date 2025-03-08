@@ -292,8 +292,8 @@
                             <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
                                 @foreach ($product->productImage->where('is_variant', false) as $image)
                                     <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
-                                        <img src="{{ asset('storage/' . $image->image) }}" class="img-fluid h-100 w-100"
-                                            style="object-fit: cover">
+                                        <img src="{{ str_contains($image->image, 'demo-products') ? asset($image->image) : Storage::url($image->image) }}"
+                                            class="img-fluid h-100 w-100" style="object-fit: cover">
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
                                             style="width: 20px; height: 20px"
@@ -609,8 +609,10 @@
             for (let file of files) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const imgContainer = createImagePreviewElement(e.target.result, file.name, regularImageInput);
-                    regularPreviewContainer.insertBefore(imgContainer, regularPreviewContainer.lastElementChild);
+                    const imgContainer = createImagePreviewElement(e.target.result, file.name,
+                        regularImageInput);
+                    regularPreviewContainer.insertBefore(imgContainer, regularPreviewContainer
+                        .lastElementChild);
                 };
                 reader.readAsDataURL(file);
             }
@@ -658,7 +660,7 @@
                             <div class="d-flex flex-wrap gap-2" id="variant_images_${value.id}">
                                 ${existingImages.map(img => `
                                     <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
-                                        <img src="/storage/${img.image}" class="img-fluid h-100 w-100" style="object-fit: cover">
+                                        <img src="/storage/${img.image} " class="img-fluid h-100 w-100" style="object-fit: cover">
                                         <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
                                             style="width: 20px; height: 20px" 
                                             onclick="deleteVariantImage(${img.id}, this)">
@@ -706,7 +708,8 @@
 
             const removeBtn = document.createElement("button");
             removeBtn.innerHTML = '<i class="bi bi-x"></i>';
-            removeBtn.classList.add("btn", "btn-sm", "btn-danger", "position-absolute", "top-0", "end-0", "p-0", "m-1");
+            removeBtn.classList.add("btn", "btn-sm", "btn-danger", "position-absolute", "top-0", "end-0", "p-0",
+                "m-1");
             removeBtn.style.width = "20px";
             removeBtn.style.height = "20px";
             removeBtn.onclick = function(e) {

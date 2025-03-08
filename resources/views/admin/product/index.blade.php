@@ -59,10 +59,8 @@
                                                         <td>
                                                             @foreach ($product->productImage->take(1) as $image)
                                                                 <img style="height: 100px; width: 100px;"
-                                                                    src="{{ Storage::url($image->image) }}"
-                                                                    {{-- src="{{ asset('storage/product_images/' . $image->image) }}" --}}
-                                                                   
-                                                                alt="product">
+                                                                    src="{{ str_contains($image->image, 'demo-products') ? asset($image->image) : Storage::url($image->image) }}"
+                                                                    alt="product">
                                                             @endforeach
                                                         </td>
                                                         <td>{{ $product->sku }} </td>
@@ -90,7 +88,7 @@
                                                                                         <!-- Added <br> for new line -->
                                                                                         <span>Price: &#2547;
                                                                                             @foreach ($variant->prices as $price)
-                                                                                            {{ $price->price }}
+                                                                                                {{ $price->price }}
                                                                                             @endforeach
                                                                                         </span>
                                                                                     </p>

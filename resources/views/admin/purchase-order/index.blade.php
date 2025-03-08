@@ -72,7 +72,7 @@
                                                                 <div class="col-sm-3">
                                                                     <a href="{{ route('purchase-order.show', $purchase->id) }}"
                                                                         class="btn btn-primary btn-sm">
-                                                                        <i class="ri-edit-2-line"></i>
+                                                                        <i class="ri-eye-line"></i>
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-sm-3">

@@ -34,7 +34,16 @@ class ProductController extends Controller
         // $products = Cache::remember('products', now()->addMinutes(10), function () {
         //     return Product::with('variants', 'variants.prices', 'categories')->orderBy('id', 'desc')->get()->values();;
         // });
-        $products = Product::with('variants', 'productImage', 'variants.prices', 'categories')->get();
+        // $products = Product::with('variants', 'productImage', 'variants.prices', 'categories')->get();
+        $products = Product::select('id', 'name', 'sku', 'brand','unit')
+            ->with([
+                'variants:id,product_id,variant_value_name,quantity',
+                'productImage:id,product_id,image',
+                'variants.prices:id,product_variant_id,price',
+                'categories:id,name'
+            ])
+            ->get();
+            // dd($products);
         return view('admin.product.index', compact('products'));
     }
 
@@ -437,7 +446,7 @@ class ProductController extends Controller
 
         // $product->variants()->delete();
 
-        
+
         // $product->prices()->delete();
 
         foreach ($product->productImage as $image) {

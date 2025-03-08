@@ -81,7 +81,7 @@ class PurchaseOrderController extends Controller
      */
     public function show(string $id)
     {
-        $purchaseOrder = PurchaseOrder::with('purchaseOrderItems', 'supplier', 'user')->find($id);
+        $purchaseOrder = PurchaseOrder::with('purchaseOrderItems', 'supplier', 'user', 'purchaseOrderItems.product', 'purchaseOrderItems.productVariant')->find($id);
 
         return view('admin.purchase-order.order-details', compact('purchaseOrder'));
     }

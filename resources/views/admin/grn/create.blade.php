@@ -1,0 +1,266 @@
+@extends('admin.layouts.master')
+@section('admin.content')
+    <div class="main-content">
+        <div class="top-bar">
+            <h4 class="mb-0">New Purchase</h4>
+            <a href="{{ route('purchase-order.index') }}" class="btn btn-primary">
+                <i class="bi bi-arrow-left"></i> Back to Purchases
+            </a>
+        </div>
+        <div class="container-fluid py-4">
+            <form id="purchaseForm" action="{{ route('purchase-order.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+
+                <!-- Selected Products Table -->
+                <div class="form-section mt-4">
+                    <div class="form-section-title">
+                        <h5 class="mb-0"><i class="bi bi-list-check text-primary"></i> Create GRN</h5>
+                    </div>
+                    <p style="margin-top: 10px;"><strong>Supplier:</strong> <span
+                            id="selectedSupplier">{{ $purchaseOrder->supplier?->name }}</span></p>
+                    <table class="table table-bordered" id="selectedProductsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Barcode</th>
+                                <th>Purchase Quantity</th>
+                                <th>Accepted Quantity</th>
+                                <th>Pending Quantity</th>
+                                <th>Receive Quantity</th>
+                                <th>Purchase Price</th>
+                                <th>Subtotal</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($purchaseOrder->purchaseOrderItems as $item)
+                                @php
+                                    $pendingQty = $item->purchase_quantity - $item->received_quantity;
+                                @endphp
+
+                                <tr>
+                                    <td>{{ $item->product?->name }} >>
+                                        {{ $item->productVariant->variant_value_name }}</td>
+                                    <td>{{ $item->productVariant->barcode }}</td>
+                                    <td>{{ $item->purchase_quantity }}</td>
+                                    <td>{{ $item->received_quantity }}</td>
+                                    <td>{{ $pendingQty }}</td>
+                                    <td><input type="number" value="0" min="0" /></td>
+                                    <td>{{ $item->purchase_price }}</td>
+                                    <td>{{ $item->subtotal }}</td>
+
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        <label class="form-label">Tax</label>
+                        <input type="tax" class="form-control" name="tax" value="{{ old('tax') }}" />
+                        @error('tax')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Discount Type</label>
+                        <select class="form-select" name="discount_type">
+                            <option>Choose</option>
+                            <option value="Amount" {{ old('discount_type') == 'Amount' ? 'selected' : '' }}>Amount</option>
+                            <option value="Percentage" {{ old('discount_type') == 'Percentage' ? 'selected' : '' }}>
+                                Percentage
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Discount</label>
+                        <input type="number" class="form-control" name="discount" value="{{ old('discount') }}" />
+                        @error('discount')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Shipping Cost</label>
+                        <input type="number" class="form-control" name="shipping_cost"
+                            value="{{ old('shipping_cost') }}" />
+                        @error('shipping_cost')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Note</label>
+                        <input type="text" class="form-control" name="note" value="{{ old('note') }}" />
+                        @error('note')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-section mt-4">
+                    <div class="row">
+                        <div class="col-md-4"> <!-- Left side small table -->
+                            <div class="form-section-title">
+                                <h5 class="mb-0"><i class="bi bi-receipt text-primary"></i> Summary</h5>
+                            </div>
+                            <table class="table table-sm table-bordered mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Sub total</th>
+                                        <th>Total Tax</th>
+                                        <th>Total Discount</th>
+                                        <th>Shipping Cost</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="totalSubtotal">0.00</td>
+                                        <td id="totalTax">0.00</td>
+                                        <td id="totalDiscount">0.00</td>
+                                        <td id="totalShipping">0.00</td>
+                                        <td id="totalPrice">0.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Hidden Input Fields for Summary -->
+                            <input type="hidden" name="total_quantity" id="totalQuantityInput" value="0">
+                            <input type="hidden" name="total_price" id="totalPriceInput" value="0.00">
+                        </div>
+                    </div>
+                </div>
+                <!-- Submit Buttons -->
+                <div class="text-end mt-4">
+                    <button type="button" class="btn btn-secondary me-2">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function calculateTotals() {
+            let totalSubtotal = 0;
+
+            document.querySelectorAll("#selectedProductsTable tbody tr").forEach((row) => {
+                let receiveQtyInput = row.querySelector("input[type='number']");
+                let purchasePrice = parseFloat(row.cells[6].innerText) || 0; // Purchase Price Column
+                let subtotalCell = row.cells[7]; // Subtotal Column
+                let pendingQty = parseFloat(row.cells[4].innerText) || 0; // Pending Quantity Column
+
+                let receiveQty = parseFloat(receiveQtyInput.value) || 0;
+
+                // ✅ Validation: Receive Quantity cannot be more than Pending Quantity
+                if (receiveQty > pendingQty) {
+                    alert("Receive Quantity cannot be greater than Pending Quantity!");
+                    receiveQtyInput.value = pendingQty; // Reset to max allowed value
+                    receiveQty = pendingQty;
+                }
+
+                let subtotal = receiveQty * purchasePrice;
+                subtotalCell.innerText = subtotal.toFixed(2);
+
+                totalSubtotal += subtotal;
+            });
+
+            let taxRate = parseFloat(document.querySelector("input[name='tax']").value) ||
+            0; // Tax as Percentage
+            let shippingCost = parseFloat(document.querySelector("input[name='shipping_cost']").value) || 0;
+            let discount = parseFloat(document.querySelector("input[name='discount']").value) || 0;
+            let discountType = document.querySelector("select[name='discount_type']").value;
+
+            // Calculate tax as percentage of subtotal
+            let taxAmount = (totalSubtotal * taxRate) / 100;
+
+            // Apply discount as percentage or fixed amount
+            let discountAmount = discountType === "Percentage" ? (totalSubtotal * discount) / 100 : discount;
+
+            let total = totalSubtotal + taxAmount + shippingCost - discountAmount;
+
+            document.getElementById("totalSubtotal").innerText = totalSubtotal.toFixed(2);
+            document.getElementById("totalTax").innerText =
+            `${taxRate.toFixed(2)}% (${taxAmount.toFixed(2)})`; // Show tax % and amount
+            document.getElementById("totalDiscount").innerText = discountType === "Percentage" ?
+                `${discount.toFixed(2)}% (${discountAmount.toFixed(2)})` : discountAmount.toFixed(2);
+            document.getElementById("totalShipping").innerText = shippingCost.toFixed(2);
+            document.getElementById("totalPrice").innerText = total.toFixed(2);
+        }
+
+        // Add event listeners for input fields
+        document.querySelectorAll("#selectedProductsTable input[type='number']").forEach((input) => {
+            input.addEventListener("input", calculateTotals);
+        });
+
+        document.querySelector("input[name='tax']").addEventListener("input", calculateTotals);
+        document.querySelector("input[name='shipping_cost']").addEventListener("input", calculateTotals);
+        document.querySelector("input[name='discount']").addEventListener("input", calculateTotals);
+        document.querySelector("select[name='discount_type']").addEventListener("change", calculateTotals);
+
+        // ✅ Call calculateTotals() once on page load to set the correct values
+        calculateTotals();
+    });
+</script>
+
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function calculateTotals() {
+            let totalSubtotal = 0;
+
+            document.querySelectorAll("#selectedProductsTable tbody tr").forEach((row) => {
+                let receiveQtyInput = row.querySelector("input[type='number']");
+                let purchasePrice = parseFloat(row.cells[6].innerText) || 0; // Purchase Price Column
+                let subtotalCell = row.cells[7]; // Subtotal Column
+                let pendingQty = parseFloat(row.cells[4].innerText) || 0; // Pending Quantity Column
+
+                let receiveQty = parseFloat(receiveQtyInput.value) || 0;
+
+                // ✅ Validation: Receive Quantity cannot be more than Pending Quantity
+                if (receiveQty > pendingQty) {
+                    alert("Receive Quantity cannot be greater than Pending Quantity!");
+                    receiveQtyInput.value = pendingQty; // Reset to max allowed value
+                    receiveQty = pendingQty;
+                }
+
+                let subtotal = receiveQty * purchasePrice;
+                subtotalCell.innerText = subtotal.toFixed(2);
+
+                totalSubtotal += subtotal;
+            });
+
+            let taxRate = parseFloat(document.querySelector("input[name='tax']").value) || 0; // Tax as Percentage
+            let shippingCost = parseFloat(document.querySelector("input[name='shipping_cost']").value) || 0;
+            let discount = parseFloat(document.querySelector("input[name='discount']").value) || 0;
+            let discountType = document.querySelector("select[name='discount_type']").value;
+
+            // Calculate tax as percentage of subtotal
+            let taxAmount = (totalSubtotal * taxRate) / 100;
+
+            // Apply discount as percentage or fixed amount
+            let discountAmount = discountType === "Percentage" ? (totalSubtotal * discount) / 100 : discount;
+
+            let total = totalSubtotal + taxAmount + shippingCost - discountAmount;
+
+            document.getElementById("totalSubtotal").innerText = totalSubtotal.toFixed(2);
+            document.getElementById("totalTax").innerText = ${taxRate.toFixed(2)}% (${taxAmount.toFixed(2)}); // Show tax % and amount
+            document.getElementById("totalDiscount").innerText = discountType === "Percentage" ? ${discount.toFixed(2)}% (${discountAmount.toFixed(2)}) : discountAmount.toFixed(2);
+            document.getElementById("totalShipping").innerText = shippingCost.toFixed(2);
+            document.getElementById("totalPrice").innerText = total.toFixed(2);
+        }
+
+        // Add event listeners for input fields
+        document.querySelectorAll("#selectedProductsTable input[type='number']").forEach((input) => {
+            input.addEventListener("input", calculateTotals);
+        });
+
+        document.querySelector("input[name='tax']").addEventListener("input", calculateTotals);
+        document.querySelector("input[name='shipping_cost']").addEventListener("input", calculateTotals);
+        document.querySelector("input[name='discount']").addEventListener("input", calculateTotals);
+        document.querySelector("select[name='discount_type']").addEventListener("change", calculateTotals);
+
+        calculateTotals();
+    });
+</script> --}}

@@ -52,7 +52,8 @@
                                                         {{-- <td>{{ $purchase->id }}</td> --}}
                                                         <td>
                                                             <strong>
-                                                                <a href="" style="color: rgb(32, 104, 212)">
+                                                                <a href="{{ route('create.grn', $purchase->id) }}"
+                                                                    style="color: rgb(32, 104, 212)">
                                                                     {{ $purchase->purchase_code }}
                                                                 </a>
                                                             </strong>

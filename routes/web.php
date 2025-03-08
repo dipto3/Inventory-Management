@@ -44,4 +44,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('purchase-order', App\Http\Controllers\Admin\PurchaseOrderController::class);
     Route::get('/insert-table-column', [App\Http\Controllers\Admin\AdminController::class, 'insertData'])->name('insert-data');
+
+    Route::get('/create-grn/{id}', [App\Http\Controllers\Admin\PurchaseOrderController::class, 'createGrn'])->name('create.grn');
 });

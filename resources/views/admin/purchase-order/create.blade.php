@@ -197,6 +197,5 @@
             $('#totalQuantityInput').val(totalQuantity);
             $('#totalPriceInput').val(totalAmount.toFixed(2));
         }
-
     });
 </script>

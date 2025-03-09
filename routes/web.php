@@ -29,9 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('category', App\Http\Controllers\Admin\CategoryController::class);
     Route::controller(CategoryController::class)->group(function () {
         Route::post('/category/update-ordering', 'updateOrdering')->name('category.updateOrdering');
-
     });
-
     Route::delete('/product/image/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteImage'])->name('product.image.delete');
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
     Route::resource('unit', App\Http\Controllers\Admin\UnitController::class);
@@ -45,5 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('purchase-order', App\Http\Controllers\Admin\PurchaseOrderController::class);
     Route::get('/insert-table-column', [App\Http\Controllers\Admin\AdminController::class, 'insertData'])->name('insert-data');
 
-    Route::get('/create-grn/{id}', [App\Http\Controllers\Admin\PurchaseOrderController::class, 'createGrn'])->name('create.grn');
+    Route::resource('purchase', App\Http\Controllers\Admin\PurchaseController::class);
+    Route::get('/create-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'createGrn'])->name('create.grn');
+
 });

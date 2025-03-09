@@ -39,7 +39,7 @@
                                             <thead>
                                                 <tr>
                                                     {{-- <th width="">ID</th> --}}
-                                                    <th width="10%">Purchase Code</th>
+                                                    <th width="10%">Purchase Order Code</th>
                                                     <th width="20%">Purchase Status</th>
                                                     <th width="5%">Purchase Date</th>
                                                     <th width="5%">Quantity</th>
@@ -54,7 +54,7 @@
                                                             <strong>
                                                                 <a href="{{ route('create.grn', $purchase->id) }}"
                                                                     style="color: rgb(32, 104, 212)">
-                                                                    {{ $purchase->purchase_code }}
+                                                                    {{ $purchase->purchase_order_code }}
                                                                 </a>
                                                             </strong>
 

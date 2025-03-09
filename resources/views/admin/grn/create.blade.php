@@ -8,7 +8,7 @@
             </a>
         </div>
         <div class="container-fluid py-4">
-            <form id="purchaseForm" action="{{ route('purchase-order.store') }}" method="post" enctype="multipart/form-data">
+            <form id="purchaseForm" action="{{ route('purchase.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Selected Products Table -->
@@ -18,6 +18,13 @@
                     </div>
                     <p style="margin-top: 10px;"><strong>Supplier:</strong> <span
                             id="selectedSupplier">{{ $purchaseOrder->supplier?->name }}</span></p>
+                    <div class="col-md-6" style="margin-bottom: 10px;">
+                        <label class="form-label">Receive Date</label>
+                        <input type="date" class="form-control" name="receive_date" value="{{ old('receive_date') }}" />
+                        @error('receive_date')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <table class="table table-bordered" id="selectedProductsTable">
                         <thead>
                             <tr>
@@ -36,6 +43,7 @@
                             @foreach ($purchaseOrder->purchaseOrderItems as $item)
                                 @php
                                     $pendingQty = $item->purchase_quantity - $item->received_quantity;
+                                    
                                 @endphp
 
                                 <tr>
@@ -45,10 +53,14 @@
                                     <td>{{ $item->purchase_quantity }}</td>
                                     <td>{{ $item->received_quantity }}</td>
                                     <td>{{ $pendingQty }}</td>
-                                    <td><input type="number" value="0" min="0" /></td>
+                                    <td><input type="number" value="0" min="0" name="receive_quantity" /></td>
                                     <td>{{ $item->purchase_price }}</td>
-                                    <td>{{ $item->subtotal }}</td>
+                                    <td></td>
 
+                                    <input type="hidden" name="items[{{ $loop->index }}][product_variant_id]"
+                                        value="{{ $item->product_variant_id }}" />
+                                    <input type="hidden" name="items[{{ $loop->index }}][product_subtotal]"
+                                        value="" />
                                 </tr>
                             @endforeach
                         </tbody>
@@ -57,7 +69,7 @@
                 <div class="row g-3">
                     <div class="col-md-2">
                         <label class="form-label">Tax</label>
-                        <input type="tax" class="form-control" name="tax" value="{{ old('tax') }}" />
+                        <input type="number" class="form-control" name="tax" value="{{ old('tax') }}" />
                         @error('tax')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
@@ -108,6 +120,7 @@
                                 <thead>
                                     <tr>
                                         <th>Sub total</th>
+                                        <th>Total Quantity</th>
                                         <th>Total Tax</th>
                                         <th>Total Discount</th>
                                         <th>Shipping Cost</th>
@@ -117,10 +130,20 @@
                                 <tbody>
                                     <tr>
                                         <td id="totalSubtotal">0.00</td>
+                                        <td id="totalQuantity">0</td>
                                         <td id="totalTax">0.00</td>
                                         <td id="totalDiscount">0.00</td>
                                         <td id="totalShipping">0.00</td>
                                         <td id="totalPrice">0.00</td>
+
+                                        <!-- Hidden Input Fields for Summary -->
+                                        <input type="hidden" name="product_subtotal" id="totalSubtotalInput"
+                                            value="0.00">
+                                        <input type="hidden" name="total_quantity" id="totalQuantityInput" value="0">
+                                        <input type="hidden" name="total_price" id="totalPriceInput" value="0.00">
+                                        <input type="hidden" name="total_tax" id="totalTaxInput" value="0.00">
+                                        <input type="hidden" name="total_discount" id="totalDiscountInput"
+                                            value="0.00">
                                     </tr>
                                 </tbody>
                             </table>
@@ -145,9 +168,10 @@
     document.addEventListener("DOMContentLoaded", function() {
         function calculateTotals() {
             let totalSubtotal = 0;
+            let totalQuantity = 0; // ✅ নতুন ভেরিয়েবল
 
             document.querySelectorAll("#selectedProductsTable tbody tr").forEach((row) => {
-                let receiveQtyInput = row.querySelector("input[type='number']");
+                let receiveQtyInput = row.querySelector("input[name='receive_quantity']");
                 let purchasePrice = parseFloat(row.cells[6].innerText) || 0; // Purchase Price Column
                 let subtotalCell = row.cells[7]; // Subtotal Column
                 let pendingQty = parseFloat(row.cells[4].innerText) || 0; // Pending Quantity Column
@@ -165,10 +189,11 @@
                 subtotalCell.innerText = subtotal.toFixed(2);
 
                 totalSubtotal += subtotal;
+                totalQuantity += receiveQty; // ✅ Total Quantity Update
             });
 
             let taxRate = parseFloat(document.querySelector("input[name='tax']").value) ||
-            0; // Tax as Percentage
+                0; // Tax as Percentage
             let shippingCost = parseFloat(document.querySelector("input[name='shipping_cost']").value) || 0;
             let discount = parseFloat(document.querySelector("input[name='discount']").value) || 0;
             let discountType = document.querySelector("select[name='discount_type']").value;
@@ -181,17 +206,25 @@
 
             let total = totalSubtotal + taxAmount + shippingCost - discountAmount;
 
+            // ✅ Update HTML Elements
             document.getElementById("totalSubtotal").innerText = totalSubtotal.toFixed(2);
-            document.getElementById("totalTax").innerText =
-            `${taxRate.toFixed(2)}% (${taxAmount.toFixed(2)})`; // Show tax % and amount
+            document.getElementById("totalQuantity").innerText = totalQuantity; // ✅ Update Total Quantity
+            document.getElementById("totalTax").innerText = `${taxRate.toFixed(2)}% (${taxAmount.toFixed(2)})`;
             document.getElementById("totalDiscount").innerText = discountType === "Percentage" ?
                 `${discount.toFixed(2)}% (${discountAmount.toFixed(2)})` : discountAmount.toFixed(2);
             document.getElementById("totalShipping").innerText = shippingCost.toFixed(2);
             document.getElementById("totalPrice").innerText = total.toFixed(2);
+
+            // ✅ Update Hidden Input Fields
+            document.getElementById("totalQuantityInput").value = totalQuantity;
+            document.getElementById("totalSubtotalInput").value = totalSubtotal.toFixed(2);
+            document.getElementById("totalPriceInput").value = total.toFixed(2);
+            document.getElementById("totalTaxInput").value = taxAmount.toFixed(2);
+            document.getElementById("totalDiscountInput").value = discountAmount.toFixed(2);
         }
 
         // Add event listeners for input fields
-        document.querySelectorAll("#selectedProductsTable input[type='number']").forEach((input) => {
+        document.querySelectorAll("#selectedProductsTable input[name='receive_quantity']").forEach((input) => {
             input.addEventListener("input", calculateTotals);
         });
 
@@ -204,6 +237,7 @@
         calculateTotals();
     });
 </script>
+
 
 {{-- <script>
     document.addEventListener("DOMContentLoaded", function () {

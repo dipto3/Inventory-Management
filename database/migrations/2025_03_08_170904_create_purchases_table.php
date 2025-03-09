@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+            $table->string('purchase_code')->unique();
+            $table->foreignId('purchase_order_id')->constrained('purchase_orders')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->date('receive_date');
+            $table->string('payment_status');
+            $table->integer('total_receive_quantity');
+            $table->string('discount_type')->nullable();
+            $table->decimal('total_discount')->default(0);
+            $table->decimal('total_tax')->default(0);
+            $table->decimal('total_shipping_cost')->default(0);
+            $table->decimal('product_subtotal');
+            $table->decimal('grand_total');
             $table->timestamps();
         });
     }

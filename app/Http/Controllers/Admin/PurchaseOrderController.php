@@ -44,11 +44,11 @@ class PurchaseOrderController extends Controller
         // dd($request->all());
         DB::beginTransaction();
         try {
-            $purchaseCode = 'PO-' . date('Ymd') . '-' . str_pad(PurchaseOrder::count() + 1, 4, '0', STR_PAD_LEFT);
+            $purchaseOrderCode = 'PRO-' . date('Ymd') . '-' . str_pad(PurchaseOrder::count() + 1, 4, '0', STR_PAD_LEFT);
             $purchaseOrder = PurchaseOrder::create([
                 'supplier_id' => $request->supplier,
                 'purchase_date' => $request->purchase_date,
-                'purchase_code' => $purchaseCode,
+                'purchase_order_code' => $purchaseOrderCode,
                 'total_quantity' => $request->total_quantity,
                 'total_price' => $request->total_price,
                 'purchase_status' => 'pending',
@@ -110,10 +110,5 @@ class PurchaseOrderController extends Controller
         //
     }
 
-    public function createGrn($id)
-    {
-        $purchaseOrder = PurchaseOrder::with('purchaseOrderItems', 'supplier', 'user', 'purchaseOrderItems.product', 'purchaseOrderItems.productVariant')->find($id);
-        // dd($purchaseOrder);
-        return view('admin.grn.create', compact('purchaseOrder'));
-    }
+   
 }

@@ -60,7 +60,15 @@
 
                                                         </td>
                                                         <td class="status">
-                                                            {{ $purchase->purchase_status }}
+                                                            @if ($purchase->purchase_status == 'pending')
+                                                                <span class="badge bg-info">Pending</span>
+                                                            @elseif ($purchase->purchase_status == 'partial')
+                                                            <span class="badge bg-warning">Partial</span>
+                                                            @elseif ($purchase->purchase_status == 'completed')
+                                                            <span class="badge bg-success">Completed</span>
+                                                            @else
+                                                            <span class="badge bg-danger">Something Wrong!</span>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             {{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d-m-Y') }}

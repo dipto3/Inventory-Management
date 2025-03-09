@@ -8,7 +8,8 @@
             </a>
         </div>
         <div class="container-fluid py-4">
-            <form id="purchaseForm" action="{{ route('purchase.store') }}" method="post" enctype="multipart/form-data">
+            <form id="purchaseForm" action="{{ route('store.grn', $purchaseOrder->id) }}" method="post"
+                enctype="multipart/form-data">
                 @csrf
 
                 <!-- Selected Products Table -->
@@ -36,14 +37,12 @@
                                 <th>Receive Quantity</th>
                                 <th>Purchase Price</th>
                                 <th>Subtotal</th>
-
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($purchaseOrder->purchaseOrderItems as $item)
                                 @php
                                     $pendingQty = $item->purchase_quantity - $item->received_quantity;
-                                    
                                 @endphp
 
                                 <tr>
@@ -53,14 +52,18 @@
                                     <td>{{ $item->purchase_quantity }}</td>
                                     <td>{{ $item->received_quantity }}</td>
                                     <td>{{ $pendingQty }}</td>
-                                    <td><input type="number" value="0" min="0" name="receive_quantity" /></td>
+                                    <td><input type="number" value="0" min="0"
+                                            name="items[{{ $loop->index }}][receive_quantity]" /></td>
                                     <td>{{ $item->purchase_price }}</td>
-                                    <td></td>
+                                    <td><span class="subtotal" data-purchase-price="{{ $item->purchase_price }}"></span>
+                                    </td>
 
                                     <input type="hidden" name="items[{{ $loop->index }}][product_variant_id]"
                                         value="{{ $item->product_variant_id }}" />
                                     <input type="hidden" name="items[{{ $loop->index }}][product_subtotal]"
-                                        value="" />
+                                        class="product_subtotal" value="0" />
+                                    <input type="hidden" name="items[{{ $loop->index }}][purchase_price]"
+                                        value="{{ $item->purchase_price }}" />
                                 </tr>
                             @endforeach
                         </tbody>
@@ -144,13 +147,14 @@
                                         <input type="hidden" name="total_tax" id="totalTaxInput" value="0.00">
                                         <input type="hidden" name="total_discount" id="totalDiscountInput"
                                             value="0.00">
+
                                     </tr>
                                 </tbody>
                             </table>
 
-                            <!-- Hidden Input Fields for Summary -->
+                            {{-- <!-- Hidden Input Fields for Summary -->
                             <input type="hidden" name="total_quantity" id="totalQuantityInput" value="0">
-                            <input type="hidden" name="total_price" id="totalPriceInput" value="0.00">
+                            <input type="hidden" name="total_price" id="totalPriceInput" value="0.00"> --}}
                         </div>
                     </div>
                 </div>
@@ -168,17 +172,21 @@
     document.addEventListener("DOMContentLoaded", function() {
         function calculateTotals() {
             let totalSubtotal = 0;
-            let totalQuantity = 0; // ✅ নতুন ভেরিয়েবল
+            let totalQuantity = 0;
 
             document.querySelectorAll("#selectedProductsTable tbody tr").forEach((row) => {
-                let receiveQtyInput = row.querySelector("input[name='receive_quantity']");
+                let receiveQtyInput = row.querySelector(
+                    "input[name^='items'][name$='[receive_quantity]']");
                 let purchasePrice = parseFloat(row.cells[6].innerText) || 0; // Purchase Price Column
-                let subtotalCell = row.cells[7]; // Subtotal Column
+                let subtotalCell = row.querySelector(".subtotal"); // Subtotal Cell
                 let pendingQty = parseFloat(row.cells[4].innerText) || 0; // Pending Quantity Column
 
                 let receiveQty = parseFloat(receiveQtyInput.value) || 0;
 
-                // ✅ Validation: Receive Quantity cannot be more than Pending Quantity
+                // Debugging: Log values
+                console.log('Purchase Price:', purchasePrice, 'Receive Quantity:', receiveQty);
+
+                // Validate that Receive Quantity cannot be more than Pending Quantity
                 if (receiveQty > pendingQty) {
                     alert("Receive Quantity cannot be greater than Pending Quantity!");
                     receiveQtyInput.value = pendingQty; // Reset to max allowed value
@@ -188,34 +196,36 @@
                 let subtotal = receiveQty * purchasePrice;
                 subtotalCell.innerText = subtotal.toFixed(2);
 
+                // Update hidden input for subtotal
+                row.querySelector("input[name^='items'][name$='[product_subtotal]']").value = subtotal
+                    .toFixed(2);
+
                 totalSubtotal += subtotal;
-                totalQuantity += receiveQty; // ✅ Total Quantity Update
+                totalQuantity += receiveQty;
             });
 
-            let taxRate = parseFloat(document.querySelector("input[name='tax']").value) ||
-                0; // Tax as Percentage
+            // Debugging: Log total quantities and subtotals
+            console.log('Total Subtotal:', totalSubtotal, 'Total Quantity:', totalQuantity);
+
+            let taxRate = parseFloat(document.querySelector("input[name='tax']").value) || 0;
             let shippingCost = parseFloat(document.querySelector("input[name='shipping_cost']").value) || 0;
             let discount = parseFloat(document.querySelector("input[name='discount']").value) || 0;
             let discountType = document.querySelector("select[name='discount_type']").value;
 
-            // Calculate tax as percentage of subtotal
             let taxAmount = (totalSubtotal * taxRate) / 100;
-
-            // Apply discount as percentage or fixed amount
             let discountAmount = discountType === "Percentage" ? (totalSubtotal * discount) / 100 : discount;
-
             let total = totalSubtotal + taxAmount + shippingCost - discountAmount;
 
-            // ✅ Update HTML Elements
+            // Update HTML Elements
             document.getElementById("totalSubtotal").innerText = totalSubtotal.toFixed(2);
-            document.getElementById("totalQuantity").innerText = totalQuantity; // ✅ Update Total Quantity
+            document.getElementById("totalQuantity").innerText = totalQuantity;
             document.getElementById("totalTax").innerText = `${taxRate.toFixed(2)}% (${taxAmount.toFixed(2)})`;
             document.getElementById("totalDiscount").innerText = discountType === "Percentage" ?
                 `${discount.toFixed(2)}% (${discountAmount.toFixed(2)})` : discountAmount.toFixed(2);
             document.getElementById("totalShipping").innerText = shippingCost.toFixed(2);
             document.getElementById("totalPrice").innerText = total.toFixed(2);
 
-            // ✅ Update Hidden Input Fields
+            // Update hidden input fields
             document.getElementById("totalQuantityInput").value = totalQuantity;
             document.getElementById("totalSubtotalInput").value = totalSubtotal.toFixed(2);
             document.getElementById("totalPriceInput").value = total.toFixed(2);
@@ -224,77 +234,15 @@
         }
 
         // Add event listeners for input fields
-        document.querySelectorAll("#selectedProductsTable input[name='receive_quantity']").forEach((input) => {
+        document.querySelectorAll("input[name^='items'][name$='[receive_quantity]']").forEach((input) => {
             input.addEventListener("input", calculateTotals);
         });
-
         document.querySelector("input[name='tax']").addEventListener("input", calculateTotals);
         document.querySelector("input[name='shipping_cost']").addEventListener("input", calculateTotals);
         document.querySelector("input[name='discount']").addEventListener("input", calculateTotals);
         document.querySelector("select[name='discount_type']").addEventListener("change", calculateTotals);
 
-        // ✅ Call calculateTotals() once on page load to set the correct values
+        // Initial calculation
         calculateTotals();
     });
 </script>
-
-
-{{-- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        function calculateTotals() {
-            let totalSubtotal = 0;
-
-            document.querySelectorAll("#selectedProductsTable tbody tr").forEach((row) => {
-                let receiveQtyInput = row.querySelector("input[type='number']");
-                let purchasePrice = parseFloat(row.cells[6].innerText) || 0; // Purchase Price Column
-                let subtotalCell = row.cells[7]; // Subtotal Column
-                let pendingQty = parseFloat(row.cells[4].innerText) || 0; // Pending Quantity Column
-
-                let receiveQty = parseFloat(receiveQtyInput.value) || 0;
-
-                // ✅ Validation: Receive Quantity cannot be more than Pending Quantity
-                if (receiveQty > pendingQty) {
-                    alert("Receive Quantity cannot be greater than Pending Quantity!");
-                    receiveQtyInput.value = pendingQty; // Reset to max allowed value
-                    receiveQty = pendingQty;
-                }
-
-                let subtotal = receiveQty * purchasePrice;
-                subtotalCell.innerText = subtotal.toFixed(2);
-
-                totalSubtotal += subtotal;
-            });
-
-            let taxRate = parseFloat(document.querySelector("input[name='tax']").value) || 0; // Tax as Percentage
-            let shippingCost = parseFloat(document.querySelector("input[name='shipping_cost']").value) || 0;
-            let discount = parseFloat(document.querySelector("input[name='discount']").value) || 0;
-            let discountType = document.querySelector("select[name='discount_type']").value;
-
-            // Calculate tax as percentage of subtotal
-            let taxAmount = (totalSubtotal * taxRate) / 100;
-
-            // Apply discount as percentage or fixed amount
-            let discountAmount = discountType === "Percentage" ? (totalSubtotal * discount) / 100 : discount;
-
-            let total = totalSubtotal + taxAmount + shippingCost - discountAmount;
-
-            document.getElementById("totalSubtotal").innerText = totalSubtotal.toFixed(2);
-            document.getElementById("totalTax").innerText = ${taxRate.toFixed(2)}% (${taxAmount.toFixed(2)}); // Show tax % and amount
-            document.getElementById("totalDiscount").innerText = discountType === "Percentage" ? ${discount.toFixed(2)}% (${discountAmount.toFixed(2)}) : discountAmount.toFixed(2);
-            document.getElementById("totalShipping").innerText = shippingCost.toFixed(2);
-            document.getElementById("totalPrice").innerText = total.toFixed(2);
-        }
-
-        // Add event listeners for input fields
-        document.querySelectorAll("#selectedProductsTable input[type='number']").forEach((input) => {
-            input.addEventListener("input", calculateTotals);
-        });
-
-        document.querySelector("input[name='tax']").addEventListener("input", calculateTotals);
-        document.querySelector("input[name='shipping_cost']").addEventListener("input", calculateTotals);
-        document.querySelector("input[name='discount']").addEventListener("input", calculateTotals);
-        document.querySelector("select[name='discount_type']").addEventListener("change", calculateTotals);
-
-        calculateTotals();
-    });
-</script> --}}

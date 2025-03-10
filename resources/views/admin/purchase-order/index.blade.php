@@ -84,9 +84,7 @@
                                                                         <i class="ri-eye-line"></i>
                                                                     </a>
                                                                 </div>
-                                                                <div class="col-sm-3">
-                                                                    Duplicate
-                                                                </div>
+                                                                
                                                             </div>
                                                         </td>
                                                     </tr>

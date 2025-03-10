@@ -38,26 +38,24 @@
                                         <table class="table table-striped" id="example">
                                             <thead>
                                                 <tr>
-                                                    <th >Purchase Code</th>
+                                                    <th>Purchase Code</th>
                                                     <th>Payment Status</th>
-                                                    <th >Received Quantity</th>
-                                                    <th >Purchase Order Code</th>
-                                                    <th >Purchase Date</th>
+                                                    <th>Received Quantity</th>
+                                                    <th>Purchase Order Code</th>
+                                                    <th>Purchase Date</th>
 
-                                                    <th >Action</th>
+                                                    <th style="width: 30%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($purchases as $purchase)
                                                     <tr>
-
                                                         <td>
                                                             <strong>
                                                                 <a href="" style="color: rgb(32, 104, 212)">
                                                                     {{ $purchase->purchase_code }}
                                                                 </a>
                                                             </strong>
-
                                                         </td>
                                                         <td class="status">
                                                             @if ($purchase->payment_status == 'pending')
@@ -83,18 +81,37 @@
 
                                                         <td>
                                                             <div class="row">
-                                                                <div class="col-sm-3">
-                                                                    <a href="" class="btn btn-primary btn-sm">
+                                                                <div class="col-sm-2">
+                                                                    <a href="" class="btn btn-primary btn-sm"
+                                                                        title="View Details">
                                                                         <i class="ri-eye-line"></i>
                                                                     </a>
                                                                 </div>
-                                                                <div class="col-sm-3">
+
+                                                                <div class="col-sm-2">
+                                                                    <button class="btn btn-sm btn-success"
+                                                                        title="Make Payment" data-bs-toggle="modal"
+                                                                        value="{{ $purchase->id }}"
+                                                                        data-bs-target="#makePaymentModal{{ $purchase->id }}"><i
+                                                                            class="las la-money-check-alt"></i>
+                                                                    </button>
+
+                                                                </div>
+
+                                                                <div class="col-sm-2">
+                                                                    <button class="btn btn-sm btn-success"
+                                                                        title="Payment History" title="Make Payment"
+                                                                        data-bs-toggle="modal" value=""
+                                                                        data-bs-target="#editSupplierModal">
+                                                                        <i class="las la-money-check"></i>
+                                                                    </button>
 
                                                                 </div>
                                                             </div>
-                                                        </td>
 
+                                                        </td>
                                                     </tr>
+                                                    @include('admin.grn.make-payment')
                                                 @endforeach
                                             </tbody>
                                         </table>

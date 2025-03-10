@@ -111,6 +111,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('purchase-order.index') }}" class="nav-link">Purchase Order</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('purchase.index') }}" class="nav-link">Purchase</a>
+                            </li>
                             
                         </ul>
                     </div>

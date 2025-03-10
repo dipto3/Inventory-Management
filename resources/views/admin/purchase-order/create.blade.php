@@ -47,9 +47,10 @@
 
                         <div class="col-md-6">
                             <label class="form-label">Purchase Date</label>
-                            <input type="date" class="form-control" name="purchase_date">
+                            <input type="date" class="form-control" name="purchase_date" value="{{ date('Y-m-d') }}"
+                                min="{{ date('Y-m-d') }}">
                         </div>
-                        
+
                     </div>
 
                 </div>

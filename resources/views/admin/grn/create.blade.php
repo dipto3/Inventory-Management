@@ -21,7 +21,8 @@
                             id="selectedSupplier">{{ $purchaseOrder->supplier?->name }}</span></p>
                     <div class="col-md-6" style="margin-bottom: 10px;">
                         <label class="form-label">Receive Date</label>
-                        <input type="date" class="form-control" name="receive_date" value="{{ old('receive_date') }}" />
+                        <input type="date" class="form-control" name="receive_date" value="{{ date('Y-m-d') }}"
+                            min="{{ date('Y-m-d') }}" />
                         @error('receive_date')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror

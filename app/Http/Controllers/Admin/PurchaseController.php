@@ -81,15 +81,24 @@ class PurchaseController extends Controller
             }
         }
         $purchaseOrder = PurchaseOrder::find($id);
-        if ($purchaseOrder->total_quantity == $purchase->total_receive_quantity) {
+        if($purchaseOrder){
+            $totalReceived = Purchase::where('purchase_order_id', $id)->sum('total_receive_quantity');
+
             $purchaseOrder->update([
-                'purchase_status' => 'completed',
-            ]);
-        } else {
-            $purchaseOrder->update([
-                'purchase_status' => 'partial',
+                'purchase_status'  => ($totalReceived == $purchaseOrder->total_quantity) ? 'completed' : 'partial',
             ]);
         }
+
+
+        // if ($purchaseOrder->total_quantity == $purchase->total_receive_quantity) {
+        //     $purchaseOrder->update([
+        //         'purchase_status' => 'completed',
+        //     ]);
+        // } else {
+        //     $purchaseOrder->update([
+        //         'purchase_status' => 'partial',
+        //     ]);
+        // }
 
         DB::commit();
         return redirect()->route('purchase.index')->with('success', 'Purchase created successfully');

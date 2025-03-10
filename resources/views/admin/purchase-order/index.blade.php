@@ -71,7 +71,7 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            {{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d-m-Y') }}
+                                                            {{ \Carbon\Carbon::parse($purchase->purchase_date)->format('d F, Y') }}
                                                         </td>
                                                         <td>
                                                             {{ $purchase->total_quantity }}

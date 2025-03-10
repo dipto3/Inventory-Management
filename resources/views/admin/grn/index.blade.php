@@ -38,16 +38,64 @@
                                         <table class="table table-striped" id="example">
                                             <thead>
                                                 <tr>
-                                                    {{-- <th width="">ID</th>
-                                                    <th width="10%">Purchase Order Code</th>
-                                                    <th width="20%">Purchase Status</th>
-                                                    <th width="5%">Purchase Date</th>
-                                                    <th width="5%">Quantity</th>
-                                                    <th width="20%">Action</th> --}}
+                                                    <th >Purchase Code</th>
+                                                    <th>Payment Status</th>
+                                                    <th >Received Quantity</th>
+                                                    <th >Purchase Order Code</th>
+                                                    <th >Purchase Date</th>
+
+                                                    <th >Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
+                                                @foreach ($purchases as $purchase)
+                                                    <tr>
+
+                                                        <td>
+                                                            <strong>
+                                                                <a href="" style="color: rgb(32, 104, 212)">
+                                                                    {{ $purchase->purchase_code }}
+                                                                </a>
+                                                            </strong>
+
+                                                        </td>
+                                                        <td class="status">
+                                                            @if ($purchase->payment_status == 'pending')
+                                                                <span class="badge bg-info">Pending</span>
+                                                            @elseif ($purchase->payment_status == 'partial')
+                                                                <span class="badge bg-warning">Partial</span>
+                                                            @elseif ($purchase->payment_status == 'completed')
+                                                                <span class="badge bg-success">Completed</span>
+                                                            @else
+                                                                <span class="badge bg-danger">Something Wrong!</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            {{ $purchase->total_receive_quantity }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $purchase->purchaseOrder?->purchase_order_code }}
+                                                        </td>
+                                                        <td>
+
+                                                            {{ \Carbon\Carbon::parse($purchase->purchaseOrder?->purchase_date)->format('d F, Y') }}
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <a href="" class="btn btn-primary btn-sm">
+                                                                        <i class="ri-eye-line"></i>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-sm-3">
+
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>

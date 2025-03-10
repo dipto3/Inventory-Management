@@ -17,7 +17,9 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        return view('admin.grn.index');
+        $purchases = Purchase::with('purchaseOrder',   'purchaseOrder.purchaseOrderItems')->orderBy('id', 'desc')->get();
+        // dd($purchases);
+        return view('admin.grn.index',compact('purchases'));
     }
 
     /**

@@ -59,11 +59,11 @@
                                                         </td>
                                                         <td class="status">
                                                             @if ($purchase->payment_status == 'pending')
-                                                                <span class="badge bg-info">Pending</span>
+                                                                <span class="badge bg-info">Unpaid</span>
                                                             @elseif ($purchase->payment_status == 'partial')
                                                                 <span class="badge bg-warning">Partial</span>
                                                             @elseif ($purchase->payment_status == 'completed')
-                                                                <span class="badge bg-success">Completed</span>
+                                                                <span class="badge bg-success">Paid</span>
                                                             @else
                                                                 <span class="badge bg-danger">Something Wrong!</span>
                                                             @endif
@@ -88,15 +88,16 @@
                                                                     </a>
                                                                 </div>
 
-                                                                <div class="col-sm-2">
-                                                                    <button class="btn btn-sm btn-success"
-                                                                        title="Make Payment" data-bs-toggle="modal"
-                                                                        value="{{ $purchase->id }}"
-                                                                        data-bs-target="#makePaymentModal{{ $purchase->id }}"><i
-                                                                            class="las la-money-check-alt"></i>
-                                                                    </button>
-
-                                                                </div>
+                                                                @if ($purchase->payment_status != 'completed')
+                                                                    <div class="col-sm-2">
+                                                                        <button class="btn btn-sm btn-success"
+                                                                            title="Make Payment" data-bs-toggle="modal"
+                                                                            value="{{ $purchase->id }}"
+                                                                            data-bs-target="#makePaymentModal{{ $purchase->id }}"><i
+                                                                                class="las la-money-check-alt"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                @endif
 
                                                                 <div class="col-sm-2">
                                                                     <button class="btn btn-sm btn-success"

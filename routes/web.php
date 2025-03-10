@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('purchase', App\Http\Controllers\Admin\PurchaseController::class);
     Route::get('/create-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'createGrn'])->name('create.grn');
-    Route::post('/store-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'storeGrn'])->name('store.grn');
+    Route::post('/store-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'storeGrn'])->name('store.grn');  
 
+    Route::post('purchase-payment-store', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'storePayment'])->name('purchase.payment.store');  
 });

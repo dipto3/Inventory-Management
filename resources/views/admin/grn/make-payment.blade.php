@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('purchase.payment.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row" style="padding: 10px;">
                     <div class="col-md-4">
@@ -22,7 +22,7 @@
                         <div class="card" style="background-color: rgb(54, 151, 91);color: white;">
                             <div class="card-body">
                                 <h6 class="card-title" style="color: white;">Paid Amount</h6>
-                                <p class="card-text">{{ $purchase->total_amount }}1000</p>
+                                <p class="card-text">{{ $purchase->purchasePayments->sum('amount') }}</p>
                             </div>
                         </div>
                     </div>
@@ -30,13 +30,15 @@
                         <div class="card" style="background-color: rgb(134, 60, 60);color: white;">
                             <div class="card-body">
                                 <h6 class="card-title" style="color: white;">Due Amount</h6>
-                                <p class="card-text">{{ $purchase->total_amount }}1000</p>
+                                <p class="card-text">
+                                    {{ max(0, $purchase->grand_total - $purchase->purchasePayments->sum('amount')) }}
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <input type="hidden" name="supplier_id" id="purchase_id" value="{{ $purchase->id }}"
+                <input type="hidden" name="purchase_id" id="purchase_id" value="{{ $purchase->id }}"
                     class="form-control">
                 <div class="modal-body">
                     <div class="mb-3">
@@ -62,6 +64,11 @@
                     <div class="mb-3">
                         <label>Account Number(to)</label>
                         <input type="number" class="form-control" name="account_number_to" value="" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Payment Date</label>
+                        <input type="date" class="form-control" name="payment_date" value="{{ date('Y-m-d') }}"
+                            required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Note</label>

@@ -100,10 +100,10 @@
                                                                 @endif
 
                                                                 <div class="col-sm-2">
-                                                                    <button class="btn btn-sm btn-success"
+                                                                    <button class="btn btn-sm btn-info"
                                                                         title="Payment History" title="Make Payment"
-                                                                        data-bs-toggle="modal" value=""
-                                                                        data-bs-target="#editSupplierModal">
+                                                                        data-bs-toggle="modal" value="{{ $purchase->id }}"
+                                                                        data-bs-target="#paymentHistoryModal{{ $purchase->id }}">
                                                                         <i class="las la-money-check"></i>
                                                                     </button>
 
@@ -112,7 +112,9 @@
 
                                                         </td>
                                                     </tr>
+                                                   
                                                     @include('admin.grn.make-payment')
+                                                    @include('admin.grn.payment-history')
                                                 @endforeach
                                             </tbody>
                                         </table>

@@ -33,4 +33,11 @@ class PurchasePaymentController extends Controller
 
         return redirect()->back()->with('success', 'Payment created successfully');
     }
+
+    public function viewPayment(Request $request, $id)
+    {
+        $purchase = Purchase::with('purchasePayments', 'purchaseOrder.supplier','purchaseItems.product','purchaseItems.productVariant')->find($id);
+        // dd($purchase);
+        return view('admin.grn.view', compact('purchase'));
+    }
 }

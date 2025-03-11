@@ -47,5 +47,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/create-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'createGrn'])->name('create.grn');
     Route::post('/store-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'storeGrn'])->name('store.grn');  
 
-    Route::post('purchase-payment-store', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'storePayment'])->name('purchase.payment.store');  
+    Route::post('purchase-payment-store', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'storePayment'])->name('purchase.payment.store');
+    Route::get('purchase-payment-view/{id}', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'viewPayment'])->name('purchase.payment.view');  
 });

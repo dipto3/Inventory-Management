@@ -82,8 +82,8 @@
                                                         <td>
                                                             <div class="row">
                                                                 <div class="col-sm-2">
-                                                                    <a href="" class="btn btn-primary btn-sm"
-                                                                        title="View Details">
+                                                                    <a href="{{ route('purchase.payment.view', $purchase->id) }}"
+                                                                        class="btn btn-primary btn-sm" title="View Details">
                                                                         <i class="ri-eye-line"></i>
                                                                     </a>
                                                                 </div>
@@ -112,7 +112,7 @@
 
                                                         </td>
                                                     </tr>
-                                                   
+
                                                     @include('admin.grn.make-payment')
                                                     @include('admin.grn.payment-history')
                                                 @endforeach

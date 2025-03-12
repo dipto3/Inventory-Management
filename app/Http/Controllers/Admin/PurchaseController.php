@@ -45,7 +45,7 @@ class PurchaseController extends Controller
             DB::beginTransaction();
             $purchase = Purchase::create([
                 'purchase_order_id' => $id,
-                'purchase_code' => 'PR-' . date('Ymd') . '-' . str_pad(Purchase::count() + 1, 4, '0', STR_PAD_LEFT),
+                'purchase_code' => 'PR-' . date('Ymd') . '-' . str_pad(Purchase::count() + 1, 3, '0', STR_PAD_LEFT),
                 'receive_date' => $request->receive_date,
                 'discount' => $request->discount,
                 'discount_type' => $request->discount_type,
@@ -62,6 +62,10 @@ class PurchaseController extends Controller
             ]);
             if ($request->has('items')) {
                 foreach ($request->items as $item) {
+                    // if quantity is 0 then not add in purchase items
+                    if ($item['receive_quantity'] <= 0) {
+                        continue;
+                    }
                     $findProduct = ProductVariant::find($item['product_variant_id']);
                     $findProduct->update([
                         'quantity' => $findProduct->quantity + $item['receive_quantity'],

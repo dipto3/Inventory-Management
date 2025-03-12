@@ -33,9 +33,7 @@
                                 <th>Name</th>
                                 <th>Barcode</th>
                                 <th>Purchase Quantity</th>
-                                <th>Accepted Quantity</th>
-                                <th>Pending Quantity</th>
-                                <th>Receive Quantity</th>
+                              
                                 <th>Purchase Price</th>
                                 <th>Subtotal</th>
                             </tr>
@@ -45,12 +43,10 @@
                                 <tr>
                                     <td>{{ $item->product?->name }}</td>
                                     <td>{{ $item->productVariant?->barcode }}</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1
+                                    <td>{{ $item->receive_quantity }}</td>
+                                    
+                                    <td>{{ $item->purchase_price }}</td>
+                                    <td>{{ $item->subtotal }}
                                     </td>
                                 </tr>
                             @endforeach

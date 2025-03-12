@@ -245,5 +245,16 @@
 
         // Initial calculation
         calculateTotals();
+        document.getElementById("purchaseForm").addEventListener("submit", function(event) {
+            let totalReceiveQuantity = 0;
+            document.querySelectorAll("input[name^='items'][name$='[receive_quantity]']").forEach(input => {
+                totalReceiveQuantity += parseFloat(input.value) || 0;
+            });
+
+            if (totalReceiveQuantity === 0) {
+                alert("At least one Receive Quantity must be greater than 0!");
+                event.preventDefault(); // Prevent form submission
+            }
+        });
     });
 </script>

@@ -198,5 +198,10 @@
             $('#totalQuantityInput').val(totalQuantity);
             $('#totalPriceInput').val(totalAmount.toFixed(2));
         }
+        // Remove row when the "Remove" button is clicked
+        $(document).on('click', '.remove-product', function() {
+            $(this).closest('tr').remove(); // Remove the closest row to the clicked button
+            calculateSubtotal(); // Recalculate totals after removal
+        });
     });
 </script>

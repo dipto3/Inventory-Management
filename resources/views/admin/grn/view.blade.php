@@ -33,7 +33,7 @@
                                 <th>Name</th>
                                 <th>Barcode</th>
                                 <th>Purchase Quantity</th>
-                              
+
                                 <th>Purchase Price</th>
                                 <th>Subtotal</th>
                             </tr>
@@ -44,7 +44,7 @@
                                     <td>{{ $item->product?->name }}</td>
                                     <td>{{ $item->productVariant?->barcode }}</td>
                                     <td>{{ $item->receive_quantity }}</td>
-                                    
+
                                     <td>{{ $item->purchase_price }}</td>
                                     <td>{{ $item->subtotal }}
                                     </td>
@@ -66,6 +66,7 @@
                                         <th>Sub total</th>
                                         <th>Total Quantity</th>
                                         <th>Total Tax</th>
+                                        <th>Discount Type</th>
                                         <th>Total Discount</th>
                                         <th>Shipping Cost</th>
                                         <th>Total</th>
@@ -73,14 +74,13 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td id="totalSubtotal">0.00</td>
-                                        <td id="totalQuantity">0</td>
-                                        <td id="totalTax">0.00</td>
-                                        <td id="totalDiscount">0.00</td>
-                                        <td id="totalShipping">0.00</td>
-                                        <td id="totalPrice">0.00</td>
-
-
+                                        <td id="totalSubtotal">{{ $purchase->product_subtotal }}</td>
+                                        <td id="totalQuantity">{{ $purchase->total_receive_quantity }}</td>
+                                        <td id="totalTax">{{ $purchase->total_tax }}</td>
+                                        <td id="totalDiscount">{{ $purchase->discount_type }}</td>
+                                        <td id="totalDiscount">{{ $purchase->total_discount }}</td>
+                                        <td id="totalShipping">{{ $purchase->total_shipping_cost }}</td>
+                                        <td id="totalPrice">{{ $purchase->grand_total }}</td>
 
                                     </tr>
                                 </tbody>

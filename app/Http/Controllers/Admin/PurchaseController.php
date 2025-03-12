@@ -43,6 +43,18 @@ class PurchaseController extends Controller
         // // dd($id);
         try {
             DB::beginTransaction();
+             // if quantity is 0 then not add in purchase
+            $totalReceiveQuantity = 0;
+            $validItems  = [];
+            foreach ($request->items as $item) {
+                if ($item['receive_quantity'] > 0) {
+                    $validItems[] = $item;
+                    $totalReceiveQuantity += $item['receive_quantity'];
+                }
+            }
+            if (empty($validItems)) {
+                return redirect()->back()->with('error', 'Please select at least one item');
+            }
             $purchase = Purchase::create([
                 'purchase_order_id' => $id,
                 'purchase_code' => 'PR-' . date('Ymd') . '-' . str_pad(Purchase::count() + 1, 3, '0', STR_PAD_LEFT),
@@ -56,7 +68,7 @@ class PurchaseController extends Controller
                 'total_discount' => $request->total_discount,
                 'product_subtotal' => $request->product_subtotal,
                 'note' => $request->note,
-                'shipping_cost' => $request->shipping_cost,
+                'total_shipping_cost' => $request->shipping_cost,
                 'payment_status' => 'pending',
                 'user_id' => auth()->user()->id,
             ]);
@@ -94,18 +106,6 @@ class PurchaseController extends Controller
                     'purchase_status'  => ($totalReceived == $purchaseOrder->total_quantity) ? 'completed' : 'partial',
                 ]);
             }
-
-
-            // if ($purchaseOrder->total_quantity == $purchase->total_receive_quantity) {
-            //     $purchaseOrder->update([
-            //         'purchase_status' => 'completed',
-            //     ]);
-            // } else {
-            //     $purchaseOrder->update([
-            //         'purchase_status' => 'partial',
-            //     ]);
-            // }
-
             DB::commit();
             return redirect()->route('purchase.index')->with('success', 'Purchase created successfully');
         } catch (\Throwable $e) {

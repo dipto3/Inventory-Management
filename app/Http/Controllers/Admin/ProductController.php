@@ -16,6 +16,7 @@ use App\Models\Unit;
 use App\Models\VariantValue;
 use App\Rules\QuantityAlertRule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,7 @@ class ProductController extends Controller
         //     return Product::with('variants', 'variants.prices', 'categories')->orderBy('id', 'desc')->get()->values();;
         // });
         // $products = Product::with('variants', 'productImage', 'variants.prices', 'categories')->get();
-        $products = Product::select('id', 'name', 'sku', 'brand','unit')
+        $products = Product::select('id', 'name', 'sku', 'brand', 'unit')
             ->with([
                 'variants:id,product_id,variant_value_name,quantity',
                 'productImage:id,product_id,image',
@@ -43,7 +44,7 @@ class ProductController extends Controller
                 'categories:id,name'
             ])
             ->get();
-            // dd($products);
+        // dd($products);
         return view('admin.product.index', compact('products'));
     }
 
@@ -75,30 +76,44 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        // Validation rules
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'store' => 'required|string|max:255',
+            'warehouse' => 'required|string|max:255',
+            'sku' => 'required|string|max:255|unique:products',
+            'slug' => 'nullable|string|max:255|unique:products',
+            'unit' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
+            'selling_type' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'category_id.*' => 'exists:categories,id',
+            'productType' => 'required|in:single,variable',
+            'manufactured_date' => 'nullable|date',
+            'expired_date' => 'nullable|date',
+            'item_code' => 'nullable',
+            'discount_type' => 'nullable',
+            'discount_value' => 'nullable',
+            'tax_type' => 'nullable',
+        ]);
+
+        // return redirect()->back()->withErrors($validatedData);
+        // Validate input
+        // if ($validator->fails()) {
+        //     return redirect()->back()
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+        // // if ($validator->fails()) {
+        // //     return redirect()->back()->withErrors($validator)->withInput();
+        // // }
+
+        // $validatedData = $validator->validated();
+
+        // Transaction handling
         DB::beginTransaction();
         try {
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'store' => 'nullable|string|max:255',
-                'warehouse' => 'nullable|string|max:255',
-                'sku' => 'nullable|string|max:255|unique:products',
-                'slug' => 'nullable|string|max:255|unique:products',
-                'unit' => 'required|string|max:255',
-                'brand' => 'required|string|max:255',
-                'selling_type' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'category_id' => 'required|exists:categories,id',
-                'category_id.*' => 'exists:categories,id',
-                'productType' => 'required|in:single,variable',
-                'manufactured_date' => 'nullable|date',
-                'expired_date' => 'nullable|date',
-                'item_code' => 'nullable',
-                'discount_type' => 'nullable',
-                'discount_value' => 'nullable',
-                'tax_type' => 'nullable',
-            ]);
-
             $product = Product::create([
                 'name' => $validatedData['name'],
                 'store' => $validatedData['store'],
@@ -119,13 +134,12 @@ class ProductController extends Controller
                 'category_id' => json_encode($validatedData['category_id']),
             ]);
 
+            // Handle images
             if ($request->image_type === 'variant') {
                 $variantImages = $request->file('variant_images');
-
                 foreach ($variantImages as $variant_value_id => $imageArray) {
                     foreach ($imageArray as $image) {
                         $imagePath = $image->store('product_images', 'public');
-
                         $product->productImage()->create([
                             'image' => $imagePath,
                             'variant_id' => $request->imageVariant_id,
@@ -145,6 +159,7 @@ class ProductController extends Controller
                 }
             }
 
+            // Create product categories
             foreach ($validatedData['category_id'] as $categoryId) {
                 ProductCategory::create([
                     'product_id' => $product->id,
@@ -152,12 +167,14 @@ class ProductController extends Controller
                 ]);
             }
 
+            // Handle product types
             if ($validatedData['productType'] === 'single') {
                 $this->handleSingleProduct($product, $request);
             } else {
                 $this->handleVariableProduct($product, $request);
             }
 
+            // Commit transaction
             DB::commit();
             return redirect()->route('product.index')->with('success', 'Product created successfully.');
         } catch (\Exception $e) {
@@ -167,6 +184,7 @@ class ProductController extends Controller
                 ->withInput();
         }
     }
+
 
     private function handleSingleProduct(Product $product, Request $request)
     {

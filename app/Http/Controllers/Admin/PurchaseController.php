@@ -41,9 +41,11 @@ class PurchaseController extends Controller
     {
         // dd($request->all());
         // // dd($id);
+        
+        // dd($validateData);
         try {
             DB::beginTransaction();
-             // if quantity is 0 then not add in purchase
+            // if quantity is 0 then not add in purchase
             $totalReceiveQuantity = 0;
             $validItems  = [];
             foreach ($request->items as $item) {

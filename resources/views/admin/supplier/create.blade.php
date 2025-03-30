@@ -85,8 +85,6 @@
                              $("#supplierForm")[0].reset();
                              $("#supplierTable").load(location.href + " #supplierTable");
                              $(".error-message").remove();
-                            
-                         
                          }
                      },
                      error: function(error) {

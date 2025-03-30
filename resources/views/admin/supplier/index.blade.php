@@ -29,7 +29,7 @@
                     <tbody>
                         @foreach ($suppliers as $supplier)
                             <tr id="supplier-row-{{ $supplier->id }}">
-                                <td>{{ $supplier->name }} </td>
+                                <td>{{ $supplier->name }} ({{ $supplier->id }}) </td>
 
                                 <td class="image"><img style="height: 50px;width:50px;"
                                         src="{{ asset('storage/' . $supplier->image) }}" alt></td>
@@ -46,23 +46,12 @@
                                 </td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                        <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-id="{{ $supplier->id }}"
                                             value="{{ $supplier->id }}"
                                             data-bs-target="#editSupplierModal{{ $supplier->id }}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
 
-                                        {{-- <form method="POST" action="{{ route('supplier.destroy', $supplier->id) }}"
-                                            style="margin-left: 5px;">
-
-                                            @csrf
-
-                                            <input name="_method" type="hidden" value="DELETE">
-
-                                            <button type="submit" class="btn btn-sm btn-danger btn-flat show_confirm"
-                                                data-toggle="tooltip" title='Delete'><i class="bi bi-trash"></i></button>
-
-                                        </form> --}}
                                         <button type="button" class="btn btn-sm btn-danger btn-flat show_confirm"
                                             data-id="{{ $supplier->id }}" data-toggle="tooltip" title='Delete'>
                                             <i class="bi bi-trash"></i>
@@ -131,6 +120,7 @@
                             _token: '{{ csrf_token() }}',
                         },
                         success: function(response) {
+                            // $("#supplierTable").load(location.href + " #supplierTable");
                             // Remove from DataTable properly
                             var table = $('#supplierTable').DataTable();
 

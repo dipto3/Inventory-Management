@@ -78,32 +78,34 @@ class SupplierController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $supplier_id = $request->supplier_id;
+        
         $validatedData = $request->validate([
             'name' => 'required',
-            'phone' => 'required|unique:suppliers',
-            'email' => 'required|unique:suppliers',
+            'phone' => 'required|unique:suppliers,phone,' . $supplier_id, // Ignore current supplier's phone
+            'email' => 'required|unique:suppliers,email,' . $supplier_id, // Ignore current supplier's email
             'status' => 'required',
             'address' => 'nullable',
             'city' => 'nullable',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        $supplier_id = $request->supplier_id;
+    
         $supplier = Supplier::findOrFail($supplier_id);
-
+    
         if ($request->hasFile('image')) {
-
             if ($supplier->image) {
                 Storage::disk('public')->delete($supplier->image);
             }
-
-
+            
             $imagePath = $request->file('image')->store('supplier_image', 'public');
             $validatedData['image'] = $imagePath;
         }
-
+    
         $supplier->update($validatedData);
-        return redirect()->back();
+        
+        return response()->json(['success' => true, 'message' => 'Supplier updated successfully', 'supplier' => $supplier]);
     }
+    
 
     /**
      * Remove the specified resource from storage.

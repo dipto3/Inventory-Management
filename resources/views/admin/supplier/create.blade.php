@@ -85,18 +85,8 @@
                              $("#supplierForm")[0].reset();
                              $("#supplierTable").load(location.href + " #supplierTable");
                              $(".error-message").remove();
-
-
-                             var table = $('#supplierTable').DataTable();
-                             var info = table.page.info();
-                             $('.dataTables_info').html(
-                                 'Showing ' + (info.start + 1) + ' to ' + info.end + ' of ' +
-                                 info.recordsDisplay + ' suppliers' +
-                                 (info.recordsDisplay !== info.recordsTotal ?
-                                     ' (filtered from ' + info.recordsTotal + ' total)' : '')
-                             );
-
-
+                            
+                         
                          }
                      },
                      error: function(error) {
@@ -120,19 +110,5 @@
                  });
              });
          });
-
-         function updatePaginationCount() {
-
-             var table = $('#supplierTable').DataTable();
-             var info = table.page.info();
-             $('.dataTables_info').html(
-                 'Showing ' + (info.start + 1) + ' to ' + info.end + ' of ' +
-                 info.recordsDisplay + ' suppliers' +
-                 (info.recordsDisplay !== info.recordsTotal ?
-                     ' (filtered from ' + info.recordsTotal + ' total)' : '')
-             );
-         }
      </script>
-   
-    
  @endpush

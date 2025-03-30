@@ -85,13 +85,17 @@
         $(document).ready(function() {
             $("#supplierTable").DataTable({
                 responsive: true,
+
                 language: {
                     search: "_INPUT_",
                     searchPlaceholder: "Search supplier...",
                     lengthMenu: "Show _MENU_ supplier per page",
-                    info: "Showing _START_ to _END_ of _TOTAL_ supplier",
-                    infoEmpty: "No supplier found",
-                    infoFiltered: "(filtered from _MAX_ total supplier)",
+                    info: "",
+                    infoEmpty: "",
+                    infoFiltered: "",
+                    // info: "Showing _START_ to _END_ of _TOTAL_ supplier",
+                    // infoEmpty: "No supplier found",
+                    // infoFiltered: "(filtered from _MAX_ total supplier)",
                     paginate: {
                         first: "First",
                         last: "Last",
@@ -104,10 +108,12 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
-    {{-- <script type="text/javascript">
-        // Event delegation for dynamically added elements
+
+
+    <script type="text/javascript">
         $(document).on("click", ".show_confirm", function(event) {
             var supplierId = $(this).data('id');
+            var $row = $(this).closest('tr'); // Store reference to the row
             event.preventDefault();
 
             swal({
@@ -125,15 +131,14 @@
                             _token: '{{ csrf_token() }}',
                         },
                         success: function(response) {
+                            // Remove from DataTable properly
+                            var table = $('#supplierTable').DataTable();
 
-                            row.fadeOut('slow', function() {
-                                $(this).remove();
-                            });
+                            table.row($row).remove().draw(
+                                false); // false keeps current pagination
 
-                            // 2. Update the counter
-                            updateSupplierCount();
-                            // swal("Deleted!", "The supplier has been deleted.", "success");
-                            // $('#supplierTable').DataTable().ajax.reload(null, false);
+                            // Update counter
+                            // updateSupplierCount();
                         },
                         error: function(xhr, status, error) {
                             swal("Error!", "Something went wrong, please try again.", "error");
@@ -142,59 +147,16 @@
                 }
             });
         });
-        function updateSupplierCount() {
-    var count = $('#supplierTable tbody tr').length;
-    $('.dataTables_info').html('Showing 1 to '+count+' of '+count+' suppliers');
-}
-    </script> --}}
 
-    <script type="text/javascript">
-    $(document).on("click", ".show_confirm", function(event) {
-        var supplierId = $(this).data('id');
-        var $row = $(this).closest('tr'); // Store reference to the row
-        event.preventDefault();
-
-        swal({
-            title: `Are you sure you want to delete this record?`,
-            text: "If you delete this, it will be gone forever.",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                $.ajax({
-                    url: "{{ url('supplier') }}/" + supplierId,
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                    },
-                    success: function(response) {
-                        // Remove from DataTable properly
-                        var table = $('#supplierTable').DataTable();
-                        table.row($row).remove().draw(false); // false keeps current pagination
-                        
-                        // Update counter
-                        updateSupplierCount();
-                        
-                        swal("Deleted!", "The supplier has been deleted.", "success");
-                    },
-                    error: function(xhr, status, error) {
-                        swal("Error!", "Something went wrong, please try again.", "error");
-                    }
-                });
-            }
-        });
-    });
-
-    function updateSupplierCount() {
-        var table = $('#supplierTable').DataTable();
-        var info = table.page.info();
-        $('.dataTables_info').html(
-            'Showing ' + (info.start + 1) + ' to ' + info.end + ' of ' + 
-            info.recordsDisplay + ' suppliers' +
-            (info.recordsDisplay !== info.recordsTotal ? 
-                ' (filtered from ' + info.recordsTotal + ' total)' : '')
-        );
-    }
-</script>
+        // function updateSupplierCount() {
+        //     var table = $('#supplierTable').DataTable();
+        //     var info = table.page.info();
+        //     $('.dataTables_info').html(
+        //         'Showing ' + (info.start + 1) + ' to ' + info.end + ' of ' +
+        //         info.recordsDisplay + ' suppliers' +
+        //         (info.recordsDisplay !== info.recordsTotal ?
+        //             ' (filtered from ' + info.recordsTotal + ' total)' : '')
+        //     );
+        // }
+    </script>
 @endpush

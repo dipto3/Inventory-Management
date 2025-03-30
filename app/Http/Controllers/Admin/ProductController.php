@@ -30,6 +30,13 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function testRoute(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //     ]);
+
+    // }
     public function index()
     {
         // $products = Cache::remember('products', now()->addMinutes(10), function () {

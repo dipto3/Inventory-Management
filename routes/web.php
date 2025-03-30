@@ -49,4 +49,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('purchase-payment-store', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'storePayment'])->name('purchase.payment.store');
     Route::get('purchase-payment-view/{id}', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'viewPayment'])->name('purchase.payment.view');  
+
+    
 });

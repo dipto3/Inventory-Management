@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SupplierController extends Controller
 {
@@ -27,6 +28,18 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required|unique:suppliers',
+            'email' => 'required|unique:suppliers',
+            'address' => 'required',
+            'city' => 'required',
+        ]);
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('supplier_image', 'public');
+        }
         $supplier = Supplier::create([
             'name' => $request->name,
             'phone' => $request->phone,
@@ -34,11 +47,14 @@ class SupplierController extends Controller
             'address' => $request->address,
             'city' => $request->city,
             'status' => $request->status ?? 0,
+            'image' => $imagePath,
         ]);
-        if ($request->hasFile('image')) {
-            $supplier->addMediaFromRequest('image')->toMediaCollection();
-        }
-        return redirect()->back();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Supplier Added Successfully!',
+            'supplier' => $supplier
+        ]);
     }
 
     /**
@@ -64,28 +80,29 @@ class SupplierController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'phone' => 'required',
-            'email' => 'required',
+            'phone' => 'required|unique:suppliers',
+            'email' => 'required|unique:suppliers',
             'status' => 'required',
             'address' => 'nullable',
             'city' => 'nullable',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $supplier_id = $request->supplier_id;
         $supplier = Supplier::findOrFail($supplier_id);
-        $supplier->update([
-            'name' => $validatedData['name'],
-            'phone' => $validatedData['phone'],
-            'email' => $validatedData['email'],
-            'address' => $validatedData['address'],
-            'city' => $validatedData['city'],
-            'status' => $validatedData['status'],
 
-        ]);
         if ($request->hasFile('image')) {
-            $supplier->clearMediaCollection();
-            $supplier->addMediaFromRequest('image')->toMediaCollection();
+
+            if ($supplier->image) {
+                Storage::disk('public')->delete($supplier->image);
+            }
+
+
+            $imagePath = $request->file('image')->store('supplier_image', 'public');
+            $validatedData['image'] = $imagePath;
         }
-        return redirect()->route('supplier.index')->with('success', 'Supplier Information updated successfully!');
+
+        $supplier->update($validatedData);
+        return redirect()->back();
     }
 
     /**
@@ -93,8 +110,10 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        $supplier->clearMediaCollection();
+        if ($supplier->image) {
+            Storage::disk('public')->delete($supplier->image);
+        }
         $supplier->delete();
-        return redirect()->back();
+        return response()->json(['success' => true]);
     }
 }

@@ -139,13 +139,13 @@
                                          },
                                      });
                                      toastr.options = {
-                                         positionClass: "toast-bottom-center" // নিচের ডানদিকে দেখাবে
+                                         positionClass: "toast-bottom-center"
                                      };
                                      toastr.success("Supplier added successfully");
                                  },
                                  error: function() {
                                      toastr.options = {
-                                         positionClass: "toast-bottom-center" // নিচের ডানদিকে দেখাবে
+                                         positionClass: "toast-bottom-center"
                                      };
                                      toastr.error("Error refreshing table data");
                                  }

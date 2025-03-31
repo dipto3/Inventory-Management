@@ -12,11 +12,9 @@
 
             <!-- Notifications with custom class -->
             <div class="header-dropdown me-3">
-                <button class="btn btn-light position-relative"
-                    onclick="toggleDropdown('notificationsDropdown')">
+                <button class="btn btn-light position-relative" onclick="toggleDropdown('notificationsDropdown')">
                     <i class="bi bi-bell"></i>
-                    <span
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         3
                     </span>
                 </button>
@@ -40,8 +38,7 @@
             <div class="header-dropdown">
                 <button class="btn btn-light dropdown-toggle d-flex align-items-center"
                     onclick="toggleDropdown('profileDropdown')">
-                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2 profile-img"
-                        alt="Profile" />
+                    <img src="https://via.placeholder.com/40" class="rounded-circle me-2 profile-img" alt="Profile" />
                     <span>Admin User</span>
                 </button>
                 <ul class="header-dropdown-menu" id="profileDropdown">
@@ -57,8 +54,13 @@
                         <hr class="dropdown-divider" />
                     </li>
                     <li>
-                        <a class="header-dropdown-item" href="#"><i
-                                class="bi bi-box-arrow-right me-2"></i> Logout</a>
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button class="btn header-dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>
+                                Logout
+                            </button>
+                        </form>
+
                     </li>
                 </ul>
             </div>

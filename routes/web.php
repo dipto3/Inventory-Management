@@ -22,9 +22,10 @@ Route::get('/', function () {
 
 Route::get('/login', [App\Http\Controllers\Admin\Auth\AuthController::class, 'login'])->name('login');
 Route::post('/authenticate', [App\Http\Controllers\Admin\Auth\AuthController::class, 'authenticate'])->name('authenticate');
-Route::post('/logout', [App\Http\Controllers\Admin\Auth\AuthController::class, 'logout'])->name('logout');
+
 
 Route::middleware('auth')->group(function () {
+    Route::post('/logout', [App\Http\Controllers\Admin\Auth\AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard'])->name('dashboard');
     Route::resource('category', App\Http\Controllers\Admin\CategoryController::class);
     Route::controller(CategoryController::class)->group(function () {
@@ -34,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
     Route::resource('unit', App\Http\Controllers\Admin\UnitController::class);
     Route::resource('variant', App\Http\Controllers\Admin\VariantController::class);
-    Route::get('admin/variants/{variant}/values', [ App\Http\Controllers\Admin\VariantController::class, 'getValues']);
+    Route::get('admin/variants/{variant}/values', [App\Http\Controllers\Admin\VariantController::class, 'getValues']);
     Route::resource('product', App\Http\Controllers\Admin\ProductController::class);
     Route::resource('supplier', App\Http\Controllers\Admin\SupplierController::class);
     Route::get('/product-details/{productID}/{variantID}', [App\Http\Controllers\Admin\ProductController::class, 'viewDetails'])->name('view.details');
@@ -45,10 +46,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('purchase', App\Http\Controllers\Admin\PurchaseController::class);
     Route::get('/create-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'createGrn'])->name('create.grn');
-    Route::post('/store-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'storeGrn'])->name('store.grn');  
+    Route::post('/store-grn/{id}', [App\Http\Controllers\Admin\PurchaseController::class, 'storeGrn'])->name('store.grn');
 
     Route::post('purchase-payment-store', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'storePayment'])->name('purchase.payment.store');
-    Route::get('purchase-payment-view/{id}', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'viewPayment'])->name('purchase.payment.view');  
-
-    
+    Route::get('purchase-payment-view/{id}', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'viewPayment'])->name('purchase.payment.view');
 });

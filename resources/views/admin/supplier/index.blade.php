@@ -120,7 +120,7 @@
                             _token: '{{ csrf_token() }}',
                         },
                         success: function(response) {
-                            // $("#supplierTable").load(location.href + " #supplierTable");
+                            $("#supplierTable").load(location.href + " #supplierTable");
                             // Remove from DataTable properly
                             var table = $('#supplierTable').DataTable();
 

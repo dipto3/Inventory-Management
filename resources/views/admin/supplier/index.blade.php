@@ -286,10 +286,15 @@
                                             },
                                         },
                                     });
-
+                                    toastr.options = {
+                                         positionClass: "toast-bottom-center"
+                                     };
                                     toastr.success("Supplier deleted successfully");
                                 },
                                 error: function() {
+                                    toastr.options = {
+                                         positionClass: "toast-bottom-center"
+                                     };
                                     toastr.error("Error refreshing table data");
                                 }
                             });

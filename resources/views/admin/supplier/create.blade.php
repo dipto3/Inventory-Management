@@ -65,6 +65,14 @@
  </div>
  @push('scripts')
      <script>
+         toastr.options = {
+             "closeButton": true,
+             "progressBar": true,
+             "positionClass": "toast-top-right",
+             "showDuration": "300",
+             "hideDuration": "1000",
+             "timeOut": "5000"
+         };
          $.ajaxSetup({
              headers: {
                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -130,10 +138,15 @@
                                              },
                                          },
                                      });
-
+                                     toastr.options = {
+                                         positionClass: "toast-bottom-center" // নিচের ডানদিকে দেখাবে
+                                     };
                                      toastr.success("Supplier added successfully");
                                  },
                                  error: function() {
+                                     toastr.options = {
+                                         positionClass: "toast-bottom-center" // নিচের ডানদিকে দেখাবে
+                                     };
                                      toastr.error("Error refreshing table data");
                                  }
                              });

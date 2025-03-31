@@ -8,3 +8,4 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
 <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
 <!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">

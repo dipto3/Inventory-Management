@@ -112,6 +112,9 @@
                                      // Reinitialize DataTable
                                      $('#supplierTable').DataTable({
                                          responsive: true,
+                                         order: [
+                                             [0, 'desc']
+                                         ],
                                          language: {
                                              search: "_INPUT_",
                                              searchPlaceholder: "Search supplier...",

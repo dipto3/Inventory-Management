@@ -17,7 +17,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Supplier email</label>
-                            <input type="email" class="form-control" placeholder="Enter Supplier Email" name="email" id="edit_email" required />
+                            <input type="email" class="form-control" placeholder="Enter Supplier Email" name="email" id="edit_email" />
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="phone" class="form-label">Supplier phone</label>
@@ -37,7 +37,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
-                        <textarea class="form-control" placeholder="Enter Address" name="address" id="edit_address" required></textarea>
+                        <textarea class="form-control" placeholder="Enter Address" name="address" id="edit_address"></textarea>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="image" class="form-label">Image</label>

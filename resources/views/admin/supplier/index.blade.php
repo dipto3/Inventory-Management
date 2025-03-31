@@ -14,6 +14,7 @@
                 <table id="supplierTable" class="table table-hover w-100">
                     <thead>
                         <tr>
+                            <th style="display:none;">ID</th>
                             <th>Name</th>
                             <th>Image</th>
                             <th>Email</th>
@@ -27,6 +28,7 @@
                     <tbody>
                         @foreach ($suppliers as $supplier)
                             <tr id="supplier-row-{{ $supplier->id }}">
+                                <td style="display:none;">{{ $supplier->id }}</td>
                                 <td>{{ $supplier->name }} ({{ $supplier->id }}) </td>
                                 <td class="image"><img style="height: 50px;width:50px;"
                                         src="{{ asset('storage/' . $supplier->image) }}" alt></td>
@@ -73,6 +75,9 @@
         $(document).ready(function() {
             $("#supplierTable").DataTable({
                 responsive: true,
+                order: [
+                    [0, 'desc']
+                ],
                 language: {
                     search: "_INPUT_",
                     searchPlaceholder: "Search supplier...",

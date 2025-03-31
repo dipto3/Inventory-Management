@@ -14,7 +14,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::orderBy('id', 'desc')->get();
         return view('admin.supplier.index', compact('suppliers'));
     }
 
@@ -32,7 +32,7 @@ class SupplierController extends Controller
             'name' => 'required',
             'phone' => 'required|unique:suppliers',
             'email' => 'required|unique:suppliers',
-            'address' => 'required',
+            'address' => 'nullable',
             'city' => 'required',
         ]);
         $imagePath = null;

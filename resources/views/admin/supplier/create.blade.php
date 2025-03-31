@@ -83,16 +83,57 @@
                      data: formData,
                      processData: false,
                      contentType: false,
-                    //  headers: {
-                    //      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    //  },
+                     //  headers: {
+                     //      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                     //  },
                      success: function(response) {
                          // Hide the modal and reset form if successful
                          $("#addSupplierModal").modal('hide');
                          if (response.success) {
                              $("#supplierForm")[0].reset();
-                             $("#supplierTable").load(location.href + " #supplierTable");
+                             //  $("#supplierTable").load(location.href + " #supplierTable");
                              $(".error-message").remove();
+                             // Completely refresh the data by making an AJAX call
+                             $.ajax({
+                                 url: window.location.href,
+                                 type: 'GET',
+                                 success: function(data) {
+                                     // Extract the table HTML from the response
+                                     let newTableHTML = $(data).find(
+                                         '#supplierTable').html();
+
+                                     // First destroy the existing DataTable
+                                     let table = $('#supplierTable').DataTable();
+                                     table.destroy();
+
+                                     // Replace the table HTML
+                                     $('#supplierTable').html(newTableHTML);
+
+                                     // Reinitialize DataTable
+                                     $('#supplierTable').DataTable({
+                                         responsive: true,
+                                         language: {
+                                             search: "_INPUT_",
+                                             searchPlaceholder: "Search supplier...",
+                                             lengthMenu: "Show _MENU_ supplier per page",
+                                             info: "Showing _START_ to _END_ of _TOTAL_ orders",
+                                             infoEmpty: "No orders found",
+                                             infoFiltered: "(filtered from _MAX_ total orders)",
+                                             paginate: {
+                                                 first: "First",
+                                                 last: "Last",
+                                                 next: "Next",
+                                                 previous: "Previous",
+                                             },
+                                         },
+                                     });
+
+                                     toastr.success("Supplier added successfully");
+                                 },
+                                 error: function() {
+                                     toastr.error("Error refreshing table data");
+                                 }
+                             });
                          }
                      },
                      error: function(error) {

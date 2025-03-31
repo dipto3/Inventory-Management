@@ -77,12 +77,12 @@
                     search: "_INPUT_",
                     searchPlaceholder: "Search supplier...",
                     lengthMenu: "Show _MENU_ supplier per page",
-                    info: "",
-                    infoEmpty: "",
-                    infoFiltered: "",
-                    // info: "Showing _START_ to _END_ of _TOTAL_ orders",
-                    // infoEmpty: "No orders found",
-                    // infoFiltered: "(filtered from _MAX_ total orders)",
+                    // info: "",
+                    // infoEmpty: "",
+                    // infoFiltered: "",
+                    info: "Showing _START_ to _END_ of _TOTAL_ orders",
+                    infoEmpty: "No orders found",
+                    infoFiltered: "(filtered from _MAX_ total orders)",
                     paginate: {
                         first: "First",
                         last: "Last",
@@ -195,9 +195,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
     <script type="text/javascript">
+        // $(document).on("click", ".show_confirm", function(event) {
+        //     var supplierId = $(this).data('id');
+        //     var $row = $(this).closest('tr'); // Store reference to the row
+        //     event.preventDefault();
+
+        //     swal({
+        //         title: `Are you sure you want to delete this record?`,
+        //         text: "If you delete this, it will be gone forever.",
+        //         icon: "warning",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             $.ajax({
+        //                 url: "{{ url('supplier') }}/" + supplierId,
+        //                 type: 'DELETE',
+        //                 data: {
+        //                     _token: '{{ csrf_token() }}',
+        //                 },
+        //                 success: function(response) {
+        //                     $("#supplierTable").load(location.href + " #supplierTable");
+        //                     // Remove from DataTable properly
+        //                     var table = $('#supplierTable').DataTable();
+        //                     table.row($row).remove().draw(
+        //                         false); // false keeps current pagination
+        //                 },
+        //                 error: function(xhr, status, error) {
+        //                     swal("Error!", "Something went wrong, please try again.", "error");
+        //                 }
+        //             });
+        //         }
+        //     });
+        // });
         $(document).on("click", ".show_confirm", function(event) {
             var supplierId = $(this).data('id');
-            var $row = $(this).closest('tr'); // Store reference to the row
             event.preventDefault();
 
             swal({
@@ -215,11 +247,47 @@
                             _token: '{{ csrf_token() }}',
                         },
                         success: function(response) {
-                            $("#supplierTable").load(location.href + " #supplierTable");
-                            // Remove from DataTable properly
-                            var table = $('#supplierTable').DataTable();
-                            table.row($row).remove().draw(
-                                false); // false keeps current pagination
+                            // Completely refresh the data by making an AJAX call
+                            $.ajax({
+                                url: window.location.href,
+                                type: 'GET',
+                                success: function(data) {
+                                    // Extract the table HTML from the response
+                                    let newTableHTML = $(data).find(
+                                        '#supplierTable').html();
+
+                                    // First destroy the existing DataTable
+                                    let table = $('#supplierTable').DataTable();
+                                    table.destroy();
+
+                                    // Replace the table HTML
+                                    $('#supplierTable').html(newTableHTML);
+
+                                    // Reinitialize DataTable
+                                    $('#supplierTable').DataTable({
+                                        responsive: true,
+                                        language: {
+                                            search: "_INPUT_",
+                                            searchPlaceholder: "Search supplier...",
+                                            lengthMenu: "Show _MENU_ supplier per page",
+                                            info: "Showing _START_ to _END_ of _TOTAL_ orders",
+                                            infoEmpty: "No orders found",
+                                            infoFiltered: "(filtered from _MAX_ total orders)",
+                                            paginate: {
+                                                first: "First",
+                                                last: "Last",
+                                                next: "Next",
+                                                previous: "Previous",
+                                            },
+                                        },
+                                    });
+
+                                    toastr.success("Supplier deleted successfully");
+                                },
+                                error: function() {
+                                    toastr.error("Error refreshing table data");
+                                }
+                            });
                         },
                         error: function(xhr, status, error) {
                             swal("Error!", "Something went wrong, please try again.", "error");

@@ -53,7 +53,7 @@
                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                              Close
                          </button>
-                         <button type="submit" class="btn btn-primary">
+                         <button type="button" class="btn btn-primary add_supplier">
                              Save Supplier
                          </button>
                      </div>
@@ -65,19 +65,27 @@
  </div>
  @push('scripts')
      <script>
+         $.ajaxSetup({
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             }
+         });
+     </script>
+     <script>
          $(document).ready(function() {
-             $("#supplierForm").on("submit", function(e) {
+             //  $("#supplierForm").on("submit", function(e) {
+             $(document).on('click', '.add_supplier', function(e) {
                  e.preventDefault();
-                 let formData = new FormData(this);
+                 let formData = new FormData($('#supplierForm')[0]);
                  $.ajax({
                      url: "{{ route('supplier.store') }}",
                      type: "POST",
                      data: formData,
                      processData: false,
                      contentType: false,
-                     headers: {
-                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                     },
+                    //  headers: {
+                    //      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    //  },
                      success: function(response) {
                          // Hide the modal and reset form if successful
                          $("#addSupplierModal").modal('hide');

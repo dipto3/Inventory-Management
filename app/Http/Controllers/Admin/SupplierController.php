@@ -68,10 +68,17 @@ class SupplierController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit($id)
+{
+    $supplier = Supplier::findOrFail($id);
+    $image_url = asset('storage/' . $supplier->image);
+    
+    return response()->json([
+        'supplier' => $supplier,
+        'image_url' => $image_url
+    ]);
+}
+
 
     /**
      * Update the specified resource in storage.

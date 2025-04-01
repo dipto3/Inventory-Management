@@ -232,7 +232,7 @@
                         $('#editVariantModal').modal('hide');
                         if (response.success) {
                             $("#variantTable").load(location.href + " #variantTable");
-                            toastr.success("variant updated successfully");
+                            toastr.success("Variant updated successfully");
                         }
                     },
                     error: function(xhr) {
@@ -316,7 +316,7 @@
                                     toastr.options = {
                                         positionClass: "toast-bottom-center"
                                     };
-                                    toastr.success("variant deleted successfully");
+                                    toastr.success("Variant deleted successfully");
                                 },
                                 error: function() {
                                     toastr.options = {

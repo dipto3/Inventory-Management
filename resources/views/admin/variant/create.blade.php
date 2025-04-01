@@ -126,7 +126,7 @@
                                      toastr.options = {
                                          positionClass: "toast-bottom-center"
                                      };
-                                     toastr.success("variant added successfully");
+                                     toastr.success("Variant added successfully");
                                  },
                                  error: function() {
                                      toastr.options = {

@@ -325,3 +325,92 @@ table.dataTable tbody td {
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     color: var(--text-color) !important;
 }
+
+
+/* bootstrap tagsinput design */
+.bootstrap-tagsinput {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    /* background-color: #fff; */
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    min-height: 45px;
+}
+
+.bootstrap-tagsinput:focus-within {
+    color: #212529;
+    background-color: #fff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.bootstrap-tagsinput input {
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    max-width: inherit;
+}
+
+.bootstrap-tagsinput .tag {
+    margin: 0.2rem;
+    padding: 0.35rem 0.65rem;
+    background-color: #28405e;
+    color: #fff;
+    border-radius: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: baseline;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"] {
+    margin-left: 8px;
+    cursor: pointer;
+    color: #fff;
+    opacity: 0.7;
+    background-color: transparent;
+    border: none;
+    font-size: 0.875rem;
+    font-weight: bold;
+    padding: 0 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s ease;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"]:hover {
+    opacity: 1;
+}
+
+.bootstrap-tagsinput .tag [data-role="remove"]::after {
+    content: "×";
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+/* Placeholder styling */
+.bootstrap-tagsinput input::placeholder {
+    color: #6c757d;
+    opacity: 0.65;
+}
+
+/* Hover effect for tags */
+.bootstrap-tagsinput .tag:hover {
+    background-color: #2b62a5;
+}

@@ -9,3 +9,7 @@
 <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.css"
+rel="stylesheet">

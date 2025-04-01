@@ -44,6 +44,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('variant.index') }}">
+                        <i class="bi bi-command"></i>
+                        <span>Variant Attributes</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('category.index') }}">
                         <i class="bi bi-ui-checks-grid"></i>
                         <span>Category</span>

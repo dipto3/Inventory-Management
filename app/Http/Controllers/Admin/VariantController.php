@@ -57,9 +57,15 @@ class VariantController extends Controller
                     }
                 }
             });
-            return redirect()->back();
+            return response()->json([
+                'success' => true,
+                'message' => 'Variant created successfully'
+            ], 200);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Something went wrong' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ], 500);
         }
     }
 
@@ -77,7 +83,8 @@ class VariantController extends Controller
     public function edit($id)
     {
         $variant = Variant::with('variantValues')->findOrFail($id);
-        return response()->json(['variant' => $variant]);
+        $valuesString = $variant->variantValues->pluck('value')->implode(',');
+        return response()->json(['variant' => $variant,'values' => $valuesString]);
     }
     /**
      * Update the specified resource in storage.
@@ -104,7 +111,7 @@ class VariantController extends Controller
                 ]);
             }
         }
-        return redirect()->back();
+        return response()->json(['success' => true, 'message' => 'variant updated successfully', 'variant' => $variant]);
     }
 
     /**
@@ -114,6 +121,6 @@ class VariantController extends Controller
     {
 
         $variant->delete();
-        return redirect()->back();
+        return response()->json(['success' => true]);
     }
 }

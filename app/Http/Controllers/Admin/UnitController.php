@@ -15,7 +15,7 @@ class UnitController extends Controller
     public function index()
     {
         $units = Unit::all();
-        return view('admin.unit.index',compact('units'));
+        return view('admin.unit.index', compact('units'));
     }
 
     /**
@@ -39,7 +39,11 @@ class UnitController extends Controller
             'short_name' => $request->short_name,
         ]);
 
-        return redirect()->back();
+        return response()->json([
+            'success' => true,
+            'message' => 'Unit Added Successfully!',
+            'unit' => $unit
+        ]);
     }
 
     /**
@@ -72,13 +76,13 @@ class UnitController extends Controller
         ]);
         $unit_id = $request->unit_id;
         $unit = Unit::findOrFail($unit_id);
-    
+
         $unit->update([
             'name' => $validatedData['name'],
             'short_name' => $validatedData['short_name'],
             'status' => $validatedData['status'],
         ]);
-        return redirect()->route('unit.index')->with('success', 'Unit updated successfully!');
+        return response()->json(['success' => true, 'message' => 'Unit updated successfully', 'unit' => $unit]);
     }
 
     /**
@@ -87,6 +91,6 @@ class UnitController extends Controller
     public function destroy(Unit $unit)
     {
         $unit->delete();
-        return redirect()->back();
+        return response()->json(['success' => true]);
     }
 }

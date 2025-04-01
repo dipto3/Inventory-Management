@@ -37,6 +37,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('unit.index') }}">
+                        <i class="bi bi-boxes"></i>
+                        <span>Unit</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('category.index') }}">
                         <i class="bi bi-ui-checks-grid"></i>
                         <span>Category</span>

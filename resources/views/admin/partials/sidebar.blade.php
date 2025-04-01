@@ -25,20 +25,27 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('supplier.index') }}">
-                        <i class="bi bi-cart"></i>
+                        <i class="bi bi-person-gear"></i>
                         <span>Supplier</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('brand.index') }}">
-                        <i class="bi bi-cart"></i>
+                        <i class="bi bi-border-width"></i>
                         <span>Brand</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('category.index') }}">
+                        <i class="bi bi-ui-checks-grid"></i>
+                        <span>Category</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('product.index') }}">
-                        <i class="bi bi-cart"></i>
+                        <i class="bi bi-box-seam"></i>
                         <span>Products</span>
                     </a>
                 </li>

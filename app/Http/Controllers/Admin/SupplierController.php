@@ -69,15 +69,15 @@ class SupplierController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-{
-    $supplier = Supplier::findOrFail($id);
-    $image_url = asset('storage/' . $supplier->image);
-    
-    return response()->json([
-        'supplier' => $supplier,
-        'image_url' => $image_url
-    ]);
-}
+    {
+        $supplier = Supplier::findOrFail($id);
+        $image_url = asset('storage/' . $supplier->image);
+
+        return response()->json([
+            'supplier' => $supplier,
+            'image_url' => $image_url
+        ]);
+    }
 
 
     /**
@@ -86,33 +86,33 @@ class SupplierController extends Controller
     public function update(Request $request, string $id)
     {
         $supplier_id = $request->supplier_id;
-        
+
         $validatedData = $request->validate([
             'name' => 'required',
-            'phone' => 'required|unique:suppliers,phone,' . $supplier_id, // Ignore current supplier's phone
-            'email' => 'required|unique:suppliers,email,' . $supplier_id, // Ignore current supplier's email
+            'phone' => 'required|unique:suppliers,phone,' . $supplier_id,
+            'email' => 'required|unique:suppliers,email,' . $supplier_id,
             'status' => 'required',
             'address' => 'nullable',
             'city' => 'nullable',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
+
         $supplier = Supplier::findOrFail($supplier_id);
-    
+
         if ($request->hasFile('image')) {
             if ($supplier->image) {
                 Storage::disk('public')->delete($supplier->image);
             }
-            
+
             $imagePath = $request->file('image')->store('supplier_image', 'public');
             $validatedData['image'] = $imagePath;
         }
-    
+
         $supplier->update($validatedData);
-        
+
         return response()->json(['success' => true, 'message' => 'Supplier updated successfully', 'supplier' => $supplier]);
     }
-    
+
 
     /**
      * Remove the specified resource from storage.

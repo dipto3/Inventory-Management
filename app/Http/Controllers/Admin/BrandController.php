@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandFormRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
@@ -15,7 +16,7 @@ class BrandController extends Controller
     public function index()
     {
         $brands = Brand::all();
-        return view('admin.brand.index',compact('brands'));
+        return view('admin.brand.index', compact('brands'));
     }
 
     /**
@@ -31,18 +32,26 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-    // dd($request->all());
+        // dd($request->all());
         // $request->validated();
+        $imagePath = null;
+
+        if ($request->hasFile('logo')) {
+            $imagePath = $request->file('logo')->store('brand_logo', 'public');
+        }
         $brand = Brand::create([
             'name' => $request->name,
             'status' => $request->status,
             'description' => $request->description,
+            'logo' => $imagePath,
         ]);
-        if ($request->hasFile('logo')) {
-            $brand->addMediaFromRequest('logo')->toMediaCollection();
-        }
 
-        return redirect()->back();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Brand Added Successfully!',
+            'brand' => $brand
+        ]);
     }
 
     /**
@@ -56,10 +65,14 @@ class BrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Brand $brand)
+    public function edit(string $id)
     {
+        $brand = Brand::findOrFail($id);
+        $image_url = asset('storage/' . $brand->logo);
+
         return response()->json([
-            'brand' => $brand
+            'brand' => $brand,
+            'image_url' => $image_url
         ]);
     }
 
@@ -69,26 +82,28 @@ class BrandController extends Controller
     public function update(Request $request, string $id)
     {
         // dd($request->all());
+        $brand_id = $request->brand_id;
         $validatedData = $request->validate([
-           'name' => 'required',
+            'name' => 'required',
             'status' => 'required',
             'description' => 'required',
-         
-        ]);
-        $brand_id = $request->brand_id;
-        $brand = Brand::findOrFail($brand_id);
-        $brand->update([
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'],
-            'status' => $validatedData['status'],
-           
+
         ]);
 
-         if ($request->hasFile('logo')) {
-            $brand->clearMediaCollection();
-            $brand->addMediaFromRequest('logo')->toMediaCollection();
+        $brand = Brand::findOrFail($brand_id);
+
+        if ($request->hasFile('logo')) {
+            if ($brand->logo) {
+                Storage::disk('public')->delete($brand->image);
+            }
+
+            $imagePath = $request->file('logo')->store('brand_logo', 'public');
+            $validatedData['logo'] = $imagePath;
         }
-        return redirect()->route('brand.index')->with('success', 'Brand updated successfully!');
+
+        $brand->update($validatedData);
+
+        return response()->json(['success' => true, 'message' => 'Brand updated successfully', 'brand' => $brand]);
     }
 
     /**
@@ -96,7 +111,10 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
+        if ($brand->logo) {
+            Storage::disk('public')->delete($brand->logo);
+        }
         $brand->delete();
-        return redirect()->back();
+        return response()->json(['success' => true]);
     }
 }

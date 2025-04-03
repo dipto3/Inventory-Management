@@ -68,7 +68,7 @@
 
     @include('admin.category.create')
 @endsection
-{{-- 
+
 @push('scripts')
     <script>
         $(document).ready(function() {
@@ -288,4 +288,4 @@
             });
         });
     </script>
-@endpush --}}
+@endpush

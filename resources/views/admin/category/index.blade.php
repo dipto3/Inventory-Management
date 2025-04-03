@@ -134,8 +134,9 @@
             // Edit category button click
             $(document).on('click', '.edit-category', function() {
                 let categoryId = $(this).data('id');
+
                 // Clear previous form data and errors
-                $('#updatecategoryForm')[0].reset();
+                $('#updateCategoryForm')[0].reset();
                 $('.error-message').remove();
 
                 // Fetch category data
@@ -149,17 +150,12 @@
                         $('#edit_status').val(response.category.status);
                         $('#edit_description').val(response.category.description);
 
-                        // Show current image if exists
-                        if (response.category.image) {
-                            $('#current_image_container').html(
-                                `<img src="${response.image_url}" style="height: 100px;width:100px;" alt="Current Image" />`
-                            );
-                        } else {
-                            $('#current_image_container').empty();
-                        }
+                        // Set the parent_id value using standard DOM methods
+                        document.getElementById('parent_id').value = response.category
+                            .parent_id;
 
                         // Show the edit modal
-                        $('#editcategoryModal').modal('show');
+                        $('#editCategoryModal').modal('show');
                     },
                     error: function(xhr) {
                         toastr.error("Error fetching category data");
@@ -167,8 +163,8 @@
                 });
             });
 
-            // Update category form submission
-            $(document).on('submit', '#updatecategoryForm', function(e) {
+             // Update category form submission
+             $(document).on('submit', '#updateCategoryForm', function(e) {
                 e.preventDefault();
                 let formData = new FormData(this);
                 let categoryId = $('#edit_category_id').val();
@@ -180,7 +176,7 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        $('#editcategoryModal').modal('hide');
+                        $('#editCategoryModal').modal('hide');
                         if (response.success) {
                             $("#categoryTable").load(location.href + " #categoryTable");
                             toastr.success("category updated successfully");
@@ -192,7 +188,7 @@
                             let errors = xhr.responseJSON.errors;
                             $.each(errors, function(field, messages) {
                                 let inputField = $(
-                                    `#updatecategoryForm [name="${field}"]`);
+                                    `#updateCategoryForm [name="${field}"]`);
                                 if (inputField.next(".error-message").length === 0) {
                                     inputField.after(
                                         `<small class="text-danger error-message">${messages[0]}</small>`

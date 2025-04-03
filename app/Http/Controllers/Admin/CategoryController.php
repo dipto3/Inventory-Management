@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Redirect, Response;
+use Response;
 
 class CategoryController extends Controller
 {
@@ -15,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $allCategories = Category::with('parentCategory')->get();
+        $allCategories = Category::with('parentCategory', 'childrenCategories')->get();
         // dd($allCategories);
         $categories = Category::where('parent_id', 0)
             ->with('childrenCategories')
@@ -40,29 +39,40 @@ class CategoryController extends Controller
         $request->validated();
 
         $category = Category::create([
-            'name' => $request->name,
-            'parent_id' => $request->parent_id,
-            'status' => $request->status,
+            'name'        => $request->name,
+            'parent_id'   => $request->parent_id,
+            'status'      => $request->status,
             'description' => $request->description,
         ]);
-        $slug = strtolower(str_replace(' ', '_', $request->name)) . '_' . $category->id;
+        $slug           = strtolower(str_replace(' ', '_', $request->name)) . '_' . $category->id;
         $category->slug = $slug;
         $category->save();
 
-        return redirect()->back()->with('success', 'Category created successfully.');
+        return response()->json([
+            'success'  => true,
+            'message'  => 'Category Added Successfully!',
+            'category' => $category,
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        $category = Category::where('id', $id)->first();
-        $categories = Category::where('parent_id', 0)
-            ->with('childrenCategories')
-            ->orderBy('name', 'asc')
-            ->get();
-        return response()->json($category, $categories);
+        // $category = Category::where('id', $id)->first();
+        // $categories = Category::where('parent_id', 0)
+        //     ->with('childrenCategories')
+        //     ->orderBy('name', 'asc')
+        //     ->get();
+        // return response()->json($category, $categories);
+        $categories = Category::where('id', '!=', $category->id)->get();
+        $html       = view('admin.category.edit_form', compact('category', 'categories'))->render();
+
+        return response()->json([
+            'html'     => $html,
+            'category' => $category,
+        ]);
     }
 
     /**
@@ -71,7 +81,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         return response()->json([
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
@@ -82,20 +92,20 @@ class CategoryController extends Controller
     {
         // dd($request->all());
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
-            'parent_id' => 'required|integer',
-            'status' => 'required|boolean'
+            'parent_id'   => 'required|integer',
+            'status'      => 'required|boolean',
         ]);
         $category_id = $request->category_id;
-        $category = Category::findOrFail($category_id);
+        $category    = Category::findOrFail($category_id);
 
-        $category->name = $validatedData['name'];
-        $category->parent_id = $validatedData['parent_id'];
+        $category->name        = $validatedData['name'];
+        $category->parent_id   = $validatedData['parent_id'];
         $category->description = $validatedData['description'];
-        $category->status = $validatedData['status'];
+        $category->status      = $validatedData['status'];
         $category->save();
-        return redirect()->route('category.index')->with('success', 'Category updated successfully!');
+        return response()->json(['success' => true, 'message' => 'Category updated successfully', 'category' => $category]);
     }
 
     /**
@@ -104,12 +114,12 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->back()->with('error', 'Category Deleted successfully.');
+        return response()->json(['success' => true]);
     }
 
     public function updateOrdering(Request $request)
     {
-        $category = Category::findOrFail($request->category_id);
+        $category           = Category::findOrFail($request->category_id);
         $category->ordering = $request->ordering;
         $category->save();
 

@@ -12,3 +12,17 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+       <!-- Bootstrap Select JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.selectpicker').selectpicker({
+            liveSearch: true,
+            actionsBox: true,
+            size: 5
+        });
+
+        // $('#tags').tagsinput();
+    });
+</script>

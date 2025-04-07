@@ -50,6 +50,7 @@ body {
     flex-shrink: 0;
 }
 
+
 .menu-group {
     padding: 10px 15px;
     font-size: 0.8rem;
@@ -325,7 +326,6 @@ table.dataTable tbody td {
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     color: var(--text-color) !important;
 }
-
 
 /* bootstrap tagsinput design */
 .bootstrap-tagsinput {

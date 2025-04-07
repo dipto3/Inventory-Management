@@ -64,6 +64,8 @@
                     </a>
                 </li>
 
+                
+
                 {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="ordersDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -84,5 +86,11 @@
 
             </ul>
         </div>
+        {{-- <li class="nav-item" style="list-style: none;">
+            <a class="nav-link" href="{{ route('variant.index') }}" >
+                <i class="bi bi-command"></i>
+                <span>Variant Attributes</span>
+            </a>
+        </li> --}}
     </div>
 </div>

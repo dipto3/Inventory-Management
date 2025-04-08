@@ -106,20 +106,6 @@ class ProductController extends Controller
             'is_featured' => 'nullable',
         ]);
 
-        // return redirect()->back()->withErrors($validatedData);
-        // Validate input
-        // if ($validator->fails()) {
-        //     return redirect()->back()
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
-        // // if ($validator->fails()) {
-        // //     return redirect()->back()->withErrors($validator)->withInput();
-        // // }
-
-        // $validatedData = $validator->validated();
-
-        // Transaction handling
         DB::beginTransaction();
         try {
             $product = Product::create([

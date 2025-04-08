@@ -59,12 +59,19 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('product.index') }}">
-                        <i class="bi bi-box-seam"></i>
+                        <i class="bi bi-box-fill"></i>
                         <span>Products</span>
                     </a>
                 </li>
 
-                
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('expired.products') }}">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Expired Products</span>
+                    </a>
+                </li>
+
+
 
                 {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="ordersDropdown" role="button"

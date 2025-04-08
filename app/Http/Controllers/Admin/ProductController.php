@@ -468,7 +468,7 @@ class ProductController extends Controller
         }
         $product->delete();
 
-        return redirect()->back()->with('info', 'Product Deleted successfully.');
+        return response()->json(['success' => true]);
     }
 
     public function deleteImage($id)

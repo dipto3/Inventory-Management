@@ -30,6 +30,7 @@ return new class extends Migration
             $table->integer('discount_value')->nullable();
             $table->string('tax_type')->nullable();
             $table->string('product_type')->nullable();
+            $table->boolean('is_featured')->nullable();
             $table->timestamps();
         });
     }

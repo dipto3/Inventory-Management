@@ -2,10 +2,10 @@
 @section('admin.content')
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0">Add New Product</h5>
+            <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Add New Product</h5>
         </div>
         <div class="card-body">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -13,10 +13,8 @@
                         <select class="form-select" name="store">
                             <option>Choose</option>
                             <option value="Thomas" {{ old('store') == 'Thomas' ? 'selected' : '' }}>Thomas</option>
-                            <option value="Rasmussen" {{ old('store') == 'Rasmussen' ? 'selected' : '' }}>Rasmussen
-                            </option>
-                            <option value="Fred john" {{ old('store') == 'Fred john' ? 'selected' : '' }}>Fred john
-                            </option>
+                            <option value="Rasmussen" {{ old('store') == 'Rasmussen' ? 'selected' : '' }}>Rasmussen</option>
+                            <option value="Fred john" {{ old('store') == 'Fred john' ? 'selected' : '' }}>Fred john</option>
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -25,55 +23,46 @@
                             <option>Choose</option>
                             <option value="Legendary" {{ old('warehouse') == 'Legendary' ? 'selected' : '' }}>Legendary
                             </option>
-                            <option value="Determined" {{ old('warehouse') == 'Determined' ? 'selected' : '' }}>
-                                Determined</option>
-                            <option value="Sincere" {{ old('warehouse') == 'Sincere' ? 'selected' : '' }}>Sincere
+                            <option value="Determined" {{ old('warehouse') == 'Determined' ? 'selected' : '' }}>Determined
                             </option>
+                            <option value="Sincere" {{ old('warehouse') == 'Sincere' ? 'selected' : '' }}>Sincere</option>
                         </select>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Product Name</label>
                         <input type="text" class="form-control" name="name" value="{{ old('name') }}"
                             placeholder="Enter Product Name" />
-                        {{-- @dd($errors) --}}
                         @error('name')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">SKU</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Enter SKU" name="sku"
-                                value="{{ old('sku') }}">
-                            @error('sku')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-
-                        </div>
+                        <input type="text" class="form-control" placeholder="Enter SKU" name="sku"
+                            value="{{ old('sku') }}">
+                        @error('sku')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
-                <div class="row">
 
+                <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="productCategory" class="form-label">Category</label>
                         <select class="form-select select2-categories" name="category_id[]" id="productCategory"
                             multiple="multiple" data-placeholder="Select categories...">
                             @foreach ($categories as $category)
-                                {{-- Display parent category (non-selectable) --}}
-                                <option class="parent-category">
+                                <option class="parent-category" value="{{ $category->id }}">
                                     {{ $category->name }}
                                 </option>
-
-                                {{-- Display children --}}
                                 @foreach ($category->childrenCategories as $child)
                                     <option value="{{ $child->id }}"
                                         {{ in_array($child->id, old('category_id', [])) ? 'selected' : '' }}>
                                         &nbsp;&nbsp;&nbsp;{{ $category->name }} >> {{ $child->name }}
                                     </option>
-
-                                    {{-- Display grandchildren if they exist --}}
                                     @foreach ($child->categories as $grandchild)
                                         <option value="{{ $grandchild->id }}"
                                             {{ in_array($grandchild->id, old('category_id', [])) ? 'selected' : '' }}>
@@ -88,56 +77,45 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Discount Type</label>
-                        <div class="input-group">
-                            <select class="form-select" name="discount_type">
-
-                                <option>Choose</option>
-                                <option value="Percentage">Percentage</option>
-                                <option value="Cash">Cash</option>
-                            </select>
-
-                        </div>
+                        <select class="form-select" name="discount_type">
+                            <option>Choose</option>
+                            <option value="Percentage">Percentage</option>
+                            <option value="Cash">Cash</option>
+                        </select>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Discount Value</label>
-                        <div class="input-group">
-                            <input type="text" placeholder="Choose" class="form-control" name="discount_value">
-                        </div>
+                        <input type="text" placeholder="Choose" class="form-control" name="discount_value">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Brand</label>
-                        <div class="input-group">
-                            <select class="form-select"name="brand">
-                                <option>Choose</option>
-                                @foreach ($brands as $brand)
-                                    <option value="{{ $brand->name }}">{{ $brand->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <select class="form-select" name="brand">
+                            <option>Choose</option>
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Unit</label>
-                        <div class="input-group">
-                            <select class="form-select" name="unit">
-                                <option>Choose</option>
-                                @foreach ($units as $unit)
-                                    <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
+                        <select class="form-select" name="unit">
+                            <option>Choose</option>
+                            @foreach ($units as $unit)
+                                <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Selling Type</label>
-                        <select class="form-select"name="selling_type">
+                        <select class="form-select" name="selling_type">
                             <option>Choose</option>
                             <option>Transactional selling</option>
                             <option>Solution selling</option>
@@ -156,72 +134,67 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Item Code</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control"
-                                placeholder="Please Enter Item Code"name="item_code" />
-
-                        </div>
+                        <input type="text" class="form-control" placeholder="Please Enter Item Code" name="item_code">
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 mb-3">
                         <label class="form-label">Description</label>
                         <textarea class="form-control" rows="4" name="description"></textarea>
                         <small class="text-muted">Maximum 60 Characters</small>
                     </div>
                 </div>
 
-                //
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label class="form-label">Product Type</label>
-                        <div>
-                            <select class="form-select" name="productType" id="productType">
-                                <option value="single" selected>Single Product</option>
-                                <option value="variable">Variable Product</option>
-                            </select>
-                        </div>
+                        <select class="form-select" name="productType" id="productType">
+                            <option value="single" selected>Single Product</option>
+                            <option value="variable">Variable Product</option>
+                        </select>
                     </div>
+
                     <!-- Single Product Section -->
                     <div class="single-product-section" style="display: none;">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label">Quantity</label>
-                                <input type="number" class="form-control" name="quantity" />
+                                <input type="number" class="form-control" name="quantity">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Price</label>
-                                <input type="number" class="form-control" name="price" />
+                                <input type="number" class="form-control" name="price">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Purchase Price</label>
-                                <input type="number" class="form-control" name="purchase_price" />
+                                <input type="number" class="form-control" name="purchase_price">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Quantity Alert</label>
-                                <input type="number" class="form-control" name="quantity_alert" />
+                                <input type="number" class="form-control" name="quantity_alert">
                             </div>
-
                         </div>
                     </div>
-
-
-
-
                 </div>
+
                 <!-- Variable Product Section -->
-                <div class="col-md-6 mb-3 form-select-container" id="variantSection" style="display: none;">
-                    <label class="form-label">Select Variants</label>
-                    <select class="selectpicker" id="variantDropdown" multiple>
+                <div class="row" id="variantSection" style="display: none;">
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Select Variants</label>
 
-                        @foreach ($variants as $variant)
-                            <option value="{{ $variant->id }}">{{ $variant->name }}</option>
-                        @endforeach
-                    </select>
+                        <select class="selectpicker form-control" id="variantDropdown" multiple>
+                            @foreach ($variants as $variant)
+                                <option value="{{ $variant->id }}">{{ $variant->name }}</option>
+                            @endforeach
+                        </select>
+
+
+                    </div>
                 </div>
-                <div id="variantValuesSection"></div>
-                <div id="combinationContainer"></div>
+
+                <div class="row" id="variantValuesSection"></div>
+                <div class="row" id="combinationContainer"></div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -230,19 +203,12 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Expiry On</label>
-                        <i data-feather="calendar" class="info-img"></i>
                         <input type="date" class="form-control" name="expired_date" placeholder="Choose Date">
                     </div>
                 </div>
 
-
-
-
-                <div class="form-section">
-                    <div class="form-section-title">
-
-                        <h5 class="mb-0"> <i class="bi bi-images text-primary"></i> Product Images</h5>
-                    </div>
+                <div class="form-section mb-4">
+                    <h5 class="mb-3"><i class="bi bi-images"></i> Product Images</h5>
 
                     <div class="mb-3">
                         <div class="form-check form-check-inline">
@@ -259,11 +225,11 @@
 
                     <!-- Regular Image Section -->
                     <div id="regularImageSection">
-                        <div class="image-upload-container">
+                        <div class="image-upload-container border rounded p-3">
                             <div class="d-flex flex-wrap gap-3" id="imagePreviewContainer">
-                                <div class="border rounded p-2" style="width: 100px; height: 100px">
+                                <div class="border rounded p-2 upload-box" style="width: 100px; height: 100px">
                                     <label for="productImages"
-                                        class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
+                                        class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer mb-0">
                                         <i class="bi bi-cloud-upload fs-3"></i>
                                         <span class="small text-muted">Upload</span>
                                     </label>
@@ -287,54 +253,91 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="variantValueTable" class="mt-4">
-                            <!-- Variant values and image upload interface will be dynamically inserted here -->
-                        </div>
+                        <div id="variantValueTable" class="mt-4"></div>
                     </div>
                 </div>
 
-                <!-- Add these styles to your CSS -->
-                <style>
-                    .text-danger {
-                        color: red !important;
-                    }
-
-                    .form-section-title {
-                        margin: 15px 0px;
-                    }
-
-                    .cursor-pointer {
-                        cursor: pointer;
-                    }
-
-                    .image-upload-container {
-                        min-height: 120px;
-                    }
-
-                    .upload-box:hover {
-                        background-color: #f8f9fa;
-                    }
-
-                    .variant-image-input {
-                        visibility: hidden;
-                        position: absolute;
-                    }
-                </style>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="featuredProduct" />
-                    <label class="form-check-label" for="featuredProduct">
-                        Featured Product
-                    </label>
+                <div class="form-check mb-4">
+                    <input class="form-check-input" name="is_featured" type="checkbox" id="featuredProduct">
+                    <label class="form-check-label" for="featuredProduct">Featured Product</label>
                 </div>
-                <div class="form-footer" style="margin-top: 10px; float: right;">
+
+                <div class="form-footer text-end">
+                    <button type="reset" class="btn btn-outline-secondary me-2">Cancel</button>
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <button type="reset" class="btn btn-outline-secondary ms-2">
-                        Cancel
-                    </button>
                 </div>
             </form>
         </div>
     </div>
+
+    <style>
+        .select2-container--bootstrap-5 .select2-results__option[aria-disabled=true] {
+            color: #6c757d;
+            font-weight: 600;
+            padding-left: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .select2-container--bootstrap-5 .select2-results__option[aria-selected=true] {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        .upload-box {
+            transition: all 0.2s ease;
+        }
+
+        .upload-box:hover {
+            background-color: #f8f9fa;
+            border-color: #86b7fe;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .variant-image-input {
+            visibility: hidden;
+            position: absolute;
+        }
+
+        #combinationContainer table {
+            width: 100%;
+        }
+
+        #combinationContainer th,
+        #combinationContainer td {
+            vertical-align: middle;
+        }
+
+        #combinationContainer .form-control {
+            min-width: 100px;
+        }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
         rel="stylesheet" />
@@ -463,30 +466,30 @@
        <table class="table table-bordered">
            <tbody>
                ${data.map(value => `
-                                     <tr>
-                                         <td class="align-middle">
-                                             ${value.value}
-                                             <input type="hidden" name="variant_value_ids[${value.id}]" value="${value.value}">
-                                         </td>
-                                         <td>
-                                             <div class="d-flex flex-wrap gap-2 image-container" id="imagePreview_${value.id}">
-                                                 <div class="upload-box border rounded p-2" style="width: 100px; height: 100px">
-                                                     <label for="variantImage_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer mb-0">
-                                                         <i class="bi bi-plus-circle fs-3"></i>
-                                                         <span class="small text-muted">Add Images</span>
-                                                     </label>
-                                                 </div>
-                                             </div>
-                                             <input type="file"
-                                                 id="variantImage_${value.id}"
-                                                 class="variant-image-input d-none"
-                                                 name="variant_images[${value.id}][]"
-                                                 multiple
-                                                 accept="image/*"
-                                                 data-value-id="${value.id}">
-                                         </td>
-                                     </tr>
-                                 `).join('')}
+                                                                                     <tr>
+                                                                                         <td class="align-middle">
+                                                                                             ${value.value}
+                                                                                             <input type="hidden" name="variant_value_ids[${value.id}]" value="${value.value}">
+                                                                                         </td>
+                                                                                         <td>
+                                                                                             <div class="d-flex flex-wrap gap-2 image-container" id="imagePreview_${value.id}">
+                                                                                                 <div class="upload-box border rounded p-2" style="width: 100px; height: 100px">
+                                                                                                     <label for="variantImage_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer mb-0">
+                                                                                                         <i class="bi bi-plus-circle fs-3"></i>
+                                                                                                         <span class="small text-muted">Add Images</span>
+                                                                                                     </label>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <input type="file"
+                                                                                                 id="variantImage_${value.id}"
+                                                                                                 class="variant-image-input d-none"
+                                                                                                 name="variant_images[${value.id}][]"
+                                                                                                 multiple
+                                                                                                 accept="image/*"
+                                                                                                 data-value-id="${value.id}">
+                                                                                         </td>
+                                                                                     </tr>
+                                                                                 `).join('')}
            </tbody>
        </table>
    `;
@@ -651,7 +654,7 @@
                     html += `
            <div class="mb-3">
                <label class="form-label">Select ${variant.name}</label>
-               <select class="form-select selectpicker variant-values"
+               <select class="selectpicker variant-values"
                        id="${variant.name.toLowerCase()}Select"
                        data-variant="${variant.name}"
                        multiple
@@ -717,8 +720,8 @@
                 let html = `
    <div class="mt-4">
        <div class="card mb-3">
-           <div class="card-header bg-light">
-               <h5 class="mb-0">Global Price & Stock Settings</h5>
+           <div class="card-header">
+               <h5 class="mb-0"><i class="bi bi-cash-stack"></i> Global Price & Stock Settings</h5>
            </div>
            <div class="card-body">
                <div class="row">

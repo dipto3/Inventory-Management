@@ -103,6 +103,7 @@ class ProductController extends Controller
             'discount_type' => 'nullable',
             'discount_value' => 'nullable',
             'tax_type' => 'nullable',
+            'is_featured' => 'nullable',
         ]);
 
         // return redirect()->back()->withErrors($validatedData);
@@ -139,6 +140,7 @@ class ProductController extends Controller
                 'tax_type' => $validatedData['tax_type'],
                 'product_type' => $validatedData['productType'],
                 'category_id' => json_encode($validatedData['category_id']),
+                'is_featured' => $validatedData['is_featured'] ?? 0,
             ]);
 
             // Handle images

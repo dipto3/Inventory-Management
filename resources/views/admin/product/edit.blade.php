@@ -172,80 +172,84 @@
                 </div>
 
                 <!-- Pricing & Stocks -->
-                <div class="form-section">
-                    <div class="form-section-title">
-                        <h5 class="mb-0"><i class="bi bi-currency-dollar text-primary"></i> Pricing & Stocks</h5>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Product Type</label>
-                        <select class="form-select" name="productType" id="productType">
-                            <option value="single" {{ $product->product_type == 'single' ? 'selected' : '' }}>Single
-                                Product</option>
-                            <option value="variable" {{ $product->product_type == 'variable' ? 'selected' : '' }}>Variable
-                                Product</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Single Product Section -->
-                    <div class="single-product-section" style="{{ !$product->is_variable ? '' : 'display: none;' }}">
-                        <div class="row g-3">
-                            @foreach ($product->variants as $variant)
-                                <div class="col-md-4">
-                                    <label class="form-label">Quantity</label>
-                                    <input type="number" class="form-control" name="quantity"
-                                        value="{{ $variant->quantity }}" />
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Price</label>
-                                    @foreach ($variant->prices as $price)
-                                        <input type="number" class="form-control" name="price"
-                                            value="{{ $price->price }}" />
-                                    @endforeach
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Purchase Price</label>
-                                    @foreach ($variant->prices as $price)
-                                        <input type="number" class="form-control" name="purchase_price"
-                                            value="{{ $price->purchase_price }}" />
-                                    @endforeach
-
-
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Quantity Alert</label>
-                                    <input type="number" class="form-control" name="quantity_alert"
-                                        value="{{ $variant->quantity_alert }}" />
-                                </div>
-                            @endforeach
+                <div class="row">
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <h5 class="mb-0"><i class="bi bi-currency-dollar text-primary"></i> Pricing & Stocks</h5>
                         </div>
-                    </div>
 
-                    <!-- Variable Product Section -->
-                    <div class="mb-3" id="variantSection"
-                        style="{{ $product->product_type == 'variable' ? '' : 'display: none;' }}">
-                        <label class="form-label">Select Variants</label>
-                        <select class="form-select selectpicker" id="variantDropdown" multiple>
-                            @foreach ($variants as $variant)
-                                @php
-                                    $isSelected = $product
-                                        ->variants()
-                                        ->whereHas('variantValues', function ($query) use ($variant) {
-                                            $query->where('variant_id', $variant->id);
-                                        })
-                                        ->exists();
-                                @endphp
-                                <option value="{{ $variant->id }}" {{ $isSelected ? 'selected' : '' }}>
-                                    {{ $variant->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        <div class="mb-4">
+                            <label class="form-label">Product Type</label>
+                            <select class="form-select" name="productType" id="productType">
+                                <option value="single" {{ $product->product_type == 'single' ? 'selected' : '' }}>Single
+                                    Product</option>
+                                <option value="variable" {{ $product->product_type == 'variable' ? 'selected' : '' }}>
+                                    Variable
+                                    Product</option>
+                            </select>
+                        </div>
 
-                    <div id="variantValuesSection"></div>
-                    <div id="combinationContainer"></div>
+
+                        <!-- Single Product Section -->
+                        <div class="single-product-section" style="{{ !$product->is_variable ? '' : 'display: none;' }}">
+                            <div class="row g-3">
+                                @foreach ($product->variants as $variant)
+                                    <div class="col-md-4">
+                                        <label class="form-label">Quantity</label>
+                                        <input type="number" class="form-control" name="quantity"
+                                            value="{{ $variant->quantity }}" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Price</label>
+                                        @foreach ($variant->prices as $price)
+                                            <input type="number" class="form-control" name="price"
+                                                value="{{ $price->price }}" />
+                                        @endforeach
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Purchase Price</label>
+                                        @foreach ($variant->prices as $price)
+                                            <input type="number" class="form-control" name="purchase_price"
+                                                value="{{ $price->purchase_price }}" />
+                                        @endforeach
+
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Quantity Alert</label>
+                                        <input type="number" class="form-control" name="quantity_alert"
+                                            value="{{ $variant->quantity_alert }}" />
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
+                <!-- Variable Product Section -->
+                <div class="mb-3" id="variantSection"
+                    style="{{ $product->product_type == 'variable' ? '' : 'display: none;' }}">
+                    <label class="form-label">Select Variants</label>
+                    <select class="form-select select2-variants" id="variantDropdown" multiple>
+                        @foreach ($variants as $variant)
+                            @php
+                                $isSelected = $product
+                                    ->variants()
+                                    ->whereHas('variantValues', function ($query) use ($variant) {
+                                        $query->where('variant_id', $variant->id);
+                                    })
+                                    ->exists();
+                            @endphp
+                            <option value="{{ $variant->id }}" {{ $isSelected ? 'selected' : '' }}>
+                                {{ $variant->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div id="variantValuesSection"></div>
+                <div id="combinationContainer"></div>
 
                 <div class="row g-3">
                     <div class="col-md-4">
@@ -387,6 +391,25 @@
                 }
             });
         });
+
+        $(document).ready(function() {
+            $('.select2-variants').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                closeOnSelect: false,
+                // templateResult: function(data) {
+                //     // Style parent categories differently
+                //     if (data.element && data.element.classList.contains('parent-category')) {
+                //         return $('<span style="">' + data.text +
+                //             '</span>');
+                //     }
+                //     return data.text;
+                // },
+                escapeMarkup: function(markup) {
+                    return markup;
+                }
+            });
+        });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -465,15 +488,15 @@
                         <td>
                             <div class="d-flex flex-wrap gap-2" id="variant_images_${value.id}">
                                 ${existingImages.map(img => `
-                                                <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
-                                                    <img src="/storage/${img.image} " class="img-fluid h-100 w-100" style="object-fit: cover">
-                                                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
-                                                        style="width: 20px; height: 20px" 
-                                                        onclick="deleteVariantImage(${img.id}, this)">
-                                                        <i class="bi bi-x"></i>
-                                                    </button>
-                                                </div>
-                                            `).join('')}
+                                                                <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
+                                                                    <img src="/storage/${img.image} " class="img-fluid h-100 w-100" style="object-fit: cover">
+                                                                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
+                                                                        style="width: 20px; height: 20px" 
+                                                                        onclick="deleteVariantImage(${img.id}, this)">
+                                                                        <i class="bi bi-x"></i>
+                                                                    </button>
+                                                                </div>
+                                                            `).join('')}
                                 <div class="border rounded p-2" style="width: 100px; height: 100px">
                                     <label for="variant_image_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
                                         <i class="bi bi-cloud-upload fs-3"></i>
@@ -701,8 +724,8 @@
                         data-live-search="true">
                     ${variant.variant_values.map(value =>
                         `<option value="${value.id}" ${existingValues.includes(value.id) ? 'selected' : ''}>
-                                        ${value.value}
-                                    </option>`
+                                                        ${value.value}
+                                                    </option>`
                     ).join('')}
                 </select>
             </div>`;

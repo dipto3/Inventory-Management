@@ -22,7 +22,6 @@
                             <th>Category</th>
                             <th>Brand</th>
                             <th>Unit</th>
-
                             <th>Variant</th>
                             <th class="no-sort">Action</th>
                         </tr>

@@ -5,7 +5,7 @@
             <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Add New Product</h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" id="productForm">
                 @csrf
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -54,6 +54,7 @@
                         <label for="productCategory" class="form-label">Category</label>
                         <select class="form-select select2-categories" name="category_id[]" id="productCategory"
                             multiple="multiple" data-placeholder="Select categories...">
+                            <option value="">Choose</option>
                             @foreach ($categories as $category)
                                 <option class="parent-category" value="{{ $category->id }}">
                                     {{ $category->name }}
@@ -73,10 +74,17 @@
                                 @endforeach
                             @endforeach
                         </select>
-                        @error('category_id')
+                        @if ($errors->has('category_id'))
+                        <div class="text-danger">{{ $errors->first('category_id') }}</div>
+                    @endif
+                    
+                    @foreach ($errors->get('category_id.*') as $messages)
+                        @foreach ($messages as $message)
                             <div class="text-danger">{{ $message }}</div>
-                        @enderror
+                        @endforeach
+                    @endforeach
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Discount Type</label>
                         <select class="form-select" name="discount_type">
@@ -95,11 +103,18 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Brand</label>
                         <select class="form-select" name="brand">
-                            <option>Choose</option>
+                            <option value="">Choose</option>
                             @foreach ($brands as $brand)
-                                <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                                <option value="{{ $brand->name }}" {{ old('brand') == $brand->name ? 'selected' : '' }}>
+                                    {{ $brand->name }}
+                                </option>
                             @endforeach
                         </select>
+
+                        </select>
+                        @error('brand')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -107,11 +122,17 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Unit</label>
                         <select class="form-select" name="unit">
-                            <option>Choose</option>
+                            <option value="">Choose</option>
                             @foreach ($units as $unit)
-                                <option value="{{ $unit->short_name }}">{{ $unit->short_name }}</option>
+                                <option value="{{ $unit->short_name }}"
+                                    {{ old('unit') == $unit->short_name ? 'selected' : '' }}>
+                                    {{ $unit->short_name }}
+                                </option>
                             @endforeach
                         </select>
+                        @error('unit')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Selling Type</label>
@@ -120,6 +141,9 @@
                             <option>Transactional selling</option>
                             <option>Solution selling</option>
                         </select>
+                        @error('selling_type')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -264,7 +288,7 @@
 
                 <div class="form-footer text-end">
                     <button type="reset" class="btn btn-outline-secondary me-2">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary add_product">Create</button>
                 </div>
             </form>
         </div>
@@ -466,30 +490,30 @@
        <table class="table table-bordered">
            <tbody>
                ${data.map(value => `
-                                                                                     <tr>
-                                                                                         <td class="align-middle">
-                                                                                             ${value.value}
-                                                                                             <input type="hidden" name="variant_value_ids[${value.id}]" value="${value.value}">
-                                                                                         </td>
-                                                                                         <td>
-                                                                                             <div class="d-flex flex-wrap gap-2 image-container" id="imagePreview_${value.id}">
-                                                                                                 <div class="upload-box border rounded p-2" style="width: 100px; height: 100px">
-                                                                                                     <label for="variantImage_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer mb-0">
-                                                                                                         <i class="bi bi-plus-circle fs-3"></i>
-                                                                                                         <span class="small text-muted">Add Images</span>
-                                                                                                     </label>
-                                                                                                 </div>
-                                                                                             </div>
-                                                                                             <input type="file"
-                                                                                                 id="variantImage_${value.id}"
-                                                                                                 class="variant-image-input d-none"
-                                                                                                 name="variant_images[${value.id}][]"
-                                                                                                 multiple
-                                                                                                 accept="image/*"
-                                                                                                 data-value-id="${value.id}">
-                                                                                         </td>
-                                                                                     </tr>
-                                                                                 `).join('')}
+                                                                                                                             <tr>
+                                                                                                                                 <td class="align-middle">
+                                                                                                                                     ${value.value}
+                                                                                                                                     <input type="hidden" name="variant_value_ids[${value.id}]" value="${value.value}">
+                                                                                                                                 </td>
+                                                                                                                                 <td>
+                                                                                                                                     <div class="d-flex flex-wrap gap-2 image-container" id="imagePreview_${value.id}">
+                                                                                                                                         <div class="upload-box border rounded p-2" style="width: 100px; height: 100px">
+                                                                                                                                             <label for="variantImage_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer mb-0">
+                                                                                                                                                 <i class="bi bi-plus-circle fs-3"></i>
+                                                                                                                                                 <span class="small text-muted">Add Images</span>
+                                                                                                                                             </label>
+                                                                                                                                         </div>
+                                                                                                                                     </div>
+                                                                                                                                     <input type="file"
+                                                                                                                                         id="variantImage_${value.id}"
+                                                                                                                                         class="variant-image-input d-none"
+                                                                                                                                         name="variant_images[${value.id}][]"
+                                                                                                                                         multiple
+                                                                                                                                         accept="image/*"
+                                                                                                                                         data-value-id="${value.id}">
+                                                                                                                                 </td>
+                                                                                                                             </tr>
+                                                                                                                         `).join('')}
            </tbody>
        </table>
    `;
@@ -566,40 +590,6 @@
 
             // Call initialization on page load
             initializeProductType();
-
-            // Image Preview Handler
-            // imageInput.addEventListener("change", function(event) {
-            //     const files = event.target.files;
-            //     for (let i = 0; i < files.length; i++) {
-            //         const file = files[i];
-            //         const reader = new FileReader();
-
-            //         reader.onload = function(e) {
-            //             const imgContainer = document.createElement("div");
-            //             imgContainer.classList.add("d-flex", "flex-column", "align-items-center",
-            //                 "m-2");
-
-            //             const img = document.createElement("img");
-            //             img.src = e.target.result;
-            //             img.classList.add("img-thumbnail");
-            //             img.style.width = "100px";
-            //             img.style.height = "100px";
-            //             img.style.objectFit = "cover";
-
-            //             const removeButton = document.createElement("button");
-            //             removeButton.textContent = "Removeeeee";
-            //             removeButton.classList.add("btn", "btn-sm", "btn-danger", "mt-2");
-            //             removeButton.onclick = () => imgContainer.remove();
-
-            //             imgContainer.appendChild(img);
-            //             imgContainer.appendChild(removeButton);
-            //             imagePreviewContainer.insertBefore(imgContainer, imagePreviewContainer
-            //                 .lastElementChild);
-            //         };
-
-            //         reader.readAsDataURL(file);
-            //     }
-            // });
 
             // Product Type Handler
             productTypeSelect.addEventListener("change", function() {
@@ -810,6 +800,119 @@
                     $(this).closest('tr').remove();
                 });
             }
+        });
+    </script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000"
+        };
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            //  $("#productForm").on("submit", function(e) {
+            $(document).on('click', '.add_product', function(e) {
+                e.preventDefault();
+                let formData = new FormData($('#productForm')[0]);
+                $.ajax({
+                    url: "{{ route('product.store') }}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    //  headers: {
+                    //      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    //  },
+                    success: function(response) {
+                        // Hide the modal and reset form if successful
+                        // $("#addBrandModal").modal('hide');
+                        if (response.success) {
+                            $("#productForm")[0].reset();
+                            window.location.href = "{{ route('product.index') }}";
+                            //  $("#productTable").load(location.href + " #productTable");
+                            $(".error-message").remove();
+                            // Completely refresh the data by making an AJAX call
+                            $.ajax({
+                                url: window.location.href,
+                                type: 'GET',
+                                success: function(data) {
+                                    // Extract the table HTML from the response
+                                    let newTableHTML = $(data).find(
+                                        '#productTable').html();
+
+                                    // First destroy the existing DataTable
+                                    let table = $('#productTable').DataTable();
+                                    table.destroy();
+
+                                    // Replace the table HTML
+                                    $('#productTable').html(newTableHTML);
+
+                                    // Reinitialize DataTable
+                                    $('#productTable').DataTable({
+                                        responsive: true,
+                                        order: [
+                                            [0, 'desc']
+                                        ],
+                                        language: {
+                                            search: "_INPUT_",
+                                            searchPlaceholder: "Search Brand...",
+                                            lengthMenu: "Show _MENU_ Brand per page",
+                                            info: "Showing _START_ to _END_ of _TOTAL_ products",
+                                            infoEmpty: "No products found",
+                                            infoFiltered: "(filtered from _MAX_ total products)",
+                                            paginate: {
+                                                first: "First",
+                                                last: "Last",
+                                                next: "Next",
+                                                previous: "Previous",
+                                            },
+                                        },
+                                    });
+                                    toastr.options = {
+                                        positionClass: "toast-bottom-center"
+                                    };
+                                    toastr.success("Brand added successfully");
+                                },
+                                error: function() {
+                                    toastr.options = {
+                                        positionClass: "toast-bottom-center"
+                                    };
+                                    toastr.error("Error refreshing table data");
+                                }
+                            });
+                        }
+                    },
+
+
+                    error: function(error) {
+                        console.log("Error Response:", error);
+                        if (error.status === 422) {
+                            let errors = error.responseJSON.errors;
+                            // Display errors next to the fields
+                            $.each(errors, function(field, messages) {
+                                let inputField = $(`[name="${field}"]`);
+                                // Check if error message already exists
+                                if (inputField.next(".error-message").length === 0) {
+                                    inputField.after(
+                                        `<small class="text-danger error-message">${messages[0]}</small>`
+                                    );
+                                }
+                            });
+                        } else {
+                            alert("Something went wrong! Please check the form.");
+                        }
+                    }
+                });
+            });
         });
     </script>
 @endpush

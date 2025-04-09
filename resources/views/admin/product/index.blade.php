@@ -47,28 +47,41 @@
                                 <td>
                                     <div class="row">
                                         @foreach ($product->variants as $variant)
+                                           
                                             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2">
                                                 <a href="{{ route('view.details', [$product->id, $variant->id]) }}"
                                                     class="card-link" title="view">
-                                                    <div class="card"
-                                                        style="padding: 0.5rem; margin: 0.5rem; 
-                                    {{ $variant->quantity === 0 ? 'background-color: #933636;color: white' : ($variant->quantity < $variant->quantity_alert ? 'background-color: #a7a944;' : '') }}">
-                                                        <div class="card-body p-1">
-                                                            <h6 class="card-title mb-1"
-                                                                style="font-size: 0.9rem;{{ $variant->quantity === 0 ? 'color: white;' : '' }}">
-                                                                {{ $variant->variant_value_name }}
-                                                            </h6>
-                                                            <p class="card-text mb-0"
-                                                                style="font-size: 0.9rem; line-height: 1.2;">
-                                                                <span>Qty:
-                                                                    {{ $variant->quantity }}</span><br>
-                                                                <!-- Added <br> for new line -->
-                                                                <span>Price: &#2547;
-                                                                    @foreach ($variant->prices as $price)
-                                                                        {{ $price->price }}
-                                                                    @endforeach
-                                                                </span>
-                                                            </p>
+                                                    <div
+                                                        class="card variant-card
+                                                        @if ($variant->quantity == 0) bg-out-of-stock
+                                                        @elseif($variant->quantity_alert > $variant->quantity)
+                                                            bg-low-stock
+                                                        @else
+                                                            bg-normal-stock @endif
+                                                    ">
+                                                        <div class="card-body p-2">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-start mb-1">
+                                                                <h6 class="card-title mb-0 variant-name">
+                                                                    {{ $variant->variant_value_name }}
+                                                                </h6>
+                                                                @if ($variant->quantity == 0)
+                                                                    <span class="badge bg-danger">Out</span>
+                                                                @elseif($variant->quantity < $variant->quantity_alert)
+                                                                    <span class="badge bg-warning text-dark">Low</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="variant-details">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span class="text-muted small">Qty:</span>
+                                                                    <span class="fw-bold">{{ $variant->quantity }}</span>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span class="text-muted small">Price:</span>
+                                                                    <span
+                                                                        class="fw-bold">৳{{ $variant->prices->first()->price ?? 'N/A' }}</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -76,6 +89,9 @@
                                         @endforeach
                                     </div>
                                 </td>
+
+
+
                                 <td>
                                     <div class="edit-delete-action">
                                         <a class="btn btn-primary me-2 p-2"
@@ -99,6 +115,50 @@
             </div>
         </div>
     </div>
+    <style>
+        .variant-card {
+            transition: all 0.2s ease;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .variant-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .variant-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+
+        .variant-details {
+            font-size: 0.8rem;
+        }
+
+        .bg-out-of-stock {
+            background-color: #ffebee !important;
+            border-color: #ef9a9a !important;
+        }
+
+        .bg-low-stock {
+            background-color: #fff3e0 !important;
+            border-color: #ffcc80 !important;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card-link:hover {
+            text-decoration: none;
+        }
+    </style>
 @endsection
 @push('scripts')
     <script>

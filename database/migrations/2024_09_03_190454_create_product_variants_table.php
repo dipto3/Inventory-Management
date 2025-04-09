@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('barcode')->nullable();
             $table->string('variant_value_name')->nullable();
             // $table->string('variant_value_price')->nullable();
-            $table->integer('quantity_alert')->nullable();
+            $table->integer('quantity_alert')->default(0);
             $table->timestamps();
         });
     }

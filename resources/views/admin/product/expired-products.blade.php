@@ -3,10 +3,10 @@
     <div class="card mb-4">
         <!-- Add this button to your card header (just below the <h5> tag) -->
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Expired Products</h5>
+            <h5 class="mb-0">Products</h5>
 
-            {{-- <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="bi bi-plus-lg me-2"></i>Add Product
-            </a> --}}
+            <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="bi bi-plus-lg me-2"></i>Add Product
+            </a>
         </div>
 
 
@@ -45,32 +45,26 @@
                                 <td>{{ $product->product }}</td>
                                 <td>{{ $product->unit }}</td>
                                 <td>
-                                    <div class="row">
+                                    <div class="variant-container">
                                         @foreach ($product->variants as $variant)
-                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2">
-                                                <a href="{{ route('view.details', [$product->id, $variant->id]) }}"
-                                                    class="card-link" title="view">
-                                                    <div class="card"
-                                                        style="padding: 0.5rem; margin: 0.5rem; 
-                                    {{ $variant->quantity === 0 ? 'background-color: #933636;color: white' : ($variant->quantity < $variant->quantity_alert ? 'background-color: #a7a944;' : '') }}">
-                                                        <div class="card-body p-1">
-                                                            <h6 class="card-title mb-1"
-                                                                style="font-size: 0.9rem;{{ $variant->quantity === 0 ? 'color: white;' : '' }}">
-                                                                {{ $variant->variant_value_name }}
-                                                            </h6>
-                                                            <p class="card-text mb-0"
-                                                                style="font-size: 0.9rem; line-height: 1.2;">
-                                                                <span>Qty:
-                                                                    {{ $variant->quantity }}</span><br>
-                                                                <!-- Added <br> for new line -->
-                                                                <span>Price: &#2547;
-                                                                    @foreach ($variant->prices as $price)
-                                                                        {{ $price->price }}
-                                                                    @endforeach
-                                                                </span>
-                                                            </p>
+                                            <div class="variant-card {{ $variant->quantity === 0 ? 'out-of-stock' : ($variant->quantity < $variant->quantity_alert ? 'low-stock' : '') }}">
+                                                <a href="{{ route('view.details', [$product->id, $variant->id]) }}" class="variant-link">
+                                                    <div class="variant-info">
+                                                        <span class="variant-name">{{ $variant->variant_value_name }}</span>
+                                                        <div class="variant-details">
+                                                            <span class="variant-qty">
+                                                                <i class="bi bi-box-seam"></i> {{ $variant->quantity }}
+                                                            </span>
+                                                            <span class="variant-price">
+                                                                <i class="bi bi-tag"></i> ৳{{ $variant->prices->first()->price ?? 'N/A' }}
+                                                            </span>
                                                         </div>
                                                     </div>
+                                                    @if($variant->quantity === 0)
+                                                        <span class="stock-badge">Out of Stock</span>
+                                                    @elseif($variant->quantity < $variant->quantity_alert)
+                                                        <span class="stock-badge">Low Stock</span>
+                                                    @endif
                                                 </a>
                                             </div>
                                         @endforeach
@@ -99,6 +93,96 @@
             </div>
         </div>
     </div>
+    <style>
+        .variant-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .variant-card {
+            width: 120px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .variant-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .variant-link {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .variant-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .variant-name {
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .variant-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .variant-qty, .variant-price {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .stock-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            border-bottom-left-radius: 5px;
+            color: white;
+        }
+        
+        .out-of-stock {
+            background-color: #ffebee;
+            border-color: #ef9a9a;
+        }
+        
+        .out-of-stock .stock-badge {
+            background-color: #c62828;
+        }
+        
+        .low-stock {
+            background-color: #fff8e1;
+            border-color: #ffe082;
+        }
+        
+        .low-stock .stock-badge {
+            background-color: #f9a825;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .variant-card {
+                width: 100px;
+            }
+        }
+    </style>
 @endsection
 @push('scripts')
     <script>

@@ -14,7 +14,6 @@ use App\Models\Variant;
 use App\Models\VariantValue;
 use App\Rules\QuantityAlertRule;
 use Carbon\Carbon;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -102,7 +101,7 @@ class ProductController extends Controller
             'tax_type'          => 'nullable',
             'is_featured'       => 'nullable',
         ]);
-        
+
         if ($request->productType === 'single') {
             $request->validate([
                 'quantity'       => 'required|integer|min:0',
@@ -111,7 +110,7 @@ class ProductController extends Controller
                 'quantity_alert' => ['required', 'numeric', new QuantityAlertRule($request->input('quantity'))],
             ]);
         }
-        
+
         DB::beginTransaction();
         try {
             $product = Product::create([
@@ -210,7 +209,7 @@ class ProductController extends Controller
             'price'              => $request->price,
             'purchase_price'     => $request->purchase_price,
         ]);
-    }  
+    }
 
     private function handleVariableProduct(Product $product, Request $request)
     {
@@ -314,11 +313,45 @@ class ProductController extends Controller
 
     public function update(Request $request, string $id)
     {
-        // dd($request->all());
-        DB::beginTransaction();
         try {
             $product = Product::findOrFail($id);
+            $rules   = [
+                'name'              => 'required|string|max:255',
+                'store'             => 'required|string|max:255',
+                'warehouse'         => 'nullable|string|max:255',
+                'sku'               => 'required|string|max:255|unique:products,sku,' . $product->id,
+                'slug'              => 'nullable|string|max:255|unique:products,slug,' . $product->id,
+                'unit'              => 'required|string|max:255',
+                'brand'             => 'required|string|max:255',
+                'selling_type'      => 'required|string|max:255',
+                'description'       => 'nullable|string',
+                'category_id'       => 'required|array',
+                'category_id.*'     => 'exists:categories,id',
+                'productType'       => 'required|in:single,variable',
+                'manufactured_date' => 'nullable|date',
+                'expired_date'      => 'nullable|date',
+                'item_code'         => 'nullable',
+                'discount_type'     => 'nullable',
+                'discount_value'    => 'nullable|numeric|required_with:discount_type',
+                'tax_type'          => 'nullable',
+            ];
 
+            if ($request->productType == 'single') {
+                $rules = array_merge($rules, [
+                    'purchase_price' => 'required|numeric',
+                    'selling_price'  => 'required|numeric',
+                    'quantity'       => 'required|numeric',
+                    'quantity_alert' => ['required', 'numeric', new QuantityAlertRule($request->quantity)],
+                ]);
+
+            }
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+            DB::beginTransaction();
             $product->update([
                 'name'              => $request->name,
                 'store'             => $request->store,
@@ -338,7 +371,7 @@ class ProductController extends Controller
                 'product_type'      => $request->productType,
             ]);
 
-            $product->productCategories()->delete(); // Remove old categories
+            $product->productCategories()->delete();
             foreach ($request->category_id as $categoryId) {
                 ProductCategory::create([
                     'product_id'  => $product->id,
@@ -387,26 +420,26 @@ class ProductController extends Controller
 
     private function updateSingleProduct(Product $product, Request $request)
     {
-        $validatedData = $request->validate([
-            'quantity'       => 'nullable|integer|min:0',
-            'price'          => 'nullable|numeric|min:0',
-            'purchase_price' => 'nullable|numeric|min:0',
-            'quantity_alert' => ['nullable', 'numeric', new QuantityAlertRule()],
-        ]);
-        if (! $validatedData) {
-            return response()->json(['error' => 'Validation failed'], 422);
-        }
+        // $validatedData = $request->validate([
+        //     'quantity'       => 'nullable|integer|min:0',
+        //     'price'          => 'nullable|numeric|min:0',
+        //     'purchase_price' => 'nullable|numeric|min:0',
+        //     'quantity_alert' => ['nullable', 'numeric', new QuantityAlertRule()],
+        // ]);
+        // if (! $validatedData) {
+        //     return response()->json(['error' => 'Validation failed'], 422);
+        // }
 
         $variant = $product->variants()->first();
 
         $variant->update([
-            'quantity'       => (int) $validatedData['quantity'],
-            'quantity_alert' => (int) $validatedData['quantity_alert'],
+            'quantity'       => (int) $request->quantity,
+            'quantity_alert' => (int) $request->quantity_alert,
         ]);
 
         ProductPrice::where('product_variant_id', $variant->id)->update([
-            'price'          => (int) $validatedData['price'],
-            'purchase_price' => (int) $validatedData['purchase_price'],
+            'price'          => (int) $request->price,
+            'purchase_price' => (int) $request->purchase_price,
         ]);
     }
 

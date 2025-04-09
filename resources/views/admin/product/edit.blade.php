@@ -44,7 +44,8 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Product Name</label>
-                            <input type="text" class="form-control" name="name" value="{{ $product->name }}" />
+                            <input type="text" class="form-control" name="name"
+                                value="{{ old('name', $product->name) }}" />
                             @error('name')
                                 <div class="text-danger small">{{ $message }}</div>
                             @enderror
@@ -83,6 +84,10 @@
                                         @endphp
                                     @endforeach
                                 </select>
+                                @error('category_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+
                             </div>
                         </div>
 
@@ -95,26 +100,36 @@
                                 <option value="Cash" {{ $product->discount_type == 'Cash' ? 'selected' : '' }}>Cash
                                 </option>
                             </select>
+                            @error('discount_type')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Discount Value</label>
                             <input type="text" class="form-control" name="discount_value"
-                                value="{{ $product->discount_value }}">
+                                value="{{ old('discount_value', $product->discount_value) }}">
+                            @error('discount_value')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Brand</label>
                             <div class="input-group">
                                 <select class="form-select" name="brand">
-                                    <option>Choose</option>
+                                    <option value="" disabled
+                                        {{ old('brand', $product->brand) == '' ? 'selected' : '' }}>Choose</option>
                                     @foreach ($brands as $brand)
                                         <option value="{{ $brand->name }}"
-                                            {{ $product->brand == $brand->name ? 'selected' : '' }}>
+                                            {{ old('brand', $product->brand) == $brand->name ? 'selected' : '' }}>
                                             {{ $brand->name }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('brand')
+                                    <div class="text-danger mt-2">{{ $message }}</div>
+                                @enderror
 
                             </div>
                         </div>
@@ -123,14 +138,18 @@
                             <label class="form-label">Unit</label>
                             <div class="input-group">
                                 <select class="form-select" name="unit">
-                                    <option>Choose</option>
+                                    <option value="" disabled
+                                        {{ old('unit', $product->unit) == '' ? 'selected' : '' }}>Choose</option>
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->short_name }}"
-                                            {{ $product->unit == $unit->short_name ? 'selected' : '' }}>
+                                            {{ old('unit', $product->unit) == $unit->short_name ? 'selected' : '' }}>
                                             {{ $unit->short_name }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('unit')
+                                    <div class="text-danger mt-2">{{ $message }}</div>
+                                @enderror
 
                             </div>
                         </div>
@@ -138,12 +157,17 @@
                         <div class="col-md-4">
                             <label class="form-label">Selling Type</label>
                             <select class="form-select" name="selling_type">
-                                <option>Choose</option>
+                                <option value="" disabled
+                                    {{ old('selling_type', $product->selling_type) == '' ? 'selected' : '' }}>Choose
+                                </option>
                                 <option {{ $product->selling_type == 'Transactional selling' ? 'selected' : '' }}>
                                     Transactional selling</option>
                                 <option {{ $product->selling_type == 'Solution selling' ? 'selected' : '' }}>Solution
                                     selling</option>
                             </select>
+                            @error('selling_type')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-4">
@@ -155,12 +179,18 @@
                                 <option value="inclusive" {{ $product->tax_type == 'inclusive' ? 'selected' : '' }}>
                                     Inclusive</option>
                             </select>
+                            @error('tax_type')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Item Code</label>
                             <input type="text" class="form-control" name="item_code"
                                 value="{{ $product->item_code }}" />
+                            @error('item_code')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-12">
@@ -197,20 +227,29 @@
                                     <div class="col-md-4">
                                         <label class="form-label">Quantity</label>
                                         <input type="number" class="form-control" name="quantity"
-                                            value="{{ $variant->quantity }}" />
+                                            value="{{ old('quantity', $variant->quantity) }}" />
+                                        @error('quantity')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Price</label>
                                         @foreach ($variant->prices as $price)
                                             <input type="number" class="form-control" name="price"
-                                                value="{{ $price->price }}" />
+                                                value="{{ old('price', $price->price) }}" />
+                                            @error('price')
+                                                <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
                                         @endforeach
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Purchase Price</label>
                                         @foreach ($variant->prices as $price)
                                             <input type="number" class="form-control" name="purchase_price"
-                                                value="{{ $price->purchase_price }}" />
+                                                value="{{ old('purchase_price', $price->purchase_price) }}" />
+                                            @error('purchase_price')
+                                                <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
                                         @endforeach
 
 
@@ -218,7 +257,10 @@
                                     <div class="col-md-4">
                                         <label class="form-label">Quantity Alert</label>
                                         <input type="number" class="form-control" name="quantity_alert"
-                                            value="{{ $variant->quantity_alert }}" />
+                                            value="{{ old('quantity_alert', $variant->quantity_alert) }}" />
+                                        @error('quantity_alert')
+                                            <div class="text-danger mt-2">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 @endforeach
                             </div>
@@ -255,12 +297,12 @@
                     <div class="col-md-4">
                         <label class="form-label">Manufactured Date</label>
                         <input type="date" class="form-control" name="manufactured_date"
-                            value="{{ $product->manufactured_date }}">
+                            value="{{ old('manufactured_date', $product->manufactured_date) }}">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Expiry Date</label>
                         <input type="date" class="form-control" name="expired_date"
-                            value="{{ $product->expired_date }}">
+                            value="{{ old('expired_date', $product->expired_date) }}">
                     </div>
                 </div>
 
@@ -488,15 +530,15 @@
                         <td>
                             <div class="d-flex flex-wrap gap-2" id="variant_images_${value.id}">
                                 ${existingImages.map(img => `
-                                                                <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
-                                                                    <img src="/storage/${img.image} " class="img-fluid h-100 w-100" style="object-fit: cover">
-                                                                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
-                                                                        style="width: 20px; height: 20px" 
-                                                                        onclick="deleteVariantImage(${img.id}, this)">
-                                                                        <i class="bi bi-x"></i>
-                                                                    </button>
-                                                                </div>
-                                                            `).join('')}
+                                                                                                                        <div class="border rounded p-2 position-relative" style="width: 100px; height: 100px">
+                                                                                                                            <img src="/storage/${img.image} " class="img-fluid h-100 w-100" style="object-fit: cover">
+                                                                                                                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0 m-1"
+                                                                                                                                style="width: 20px; height: 20px" 
+                                                                                                                                onclick="deleteVariantImage(${img.id}, this)">
+                                                                                                                                <i class="bi bi-x"></i>
+                                                                                                                            </button>
+                                                                                                                        </div>
+                                                                                                                    `).join('')}
                                 <div class="border rounded p-2" style="width: 100px; height: 100px">
                                     <label for="variant_image_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer">
                                         <i class="bi bi-cloud-upload fs-3"></i>
@@ -724,8 +766,8 @@
                         data-live-search="true">
                     ${variant.variant_values.map(value =>
                         `<option value="${value.id}" ${existingValues.includes(value.id) ? 'selected' : ''}>
-                                                        ${value.value}
-                                                    </option>`
+                                                                                                                ${value.value}
+                                                                                                            </option>`
                     ).join('')}
                 </select>
             </div>`;

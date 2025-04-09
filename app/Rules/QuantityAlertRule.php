@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Rules;
 
 use Closure;
@@ -12,9 +11,10 @@ class QuantityAlertRule implements ValidationRule
      *
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
+   
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        
+
         $quantity = request()->input('quantity');
 
         if ($value > $quantity) {

@@ -14,9 +14,11 @@ use App\Models\Variant;
 use App\Models\VariantValue;
 use App\Rules\QuantityAlertRule;
 use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
@@ -53,7 +55,7 @@ class ProductController extends Controller
     public function expiredProducts()
     {
         // dd(now()->toDateString());
-        $products = Product::with('productImage','categories','variants.prices')->where('expired_date', '<', now()->toDateString())->with('variants', 'prices')->get();
+        $products = Product::with('productImage', 'categories', 'variants.prices')->where('expired_date', '<', now()->toDateString())->with('variants', 'prices')->get();
         // dd($products );
         return view('admin.product.expired-products', compact('products'));
     }
@@ -82,7 +84,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name'              => 'required|string|max:255',
             'store'             => 'required|string|max:255',
-            'warehouse'         => 'required|string|max:255',
+            'warehouse'         => 'nullable|string|max:255',
             'sku'               => 'required|string|max:255|unique:products',
             'slug'              => 'nullable|string|max:255|unique:products',
             'unit'              => 'required|string|max:255',
@@ -96,11 +98,20 @@ class ProductController extends Controller
             'expired_date'      => 'nullable|date',
             'item_code'         => 'nullable',
             'discount_type'     => 'nullable',
-            'discount_value'    => 'nullable',
+            'discount_value'    => 'nullable|numeric|required_with:discount_type',
             'tax_type'          => 'nullable',
             'is_featured'       => 'nullable',
         ]);
-
+        
+        if ($request->productType === 'single') {
+            $request->validate([
+                'quantity'       => 'required|integer|min:0',
+                'price'          => 'required|numeric|min:0',
+                'purchase_price' => 'required|numeric|min:0',
+                'quantity_alert' => ['required', 'numeric', new QuantityAlertRule($request->input('quantity'))],
+            ]);
+        }
+        
         DB::beginTransaction();
         try {
             $product = Product::create([
@@ -183,18 +194,11 @@ class ProductController extends Controller
     private function handleSingleProduct(Product $product, Request $request)
     {
 
-        $validatedData = $request->validate([
-            'quantity'       => 'required|integer|min:0',
-            'price'          => 'required|numeric|min:0',
-            'purchase_price' => 'required|numeric|min:0',
-            'quantity_alert' => ['required', 'numeric', new QuantityAlertRule()],
-        ]);
-
         $variant = ProductVariant::create([
             'product_id'     => $product->id,
-            'quantity'       => $validatedData['quantity'],
+            'quantity'       => $request->quantity,
             'barcode'        => str_pad(random_int(0, 999999999), 9, '0', STR_PAD_LEFT),
-            'quantity_alert' => $validatedData['quantity_alert'],
+            'quantity_alert' => $request->quantity_alert,
 
             // 'variant_value_price' => $validatedData['variant_value_price'],
 
@@ -203,10 +207,10 @@ class ProductController extends Controller
         ProductPrice::create([
             'product_id'         => $product->id,
             'product_variant_id' => $variant->id,
-            'price'              => $validatedData['price'],
-            'purchase_price'     => $validatedData['purchase_price'],
+            'price'              => $request->price,
+            'purchase_price'     => $request->purchase_price,
         ]);
-    }
+    }  
 
     private function handleVariableProduct(Product $product, Request $request)
     {
@@ -220,7 +224,7 @@ class ProductController extends Controller
             'child_products.*.quantity'       => 'required|integer|min:0',
             'child_products.*.price'          => 'required|numeric|min:0',
             'child_products.*.purchase_price' => 'required|numeric|min:0',
-            'child_products.*.quantity_alert' => 'required|integer|min:0',
+            'child_products.*.quantity_alert' => 'required|numeric|min:0',
         ]);
 
         foreach ($validatedData['child_products'] as $childProduct) {

@@ -74,15 +74,13 @@
                                 @endforeach
                             @endforeach
                         </select>
-                        @if ($errors->has('category_id'))
-                        <div class="text-danger">{{ $errors->first('category_id') }}</div>
-                    @endif
-                    
-                    @foreach ($errors->get('category_id.*') as $messages)
-                        @foreach ($messages as $message)
+                        @error('category_id')
                             <div class="text-danger">{{ $message }}</div>
-                        @endforeach
-                    @endforeach
+                        @enderror
+                        @error('category_id.*')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+
                     </div>
 
                     <div class="col-md-6 mb-3">
@@ -92,13 +90,19 @@
                             <option value="Percentage">Percentage</option>
                             <option value="Cash">Cash</option>
                         </select>
+                        @error('discount_type')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Discount Value</label>
-                        <input type="text" placeholder="Choose" class="form-control" name="discount_value">
+                        <input type="number" placeholder="Choose" class="form-control" name="discount_value">
+                        @error('discount_value')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Brand</label>
@@ -137,7 +141,7 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Selling Type</label>
                         <select class="form-select" name="selling_type">
-                            <option>Choose</option>
+                            <option value="{{ old('selling_type') }}">Choose</option>
                             <option>Transactional selling</option>
                             <option>Solution selling</option>
                         </select>
@@ -155,10 +159,17 @@
                             <option value="exclusive">Exclusive</option>
                             <option value="inclusive">Inclusive</option>
                         </select>
+                        @error('tax_type')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Item Code</label>
-                        <input type="text" class="form-control" placeholder="Please Enter Item Code" name="item_code">
+                        <input type="text" class="form-control" placeholder="Please Enter Item Code"
+                            name="item_code">
+                        @error('item_code')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -177,26 +188,41 @@
                             <option value="single" selected>Single Product</option>
                             <option value="variable">Variable Product</option>
                         </select>
+                        @error('productType')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Single Product Section -->
                     <div class="single-product-section" style="display: none;">
                         <div class="row g-3">
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Quantity</label>
-                                <input type="number" class="form-control" name="quantity">
+                                <input type="number" class="form-control" name="quantity" value="{{ old('quantity') }}">
+                                @error('quantity')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Price</label>
                                 <input type="number" class="form-control" name="price">
+                                @error('price')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Purchase Price</label>
                                 <input type="number" class="form-control" name="purchase_price">
+                                @error('purchase_price')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Quantity Alert</label>
-                                <input type="number" class="form-control" name="quantity_alert">
+                                <input type="number" class="form-control" name="quantity_alert" value="{{ old('quantity_alert') }}">
+                                @error('quantity_alert')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -490,30 +516,30 @@
        <table class="table table-bordered">
            <tbody>
                ${data.map(value => `
-                                                                                                                             <tr>
-                                                                                                                                 <td class="align-middle">
-                                                                                                                                     ${value.value}
-                                                                                                                                     <input type="hidden" name="variant_value_ids[${value.id}]" value="${value.value}">
-                                                                                                                                 </td>
-                                                                                                                                 <td>
-                                                                                                                                     <div class="d-flex flex-wrap gap-2 image-container" id="imagePreview_${value.id}">
-                                                                                                                                         <div class="upload-box border rounded p-2" style="width: 100px; height: 100px">
-                                                                                                                                             <label for="variantImage_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer mb-0">
-                                                                                                                                                 <i class="bi bi-plus-circle fs-3"></i>
-                                                                                                                                                 <span class="small text-muted">Add Images</span>
-                                                                                                                                             </label>
-                                                                                                                                         </div>
-                                                                                                                                     </div>
-                                                                                                                                     <input type="file"
-                                                                                                                                         id="variantImage_${value.id}"
-                                                                                                                                         class="variant-image-input d-none"
-                                                                                                                                         name="variant_images[${value.id}][]"
-                                                                                                                                         multiple
-                                                                                                                                         accept="image/*"
-                                                                                                                                         data-value-id="${value.id}">
-                                                                                                                                 </td>
-                                                                                                                             </tr>
-                                                                                                                         `).join('')}
+                                                                                                                                                         <tr>
+                                                                                                                                                             <td class="align-middle">
+                                                                                                                                                                 ${value.value}
+                                                                                                                                                                 <input type="hidden" name="variant_value_ids[${value.id}]" value="${value.value}">
+                                                                                                                                                             </td>
+                                                                                                                                                             <td>
+                                                                                                                                                                 <div class="d-flex flex-wrap gap-2 image-container" id="imagePreview_${value.id}">
+                                                                                                                                                                     <div class="upload-box border rounded p-2" style="width: 100px; height: 100px">
+                                                                                                                                                                         <label for="variantImage_${value.id}" class="d-flex flex-column align-items-center justify-content-center h-100 cursor-pointer mb-0">
+                                                                                                                                                                             <i class="bi bi-plus-circle fs-3"></i>
+                                                                                                                                                                             <span class="small text-muted">Add Images</span>
+                                                                                                                                                                         </label>
+                                                                                                                                                                     </div>
+                                                                                                                                                                 </div>
+                                                                                                                                                                 <input type="file"
+                                                                                                                                                                     id="variantImage_${value.id}"
+                                                                                                                                                                     class="variant-image-input d-none"
+                                                                                                                                                                     name="variant_images[${value.id}][]"
+                                                                                                                                                                     multiple
+                                                                                                                                                                     accept="image/*"
+                                                                                                                                                                     data-value-id="${value.id}">
+                                                                                                                                                             </td>
+                                                                                                                                                         </tr>
+                                                                                                                                                     `).join('')}
            </tbody>
        </table>
    `;
@@ -891,26 +917,42 @@
                             });
                         }
                     },
-
-
                     error: function(error) {
                         console.log("Error Response:", error);
                         if (error.status === 422) {
                             let errors = error.responseJSON.errors;
+                            // Clear existing errors
+                            $('.error-message').remove();
+
                             // Display errors next to the fields
                             $.each(errors, function(field, messages) {
-                                let inputField = $(`[name="${field}"]`);
-                                // Check if error message already exists
-                                if (inputField.next(".error-message").length === 0) {
-                                    inputField.after(
-                                        `<small class="text-danger error-message">${messages[0]}</small>`
-                                    );
+                                // Handle array fields differently
+                                if (field.includes('.')) {
+                                    // This is an array field error (like category_id.0)
+                                    let baseField = field.split('.')[0];
+                                    let element = $(`[name="${baseField}[]"]`);
+                                    if (element.length) {
+                                        element.closest('.mb-3').append(
+                                            `<small class="text-danger error-message">${messages[0]}</small>`
+                                        );
+                                    }
+                                } else {
+                                    // Regular field error
+                                    let element = $(
+                                        `[name="${field}"], [name="${field}[]"]`);
+                                    if (element.length) {
+                                        element.closest('.mb-3').append(
+                                            `<small class="text-danger error-message">${messages[0]}</small>`
+                                        );
+                                    }
                                 }
                             });
                         } else {
                             alert("Something went wrong! Please check the form.");
                         }
                     }
+
+
                 });
             });
         });

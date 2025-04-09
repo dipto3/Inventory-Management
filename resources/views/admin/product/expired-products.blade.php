@@ -3,10 +3,10 @@
     <div class="card mb-4">
         <!-- Add this button to your card header (just below the <h5> tag) -->
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Products</h5>
+            <h5 class="mb-0">Expired Products</h5>
 
-            <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="bi bi-plus-lg me-2"></i>Add Product
-            </a>
+            {{-- <a href="{{ route('product.create') }}" class="btn btn-primary"> <i class="bi bi-plus-lg me-2"></i>Add Product
+            </a> --}}
         </div>
 
 
@@ -45,31 +45,52 @@
                                 <td>{{ $product->product }}</td>
                                 <td>{{ $product->unit }}</td>
                                 <td>
-                                    <div class="variant-container">
+                                    <div class="row">
                                         @foreach ($product->variants as $variant)
-                                            <div class="variant-card {{ $variant->quantity === 0 ? 'out-of-stock' : ($variant->quantity < $variant->quantity_alert ? 'low-stock' : '') }}">
-                                                <a href="{{ route('view.details', [$product->id, $variant->id]) }}" class="variant-link">
-                                                    <div class="variant-info">
-                                                        <span class="variant-name">{{ $variant->variant_value_name }}</span>
-                                                        <div class="variant-details">
-                                                            <span class="variant-qty">
-                                                                <i class="bi bi-box-seam"></i> {{ $variant->quantity }}
-                                                            </span>
-                                                            <span class="variant-price">
-                                                                <i class="bi bi-tag"></i> ৳{{ $variant->prices->first()->price ?? 'N/A' }}
-                                                            </span>
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2">
+                                                <a href="{{ route('view.details', [$product->id, $variant->id]) }}"
+                                                    class="card-link" title="view">
+                                                    <div
+                                                        class="card variant-card
+                                                        @if ($variant->quantity == 0) bg-out-of-stock
+                                                        @elseif($variant->quantity_alert > $variant->quantity)
+                                                            bg-low-stock
+                                                        @else
+                                                            bg-normal-stock @endif
+                                                    ">
+                                                        <div class="card-body p-2">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-start mb-1">
+                                                                <h6 class="card-title mb-0 variant-name">
+                                                                    {{ $variant->variant_value_name }}
+                                                                </h6>
+                                                                @if ($variant->quantity == 0)
+                                                                    <span class="badge bg-danger">Out</span>
+                                                                @elseif($variant->quantity < $variant->quantity_alert)
+                                                                    <span class="badge bg-warning text-dark">Low</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="variant-details">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span class="text-muted small">Qty:</span>
+                                                                    <span class="fw-bold">{{ $variant->quantity }}</span>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span class="text-muted small">Price:</span>
+                                                                    <span
+                                                                        class="fw-bold">৳{{ $variant->prices->first()->price ?? 'N/A' }}</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    @if($variant->quantity === 0)
-                                                        <span class="stock-badge">Out of Stock</span>
-                                                    @elseif($variant->quantity < $variant->quantity_alert)
-                                                        <span class="stock-badge">Low Stock</span>
-                                                    @endif
                                                 </a>
                                             </div>
                                         @endforeach
                                     </div>
                                 </td>
+
+
+
                                 <td>
                                     <div class="edit-delete-action">
                                         <a class="btn btn-primary me-2 p-2"
@@ -94,93 +115,47 @@
         </div>
     </div>
     <style>
-        .variant-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
         .variant-card {
-            width: 120px;
+            transition: all 0.2s ease;
             border-radius: 8px;
             border: 1px solid #e0e0e0;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
         }
-        
+
         .variant-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
-        .variant-link {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        .variant-info {
-            display: flex;
-            flex-direction: column;
-        }
-        
+
         .variant-name {
-            font-weight: 500;
             font-size: 0.85rem;
-            margin-bottom: 6px;
+            font-weight: 500;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            max-width: 120px;
         }
-        
+
         .variant-details {
-            display: flex;
-            justify-content: space-between;
             font-size: 0.8rem;
-            color: #666;
         }
-        
-        .variant-qty, .variant-price {
-            display: flex;
-            align-items: center;
-            gap: 3px;
+
+        .bg-out-of-stock {
+            background-color: #ffebee !important;
+            border-color: #ef9a9a !important;
         }
-        
-        .stock-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 0.7rem;
-            padding: 2px 5px;
-            border-bottom-left-radius: 5px;
-            color: white;
+
+        .bg-low-stock {
+            background-color: #fff3e0 !important;
+            border-color: #ffcc80 !important;
         }
-        
-        .out-of-stock {
-            background-color: #ffebee;
-            border-color: #ef9a9a;
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
         }
-        
-        .out-of-stock .stock-badge {
-            background-color: #c62828;
-        }
-        
-        .low-stock {
-            background-color: #fff8e1;
-            border-color: #ffe082;
-        }
-        
-        .low-stock .stock-badge {
-            background-color: #f9a825;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .variant-card {
-                width: 100px;
-            }
+
+        .card-link:hover {
+            text-decoration: none;
         }
     </style>
 @endsection

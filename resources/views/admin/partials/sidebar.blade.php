@@ -71,6 +71,20 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('purchase-order.index') }}">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Purchase Order</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('purchase.index') }}">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Purchase</span>
+                    </a>
+                </li>
+
 
 
                 {{-- <li class="nav-item dropdown">

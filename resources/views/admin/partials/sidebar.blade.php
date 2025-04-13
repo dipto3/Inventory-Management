@@ -73,14 +73,14 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('purchase-order.index') }}">
-                        <i class="bi bi-box-seam"></i>
+                        <i class="bi bi-cart-check-fill"></i>
                         <span>Purchase Order</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('purchase.index') }}">
-                        <i class="bi bi-box-seam"></i>
+                        <i class="bi bi-cart-plus-fill"></i>
                         <span>Purchase</span>
                     </a>
                 </li>

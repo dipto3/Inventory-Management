@@ -20,9 +20,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($purchases as $purchas)
-                            <tr id="brand-row-{{ $brand->id }}">
-                                <td style="display:none;">{{ $brand->id }}</td>
+                        @foreach ($purchases as $purchase)
+                            <tr id="purchase-row-{{ $purchase->id }}">
+                                <td style="display:none;">{{ $purchase->id }}</td>
                                 <td> <strong>
                                         <a href="{{ route('create.grn', $purchase->id) }}" style="color: rgb(32, 104, 212)">
                                             {{ $purchase->purchase_order_code }}
@@ -50,7 +50,7 @@
                                         <div class="col-sm-3">
                                             <a href="{{ route('purchase-order.show', $purchase->id) }}"
                                                 class="btn btn-primary btn-sm">
-                                                <i class="ri-eye-line"></i>
+                                                <i class="bi bi-eye"></i>
                                             </a>
                                         </div>
 

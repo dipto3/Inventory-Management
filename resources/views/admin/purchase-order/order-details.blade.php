@@ -10,7 +10,7 @@
                         <div class="page-title-box d-flex align-items-center">
                             <!-- Centered title -->
                             <div class="position-absolute start-50 translate-middle-x text-center w-100">
-                                <h4 class="mb-0">Purchase Order #{{ $purchaseOrder->id }}</h4>
+                                <h4 class="mb-10">Purchase Order #{{ $purchaseOrder->id }}</h4>
                             </div>
                             
                             <!-- Breadcrumb in the right corner -->

@@ -12,11 +12,12 @@
                             <div class="position-absolute start-50 translate-middle-x text-center w-100">
                                 <h4 class="mb-10">Purchase Order #{{ $purchaseOrder->id }}</h4>
                             </div>
-                            
+
                             <!-- Breadcrumb in the right corner -->
-                            <div class="ms-auto">  <!-- ms-auto pushes content to the right -->
+                            <div class="ms-auto"> <!-- ms-auto pushes content to the right -->
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('purchase.index') }}">Purchases</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('purchase.index') }}">Purchase Order</a>
+                                    </li>
                                     <li class="breadcrumb-item active">Details</li>
                                 </ol>
                             </div>

@@ -85,6 +85,20 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('return-reason.index') }}">
+                        <i class="bi bi-bootstrap-reboot"></i>
+                        <span>Return Reasons</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('purchase.index') }}">
+                        <i class="bi bi-r-circle-fill"></i>
+                        <span>Return</span>
+                    </a>
+                </li>
+
 
 
                 {{-- <li class="nav-item dropdown">

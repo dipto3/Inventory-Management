@@ -64,8 +64,6 @@
         </div>
     </div>
 
-
-
     <style>
 
     </style>
@@ -101,7 +99,4 @@
 
         });
     </script>
-
-
-
 @endpush

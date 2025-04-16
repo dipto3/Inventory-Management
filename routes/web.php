@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\CategoryController;
-use Database\Seeders\AdminSeeder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,12 +20,11 @@ Route::get('/', function () {
 Route::get('/login', [App\Http\Controllers\Admin\Auth\AuthController::class, 'login'])->name('login');
 Route::post('/authenticate', [App\Http\Controllers\Admin\Auth\AuthController::class, 'authenticate'])->name('authenticate');
 
-
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [App\Http\Controllers\Admin\Auth\AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'dashboard'])->name('dashboard');
     Route::resource('category', App\Http\Controllers\Admin\CategoryController::class);
-    Route::controller(CategoryController::class)->group(function () {
+    Route::controller(App\Http\Controllers\Admin\CategoryController::class)->group(function () {
         Route::post('/category/update-ordering', 'updateOrdering')->name('category.updateOrdering');
     });
     Route::delete('/product/image/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteImage'])->name('product.image.delete');
@@ -50,4 +46,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('purchase-payment-store', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'storePayment'])->name('purchase.payment.store');
     Route::get('purchase-payment-view/{id}', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'viewPayment'])->name('purchase.payment.view');
+
+    Route::resource('return-reason', App\Http\Controllers\Admin\ReturnReasonController::class);
 });

@@ -93,7 +93,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('purchase.index') }}">
+                    <a class="nav-link" href="{{ route('purchase-return.index') }}">
                         <i class="bi bi-r-circle-fill"></i>
                         <span>Return</span>
                     </a>

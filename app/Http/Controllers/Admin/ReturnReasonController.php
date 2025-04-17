@@ -29,6 +29,11 @@ class ReturnReasonController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'reason'      => 'required',
+            'status'      => 'required',
+            'description' => 'nullable',
+        ]);
         $returnReason = ReturnReason::create([
             'reason'      => $request->reason,
             'status'      => $request->status ?? 0,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PurchaseReturnController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,4 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::get('purchase-payment-view/{id}', [App\Http\Controllers\Admin\PurchasePaymentController::class, 'viewPayment'])->name('purchase.payment.view');
 
     Route::resource('return-reason', App\Http\Controllers\Admin\ReturnReasonController::class);
+    Route::resource('purchase-return', App\Http\Controllers\Admin\PurchaseReturnController::class);
+
+    Route::get('get-purchase-orders/{supplier}', [PurchaseReturnController::class, 'getOrders']);
+    Route::get('get-purchases/{order}', [PurchaseReturnController::class, 'getPurchases']);
+    Route::get('get-purchase-items/{purchase}', [PurchaseReturnController::class, 'getItems']);
 });

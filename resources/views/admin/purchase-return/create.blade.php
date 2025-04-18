@@ -36,6 +36,7 @@
             </div>
 
             <div id="purchaseItemsWrapper"></div>
+            <div id="perProductDiscount"></div>
 
             <button type="submit" class="btn btn-primary mt-3">Submit Return</button>
         </form>
@@ -61,6 +62,9 @@
                 });
         });
 
+        let totalDiscount = 0;
+        let totalReceivedQty = 0;
+
         document.getElementById('purchase_order_id').addEventListener('change', function() {
             let orderId = this.value;
 
@@ -71,15 +75,21 @@
                     purchaseSelect.innerHTML = '<option value="">Select Purchase</option>';
                     data.forEach(p => {
                         purchaseSelect.innerHTML +=
-                            `<option value="${p.id}">#${p.id} - ${p.purchase_code}</option>`;
+                            `<option value="${p.id}" data-discount="${p.total_discount}" data-totalqty="${p.total_receive_quantity}">
+                        #${p.id} - ${p.purchase_code}
+                    </option>`;
                     });
-
-                    document.getElementById('purchaseItemsWrapper').innerHTML = '';
                 });
         });
 
+
         document.getElementById('purchase_id').addEventListener('change', function() {
             let purchaseId = this.value;
+            let selectedOption = this.options[this.selectedIndex];
+
+            totalDiscount = parseFloat(selectedOption.dataset.discount || 0);
+            totalReceivedQty = parseFloat(selectedOption.dataset.totalqty || 1); // avoid division by zero
+            let perProductDiscount = totalDiscount / totalReceivedQty;
 
             fetch('/get-purchase-items/' + purchaseId)
                 .then(res => res.json())
@@ -87,32 +97,60 @@
                     let wrapper = document.getElementById('purchaseItemsWrapper');
                     wrapper.innerHTML = `<h4>Items</h4>`;
                     data.forEach(item => {
+                        let discountedPrice = item.purchase_price - perProductDiscount;
                         wrapper.innerHTML += `
-                        <div class="mb-3 border p-2">
-                            <strong>${item.product.name}</strong><br>
-                            Quantity: ${item.receive_quantity} <br>
-                            Price: ${item.purchase_price}<br>
-                            <label>Return Qty:</label>
-                            <input 
+                    <div class="mb-3 border p-2">
+                        <strong>${item.product.name}</strong><br>
+                        Quantity: ${item.receive_quantity} <br>
+                        Price: ${item.purchase_price}<br>
+                        Discounted Price: ${discountedPrice.toFixed(2)}<br>
+                        <label>Return Qty:</label>
+                        <input 
                             type="number" 
                             name="items[${item.id}][quantity]" 
                             class="form-control return-qty-input" 
                             max="${item.receive_quantity}" 
                             data-max="${item.receive_quantity}"
-                            oninput="checkReturnQty(this)"
+                            data-price="${discountedPrice}"
+                            oninput="checkReturnQty(this); calculateTotalAmount();"
                         >
-                            <label>Reason:</label>
-                           <select name="items[${item.id}][reason_id]" class="form-select reason-select" data-target="reason-input-${item.id}">
-                        <option value="">Select Reason</option>
-                        @foreach ($returnReasons as $reason)
-                            <option value="{{ $reason->id }}">{{ $reason->reason }}</option>
-                        @endforeach
-                    </select>
-                        </div>
-                    `;
+                        <label>Reason:</label>
+                        <select name="items[${item.id}][reason_id]" class="form-select">
+                            <option value="">Select Reason</option>
+                            @foreach ($returnReasons as $reason)
+                                <option value="{{ $reason->id }}">{{ $reason->reason }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                `;
                     });
+
+                    wrapper.innerHTML += `
+                <div class="mt-3">
+                    <strong>Total Return Amount: </strong> <span id="totalReturnAmount">0.00</span> <br>
+                      <strong>Per Product Discount: </strong> <span id="perProductDiscountAmount">${perProductDiscount}</span>
+                    <input type="hidden" name="total_amount" id="totalAmountInput">
+                    <input type="hidden" name="per_product_discount" id="" value="${perProductDiscount}">
+                  
+                </div>
+            `;
                 });
         });
+
+        function calculateTotalAmount() {
+            let total = 0;
+            document.querySelectorAll('.return-qty-input').forEach(input => {
+                let qty = parseFloat(input.value) || 0;
+                let price = parseFloat(input.dataset.price) || 0;
+                total += qty * price;
+            });
+
+            document.getElementById('totalReturnAmount').innerText = total.toFixed(2);
+            document.getElementById('totalAmountInput').value = total.toFixed(2);
+        }
+
+
+
         // Validation function
         function checkReturnQty(input) {
             const maxQty = parseInt(input.getAttribute('data-max'));

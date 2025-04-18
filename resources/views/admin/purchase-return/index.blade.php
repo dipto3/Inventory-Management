@@ -14,44 +14,44 @@
                 <table id="purchaseReturnTable" class="table table-hover w-100">
                     <thead>
                         <tr>
-                            {{-- <th style="display:none;">ID</th>
-                            <th>Name</th>
-                            <th>Image</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th>Action</th> --}}
+                            <th style="display:none;">ID</th>
+                            <th>Purchase Code</th>
+                            <th>Purchase Order Code</th>
+                            <th>Supplier</th>
+                            <th>Return Date</th>
+                            <th>Approval</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($brands as $brand)
-                            <tr id="brand-row-{{ $brand->id }}">
-                                <td style="display:none;">{{ $brand->id }}</td>
-                                <td>{{ $brand->name }} ({{ $brand->id }}) </td>
-                                <td class="image"><img style="height: 50px;width:50px;"
-                                        src="{{ asset('storage/' . $brand->logo) }}" alt></td>
-                                <td> {{ $brand->description }} </td>
+                        @foreach ($purchaseReturns as $purchaseReturn)
+                            <tr id="purchaseReturn-row-{{ $purchaseReturn->id }}">
+                                <td style="display:none;">{{ $purchaseReturn->id }}</td>
+                                <td>{{ $purchaseReturn->purchase?->purchase_code }} </td>
+                                <td>{{ $purchaseReturn->purchaseOrder?->purchase_order_code }} </td>
+                                <td> {{ $purchaseReturn->supplier?->name }} </td>
 
                                 <td>
-                                    @if ($brand->status == 1)
-                                        <span class="badge bg-success">Active</span>
-                                    @elseif ($brand->status == 0)
-                                        <span class="badge bg-danger">Inactive</span>
-                                    @endif
+                                    {{ \Carbon\Carbon::parse($purchaseReturn->return_date)->format('d F, Y') }}
+                                </td>
+                                <td>
+                                    {{ $purchaseReturn->is_approved ? 'Approved' : 'Not-Approved' }}
                                 </td>
                                 <td>
                                     <div class="d-flex">
-                                        <button class="btn btn-sm btn-info edit-brand" data-id="{{ $brand->id }}">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
+                                        <a class="btn btn-sm btn-primary edit-brand"
+                                            href="{{ route('purchase-return.show', $purchaseReturn->id) }}">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
 
                                         <button type="button" class="btn btn-sm btn-danger btn-flat show_confirm"
-                                            data-id="{{ $brand->id }}" data-toggle="tooltip" title='Delete'>
+                                            data-id="" data-toggle="tooltip" title='Delete'>
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -71,13 +71,13 @@
                 language: {
                     search: "_INPUT_",
                     searchPlaceholder: "Search brand...",
-                    lengthMenu: "Show _MENU_ brand per page",
+                    lengthMenu: "Show _MENU_ purchase return per page",
                     // info: "",
                     // infoEmpty: "",
                     // infoFiltered: "",
-                    info: "Showing _START_ to _END_ of _TOTAL_ brands",
-                    infoEmpty: "No brands found",
-                    infoFiltered: "(filtered from _MAX_ total brands)",
+                    info: "Showing _START_ to _END_ of _TOTAL_ purchase return",
+                    infoEmpty: "No purchase return found",
+                    infoFiltered: "(filtered from _MAX_ total purchase return)",
                     paginate: {
                         first: "First",
                         last: "Last",

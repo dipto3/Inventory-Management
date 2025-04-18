@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light rounded-0 mb-4"
+<nav class="navbar navbar-expand-lg navbar-light rounded-0 mb-2"
     style="
             background-color: var(--card-bg);
             border-bottom: 1px solid var(--border-color);

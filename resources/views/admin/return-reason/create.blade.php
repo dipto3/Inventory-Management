@@ -10,7 +10,7 @@
                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
              </div>
              <div class="modal-body">
-                 <form method="post" enctype="multipart/form-data" id="returnReasonForm">
+                 <form method="post" action="{{ route('return-reason.create') }}" enctype="multipart/form-data" id="returnReasonForm">
                      @csrf
                      <div class="row">
                          <div class="col-md-6 mb-3">

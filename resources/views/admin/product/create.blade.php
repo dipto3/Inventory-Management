@@ -1,5 +1,27 @@
 @extends('admin.layouts.master')
 @section('admin.content')
+{{-- Breadcrumb --}}
+<div class="container-p-y">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style2 mb-0">  <!-- mb-0 removes bottom margin -->
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('dashboard') }}">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="javascript:void(0);">Inventory</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="javascript:void(0);">Products</a>
+                    </li>
+                    <li class="breadcrumb-item active">Create</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+{{-- End Breadcrumb --}}
     <div class="card">
         <div class="card-header">
             <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Add New Product</h5>

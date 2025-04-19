@@ -35,6 +35,7 @@
                                     <th>Product</th>
                                     <th>Barcode</th>
                                     <th>Return Quantity</th>
+                                    <th>Discount value</th>
                                     <th>Per Product Discount</th>
                                     <th>Purchase Price</th>
                                     <th>Subtotal</th>
@@ -43,6 +44,7 @@
                             <tbody>
                                 @foreach ($purchaseReturn->purchaseReturnItems as $item)
                                     @php
+                                        // (Product Price / Purchase Grand Total) × Total Discount
                                         $perProductDiscount =
                                             ($item->unit_price / $item->purchaseReturn?->purchase?->grand_total) *
                                             $item->purchaseReturn?->purchase?->total_discount;
@@ -58,13 +60,16 @@
                                         </td>
                                         <td>{{ $item->purchaseItem->productVariant?->barcode }}</td>
                                         <td>{{ $item->quantity }}</td>
+                                            <td>
+                                                {{ $item->purchaseReturn?->purchase?->discount_value }}
+                                            </td>
                                         <td> {{ number_format($perProductDiscount, 2) }}
                                         </td>
                                         <td>
                                             {{ $item->unit_price }}
                                         </td>
                                         <td>
-                                            {{ ceil($item->unit_price - $perProductDiscount) }}
+                                            {{ ceil($item->unit_price - $perProductDiscount) * $item->quantity }}
                                         </td>
                                     </tr>
                                 @endforeach

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->date('receive_date');
             $table->string('payment_status');
             $table->integer('total_receive_quantity');
+
             $table->string('discount_type')->nullable();
+            $table->decimal('discount_value')->default(0);
             $table->decimal('total_discount')->default(0);
             $table->decimal('total_tax')->default(0);
             $table->decimal('total_shipping_cost')->default(0);

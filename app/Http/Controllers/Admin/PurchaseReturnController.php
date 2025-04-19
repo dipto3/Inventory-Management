@@ -30,7 +30,7 @@ class PurchaseReturnController extends Controller
             'return_date'        => 'required|date',
             'items'              => 'required|array',
             'total_amount'       => 'required',
-            'per_product_discount' => 'required',
+            // 'per_product_discount' => 'required',
         ]);
 
         // Create purchase return
@@ -40,7 +40,7 @@ class PurchaseReturnController extends Controller
         $purchaseReturn->purchase_id        = $validated['purchase_id'];
         $purchaseReturn->return_date        = $validated['return_date'];
         $purchaseReturn->total_amount       = $validated['total_amount'];
-        $purchaseReturn->per_product_discount = $validated['per_product_discount'];
+        // $purchaseReturn->per_product_discount = $validated['per_product_discount'];
         $purchaseReturn->save();
 
         // Loop through the items and create return entries

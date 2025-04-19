@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('purchase_order_id')->constrained('purchase_orders')->onDelete('cascade');
             $table->date('return_date');
             $table->decimal('total_amount')->default(0);
-            $table->boolean('is_approved')->default(false);
+            $table->tinyInteger('is_approved')->default(0);
             $table->timestamps();
         });
     }

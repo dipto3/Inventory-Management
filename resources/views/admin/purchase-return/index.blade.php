@@ -35,7 +35,16 @@
                                     {{ \Carbon\Carbon::parse($purchaseReturn->return_date)->format('d F, Y') }}
                                 </td>
                                 <td>
-                                    {{ $purchaseReturn->is_approved ? 'Approved' : 'Not-Approved' }}
+                                    @if ($purchaseReturn->is_approved == 0)
+                                        <span class="badge bg-info">Pending</span>
+                                    @elseif ($purchaseReturn->is_approved == 1)
+                                    <span class="badge bg-success">Approved</span>
+                                    @elseif ($purchaseReturn->is_approved == 2)
+                                    <span class="badge bg-danger">Rejected</span>
+                                    @else
+                                    <span class="badge bg-warning">Something wrong!!</span>
+                                        
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="d-flex">

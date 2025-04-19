@@ -23,8 +23,9 @@
                             <label class="form-label">Return Date : {{ $purchaseReturn->return_date }}
                             </label> <br>
                             <label class="form-label">Approval status :
-                                {{ $purchaseReturn->is_approved ? 'Approved' : 'Not Approved' }}
+
                             </label>
+
 
                         </div>
                         <table class="table table-bordered" id="selectedProductsTable">
@@ -60,9 +61,9 @@
                                         </td>
                                         <td>{{ $item->purchaseItem->productVariant?->barcode }}</td>
                                         <td>{{ $item->quantity }}</td>
-                                            <td>
-                                                {{ $item->purchaseReturn?->purchase?->discount_value }}
-                                            </td>
+                                        <td>
+                                            {{ $item->purchaseReturn?->purchase?->discount_value }}
+                                        </td>
                                         <td> {{ number_format($perProductDiscount, 2) }}
                                         </td>
                                         <td>
@@ -83,6 +84,19 @@
 
                         <button type="submit" class="btn btn-primary">Back to return</button>
                     </div>
+                </form>
+
+                <form action="{{ route('approve.purchase.return', $purchaseReturn->id) }}" method="post">
+                    @csrf
+                    <select name="is_approved" id="" class="form-select">
+                        <option value="0"{{ $purchaseReturn->is_approved == 0 ? 'selected' : '' }}>Pending
+                        </option>
+                        <option value="1"{{ $purchaseReturn->is_approved == 1 ? 'selected' : '' }}>Approved
+                        </option>
+                        <option value="2"{{ $purchaseReturn->is_approved == 2 ? 'selected' : '' }}>Rejected
+                        </option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">Update Status</button>
                 </form>
             </div>
         </div>

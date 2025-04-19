@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\PurchaseReturnController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,7 +50,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('return-reason', App\Http\Controllers\Admin\ReturnReasonController::class);
     Route::resource('purchase-return', App\Http\Controllers\Admin\PurchaseReturnController::class);
 
-    Route::get('get-purchase-orders/{supplier}', [PurchaseReturnController::class, 'getOrders']);
-    Route::get('get-purchases/{order}', [PurchaseReturnController::class, 'getPurchases']);
-    Route::get('get-purchase-items/{purchase}', [PurchaseReturnController::class, 'getItems']);
+    Route::get('get-purchase-orders/{supplier}', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'getOrders']);
+    Route::get('get-purchases/{order}', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'getPurchases']);
+    Route::get('get-purchase-items/{purchase}', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'getItems']);
+
+    Route::post('approve-purchase-return/{id}', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'approvePurchaseReturn'])->name('approve.purchase.return');
 });

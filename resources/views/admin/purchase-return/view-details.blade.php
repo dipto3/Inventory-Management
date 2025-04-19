@@ -22,7 +22,7 @@
                         <div class="col-md-6" style="margin-bottom: 10px;">
                             <label class="form-label">Return Date : {{ $purchaseReturn->return_date }}
                             </label> <br>
-                            <label class="form-label">Approval status :
+                            <label class="form-label">Approval status : {{ $purchaseReturn->is_approved == 0 ? 'Pending' : ($purchaseReturn->is_approved == 1 ? 'Approved' : 'Rejected') }}
 
                             </label>
 
@@ -86,18 +86,20 @@
                     </div>
                 </form>
 
-                <form action="{{ route('approve.purchase.return', $purchaseReturn->id) }}" method="post">
-                    @csrf
-                    <select name="is_approved" id="" class="form-select">
-                        <option value="0"{{ $purchaseReturn->is_approved == 0 ? 'selected' : '' }}>Pending
-                        </option>
-                        <option value="1"{{ $purchaseReturn->is_approved == 1 ? 'selected' : '' }}>Approved
-                        </option>
-                        <option value="2"{{ $purchaseReturn->is_approved == 2 ? 'selected' : '' }}>Rejected
-                        </option>
-                    </select>
-                    <button type="submit" class="btn btn-primary mt-2">Update Status</button>
-                </form>
+                @if ($purchaseReturn->is_approved != 1)
+                    <form action="{{ route('approve.purchase.return', $purchaseReturn->id) }}" method="post">
+                        @csrf
+                        <select name="is_approved" id="" class="form-select">
+                            <option value="0"{{ $purchaseReturn->is_approved == 0 ? 'selected' : '' }}>Pending
+                            </option>
+                            <option value="1"{{ $purchaseReturn->is_approved == 1 ? 'selected' : '' }}>Approved
+                            </option>
+                            <option value="2"{{ $purchaseReturn->is_approved == 2 ? 'selected' : '' }}>Rejected
+                            </option>
+                        </select>
+                        <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+                    </form>
+                @endif
             </div>
         </div>
     @endsection

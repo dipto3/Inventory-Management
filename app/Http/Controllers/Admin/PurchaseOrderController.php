@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
@@ -28,7 +26,7 @@ class PurchaseOrderController extends Controller
      */
     public function create()
     {
-        $suppliers = Supplier::where('status', 1)->select('id', 'name')->get();
+        $suppliers = Supplier::with('supplierCredit')->where('status', 1)->select('id', 'name')->get();
         // dd($suppliers);
         $productVariants = ProductVariant::with('product', 'prices')->get();
         // dd($products);
@@ -45,14 +43,14 @@ class PurchaseOrderController extends Controller
         DB::beginTransaction();
         try {
             $purchaseOrderCode = 'PRO-' . date('Ymd') . '-' . str_pad(PurchaseOrder::count() + 1, 4, '0', STR_PAD_LEFT);
-            $purchaseOrder = PurchaseOrder::create([
-                'supplier_id' => $request->supplier,
-                'purchase_date' => $request->purchase_date,
+            $purchaseOrder     = PurchaseOrder::create([
+                'supplier_id'         => $request->supplier,
+                'purchase_date'       => $request->purchase_date,
                 'purchase_order_code' => $purchaseOrderCode,
-                'total_quantity' => $request->total_quantity,
-                'total_price' => $request->total_price,
-                'purchase_status' => 'pending',
-                'user_id' => auth()->user()->id,
+                'total_quantity'      => $request->total_quantity,
+                'total_price'         => $request->total_price,
+                'purchase_status'     => 'pending',
+                'user_id'             => auth()->user()->id,
             ]);
 
             if ($request->has('products')) {
@@ -60,11 +58,11 @@ class PurchaseOrderController extends Controller
                     // dd($variantId);
                     $findProduct = ProductVariant::find($variantId);
                     $purchaseOrder->purchaseOrderItems()->create([
-                        'product_id' => $findProduct->product_id,
+                        'product_id'         => $findProduct->product_id,
                         'product_variant_id' => $variantId,
-                        'purchase_quantity' => $product['quantity'],
-                        'purchase_price' => $product['purchase_price'],
-                        'subtotal' => $product['subtotal'],
+                        'purchase_quantity'  => $product['quantity'],
+                        'purchase_price'     => $product['purchase_price'],
+                        'subtotal'           => $product['subtotal'],
                     ]);
                 }
             }
@@ -110,5 +108,4 @@ class PurchaseOrderController extends Controller
         //
     }
 
-   
 }

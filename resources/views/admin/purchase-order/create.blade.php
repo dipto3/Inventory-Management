@@ -16,8 +16,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Supplier</label>
-                            <select class="selectpicker" id="supplierSelect" name="supplier"
-                                data-live-search="true">
+                            <select class="selectpicker" id="supplierSelect" name="supplier" data-live-search="true">
                                 <option value="">Choose</option>
                                 @foreach ($suppliers as $supplier)
                                     <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
@@ -58,6 +57,9 @@
                         <h5 class="mb-0"><i class="bi bi-list-check text-primary"></i> Selected Products</h5>
                     </div>
                     <p style="margin-top: 10px;"><strong>Supplier:</strong> <span id="selectedSupplier">None</span></p>
+                    
+                <div id="credit-info" class="text-green-600 text-sm my-2"></div>
+                <input type="hidden" name="credit_amount" id="credit_amount_input">
                     <table class="table table-bordered" id="selectedProductsTable">
                         <thead>
                             <tr>
@@ -105,6 +107,10 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
                 <!-- Submit Buttons -->
                 <div class="text-end mt-4">
                     <button type="button" class="btn btn-secondary me-2">Cancel</button>
@@ -113,8 +119,6 @@
             </form>
         </div>
     </div>
-
-
 
     <style>
 
@@ -205,6 +209,35 @@
                 $(this).closest('tr').remove(); // Remove the closest row to the clicked button
                 calculateSubtotal(); // Recalculate totals after removal
             });
+        });
+
+
+        $('#supplierSelect').on('change', function() {
+            const supplierId = $(this).val();
+
+            if (supplierId) {
+                fetch(`/supplier/${supplierId}/credit`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.length > 0) {
+                            // Show the credit info in UI
+                            $('#credit-info').html(
+                                data.map(c => `
+                            <div>
+                                <strong class="text-success">Credit: ${c.credit_amount}</strong> 
+                              
+                            </div>
+                        `).join('')
+                            );
+
+                            // optionally add it to hidden input for form submit
+                            $('#credit_amount_input').val(data[0].credit_amount);
+                        } else {
+                            $('#credit-info').html('');
+                            $('#credit_amount_input').val('');
+                        }
+                    });
+            }
         });
     </script>
 @endpush

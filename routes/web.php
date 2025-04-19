@@ -55,4 +55,5 @@ Route::middleware('auth')->group(function () {
     Route::get('get-purchase-items/{purchase}', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'getItems']);
 
     Route::post('approve-purchase-return/{id}', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'approvePurchaseReturn'])->name('approve.purchase.return');
+    Route::get('/supplier/{id}/credit', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'getSupplierCredit'])->name('get.supplier.credit');
 });

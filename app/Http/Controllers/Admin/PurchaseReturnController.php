@@ -152,6 +152,15 @@ class PurchaseReturnController extends Controller
 
     }
 
+    public function getSupplierCredit($id)
+    {
+        $credits = SupplierCredit::where('supplier_id', $id)
+            ->where('usage_type', 'next_order')
+            ->where('credit_amount', '>', 0)
+            ->get();
+        return response()->json($credits);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

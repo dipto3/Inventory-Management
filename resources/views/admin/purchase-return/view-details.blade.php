@@ -42,6 +42,11 @@
                             </thead>
                             <tbody>
                                 @foreach ($purchaseReturn->purchaseReturnItems as $item)
+                                    @php
+                                        $perProductDiscount =
+                                            ($item->unit_price / $item->purchaseReturn?->purchase?->grand_total) *
+                                            $item->purchaseReturn?->purchase?->total_discount;
+                                    @endphp
                                     <tr>
                                         <td>{{ $item->purchaseReturn?->purchase?->purchase_code }}</td>
                                         <td>{{ $item->purchaseReturn?->purchaseOrder?->purchase_order_code }}</td>
@@ -53,12 +58,13 @@
                                         </td>
                                         <td>{{ $item->purchaseItem->productVariant?->barcode }}</td>
                                         <td>{{ $item->quantity }}</td>
-                                        <td>{{ $item->purchaseReturn?->per_product_discount }}</td>
+                                        <td> {{ number_format($perProductDiscount, 2) }}
+                                        </td>
                                         <td>
                                             {{ $item->unit_price }}
                                         </td>
                                         <td>
-                                            {{ $item->quantity * $item->unit_price - $item->purchaseReturn?->per_product_discount }}
+                                            {{ ceil($item->unit_price - $perProductDiscount) }}
                                         </td>
                                     </tr>
                                 @endforeach

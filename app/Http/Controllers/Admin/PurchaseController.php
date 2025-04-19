@@ -30,8 +30,9 @@ class PurchaseController extends Controller
         //
     }
 
-    public function createGrn($id)
+    public function createGrn($id,Request $request)
     {
+       
         $purchaseOrder = PurchaseOrder::with('purchaseOrderItems', 'supplier', 'user', 'purchaseOrderItems.product', 'purchaseOrderItems.productVariant')->find($id);
         // dd($purchaseOrder);
         return view('admin.grn.create', compact('purchaseOrder'));

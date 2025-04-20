@@ -19,6 +19,7 @@
                         </div>
                         <p style="margin-top: 10px;"><strong>Supplier:</strong> <span
                                 id="selectedSupplier">{{ $purchaseOrder->supplier?->name }}</span></p>
+                        <input type="hidden" name="supplier" value="{{ $purchaseOrder->supplier_id }}" />
 
                         <div id="credit-info" class="text-green-600 text-sm my-2"></div>
                         <div id="credit-user-info" class="">

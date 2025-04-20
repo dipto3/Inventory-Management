@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-12 d-flex justify-content-end">
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb breadcrumb-style2 mb-0">  <!-- mb-0 removes bottom margin -->
+                    <ol class="breadcrumb breadcrumb-style2 mb-0"> <!-- mb-0 removes bottom margin -->
                         <li class="breadcrumb-item">
                             <a href="{{ route('dashboard') }}">Home</a>
                         </li>
@@ -57,6 +57,8 @@
                                         <span class="badge bg-warning">Partial</span>
                                     @elseif ($purchase->payment_status == 'completed')
                                         <span class="badge bg-success">Paid</span>
+                                    @elseif ($purchase->payment_status == 'merged')
+                                        <span class="badge bg-success">Merged with Credit Balance</span>
                                     @else
                                         <span class="badge bg-danger">Something Wrong!</span>
                                     @endif

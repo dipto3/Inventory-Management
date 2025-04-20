@@ -6,6 +6,7 @@ use App\Models\ProductVariant;
 use App\Models\Purchase;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
+use App\Models\SupplierCredit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -107,6 +108,18 @@ class PurchaseController extends Controller
 
                 $purchaseOrder->update([
                     'purchase_status' => ($totalReceived == $purchaseOrder->total_quantity) ? 'completed' : 'partial',
+                ]);
+            }
+
+            if (!is_null($request->credit_amount != null) && $request->credit_used > 0) {
+                $supplierCredit = SupplierCredit::where('supplier_id', $request->supplier)->first();
+                if ($supplierCredit) {
+                    $supplierCredit->update([
+                        'credit_amount' => $supplierCredit->credit_amount - $request->credit_used,
+                    ]);
+                }
+                $purchase->update([
+                    'payment_status' => 'merged',
                 ]);
             }
             DB::commit();

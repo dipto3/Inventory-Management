@@ -19,6 +19,13 @@
                         </div>
                         <p style="margin-top: 10px;"><strong>Supplier:</strong> <span
                                 id="selectedSupplier">{{ $purchaseOrder->supplier?->name }}</span></p>
+
+                        <div id="credit-info" class="text-green-600 text-sm my-2"></div>
+                        <div id="credit-user-info" class="">
+                        </div>
+                        <input type="hidden" name="credit_amount" id="credit_amount_input">
+                        <input type="hidden" name="credit_used" id="credit_used_input" value="0">
+
                         <div class="col-md-6" style="margin-bottom: 10px;">
                             <label class="form-label">Receive Date</label>
                             <input type="date" class="form-control" name="receive_date" value="{{ date('Y-m-d') }}"
@@ -147,7 +154,8 @@
                                                 value="0.00">
                                             <input type="hidden" name="total_quantity" id="totalQuantityInput"
                                                 value="0">
-                                            <input type="hidden" name="total_price" id="totalPriceInput" value="0.00">
+                                            <input type="hidden" name="total_price" id="totalPriceInput"
+                                                value="0.00">
                                             <input type="hidden" name="total_tax" id="totalTaxInput" value="0.00">
                                             <input type="hidden" name="total_discount" id="totalDiscountInput"
                                                 value="0.00">
@@ -224,6 +232,9 @@
                 let discountAmount = discountType === "Percentage" ? (totalSubtotal * discount) / 100 : discount;
                 let total = totalSubtotal + taxAmount + shippingCost - discountAmount;
                 let discountValue = discountType === "Percentage" ? discount + "%" : discount;
+                let creditAmount = parseFloat(document.getElementById("credit_amount_input").value) || 0;
+                let totalAfterCredit = total - creditAmount;
+                if (totalAfterCredit < 0) totalAfterCredit = 0;
 
                 // Update HTML Elements
                 document.getElementById("totalSubtotal").innerText = totalSubtotal.toFixed(2);
@@ -232,15 +243,39 @@
                 document.getElementById("totalDiscount").innerText = discountType === "Percentage" ?
                     `${discount.toFixed(2)}% (${discountAmount.toFixed(2)})` : discountAmount.toFixed(2);
                 document.getElementById("totalShipping").innerText = shippingCost.toFixed(2);
-                document.getElementById("totalPrice").innerText = total.toFixed(2);
+                document.getElementById("totalPrice").innerText = totalAfterCredit.toFixed(2);
 
                 // Update hidden input fields
                 document.getElementById("totalQuantityInput").value = totalQuantity;
                 document.getElementById("totalSubtotalInput").value = totalSubtotal.toFixed(2);
-                document.getElementById("totalPriceInput").value = total.toFixed(2);
+                document.getElementById("totalPriceInput").value = totalAfterCredit.toFixed(2);
                 document.getElementById("totalTaxInput").value = taxAmount.toFixed(2);
                 document.getElementById("totalDiscountInput").value = discountAmount.toFixed(2);
                 document.getElementById("discountValue").value = discountValue;
+
+
+                let creditUsed = 0;
+                let availableCredit = parseFloat(document.getElementById("credit_amount_input")?.value) || 0;
+
+                if (availableCredit > 0) {
+                    if (availableCredit >= total) {
+                        creditUsed = total;
+                        total = 0;
+                    } else {
+                        creditUsed = availableCredit;
+                        total -= availableCredit;
+                    }
+                } else {
+                    creditUsed = 0;
+                }
+
+                // Show credit used
+                document.getElementById("credit-user-info").innerHTML =
+                    creditUsed > 0 ? `<strong class="text-success">Credit Used: ${creditUsed.toFixed(2)}</strong>` :
+                    '';
+
+                // Hidden input for credit used
+                document.getElementById("credit_used_input").value = creditUsed.toFixed(2);
             }
 
             // Add event listeners for input fields
@@ -266,6 +301,34 @@
                     event.preventDefault(); // Prevent form submission
                 }
             });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const supplierId = {{ $purchaseOrder->supplier_id ?? 'null' }};
+            if (supplierId) {
+                fetch(`/supplier/${supplierId}/credit`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.length > 0) {
+                            // Show the credit info in UI
+                            $('#credit-info').html(
+                                data.map(c => `
+                            <div>
+                                <strong class="text-success">Credit: ${c.credit_amount}</strong> 
+                              
+                            </div>
+                        `).join('')
+                            );
+
+                            // optionally add it to hidden input for form submit
+                            $('#credit_amount_input').val(data[0].credit_amount);
+                        } else {
+                            $('#credit-info').html('');
+                            $('#credit_amount_input').val('');
+                        }
+                    });
+            }
         });
     </script>
 @endpush

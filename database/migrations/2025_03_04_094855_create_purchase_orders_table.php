@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('purchase_status');
             $table->integer('total_quantity');
             $table->decimal('total_price');
+            $table->decimal('credit_amount')->nullable();
+            $table->decimal('credit_amount_used')->default(0);
             $table->timestamps();
         });
     }

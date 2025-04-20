@@ -2,9 +2,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\PurchasePayment;
 use App\Models\ProductVariant;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
+use App\Models\SupplierCredit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -51,6 +53,8 @@ class PurchaseOrderController extends Controller
                 'total_price'         => $request->total_price,
                 'purchase_status'     => 'pending',
                 'user_id'             => auth()->user()->id,
+                'credit_amount'       => $request->credit_amount,
+                'credit_amount_used'  => $request->credit_used,
             ]);
 
             if ($request->has('products')) {
@@ -66,6 +70,15 @@ class PurchaseOrderController extends Controller
                     ]);
                 }
             }
+            // if ($request->has('credit_amount') != null) {
+            //     $supplierCredit = SupplierCredit::where('supplier_id', $request->supplier)->first();
+            //     if ($supplierCredit) {
+            //         $supplierCredit->update([
+            //             'credit_amount' => $supplierCredit->credit_amount - $request->credit_used,
+            //         ]);
+            //     }
+                
+            // }
             DB::commit();
             return redirect()->route('purchase-order.index')->with('success', 'Purchase order created successfully');
         } catch (\Exception $e) {

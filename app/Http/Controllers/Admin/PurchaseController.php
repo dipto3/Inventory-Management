@@ -112,7 +112,7 @@ class PurchaseController extends Controller
             DB::commit();
             return redirect()->route('purchase.index')->with('success', 'Purchase created successfully');
         } catch (\Throwable $e) {
-            DB::rollBack();
+            // DB::rollBack();
             return back()->with('error', $e->getMessage());
         }
     }

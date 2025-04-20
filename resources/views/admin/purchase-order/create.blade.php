@@ -57,9 +57,13 @@
                         <h5 class="mb-0"><i class="bi bi-list-check text-primary"></i> Selected Products</h5>
                     </div>
                     <p style="margin-top: 10px;"><strong>Supplier:</strong> <span id="selectedSupplier">None</span></p>
-                    
-                <div id="credit-info" class="text-green-600 text-sm my-2"></div>
-                <input type="hidden" name="credit_amount" id="credit_amount_input">
+
+
+                    <div id="credit-info" class="text-green-600 text-sm my-2"></div>
+                    <div id="credit-user-info" class="">
+                    </div>
+                    <input type="hidden" name="credit_amount" id="credit_amount_input">
+                    <input type="hidden" name="credit_used" id="credit_used_input">
                     <table class="table table-bordered" id="selectedProductsTable">
                         <thead>
                             <tr>
@@ -197,12 +201,25 @@
                     totalQuantity += quantity;
                 });
 
-                $('#totalQuantity').text(totalQuantity);
-                $('#totalPrice').text(totalAmount.toFixed(2));
+                // credit_amount ইনপুট থেকে নাও
+                const creditAmount = parseFloat($('#credit_amount_input').val()) || 0;
+                const netTotal = Math.max(totalAmount - creditAmount, 0);
 
-                // Update hidden input fields
+
+                const creditUsed = Math.min(creditAmount, totalAmount);
+                $('#credit_used_input').val(creditUsed.toFixed(2));
+                if (creditUsed > 0) {
+                    $('#credit-user-info').text(`You are using ৳${creditUsed.toFixed(2)} from your credit.`)
+                        .addClass('text-success');
+                } else {
+                    $('#credit-user-info').text('').addClass('hidden');
+                }
+                $('#totalPrice').text(netTotal.toFixed(2));
+                $('#totalPriceInput').val(netTotal.toFixed(2));
+
+                // কোয়ান্টিটিও আপডেট করো
+                $('#totalQuantity').text(totalQuantity);
                 $('#totalQuantityInput').val(totalQuantity);
-                $('#totalPriceInput').val(totalAmount.toFixed(2));
             }
             // Remove row when the "Remove" button is clicked
             $(document).on('click', '.remove-product', function() {

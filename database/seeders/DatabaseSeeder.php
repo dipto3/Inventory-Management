@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -19,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UnitSeeder::class);
         $this->call(SupplierSeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(ReturnReasonSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 

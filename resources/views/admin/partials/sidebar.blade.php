@@ -121,11 +121,47 @@
 
             </ul>
         </div>
-        {{-- <li class="nav-item" style="list-style: none;">
-            <a class="nav-link" href="{{ route('variant.index') }}" >
-                <i class="bi bi-command"></i>
-                <span>Variant Attributes</span>
-            </a>
-        </li> --}}
+        <div class="menu-group" data-bs-toggle="collapse" data-bs-target="#ecommerceGroup">
+            <span>E-commerce</span>
+            <i class="bi bi-chevron-down"></i>
+        </div>
+        <div class="menu-items collapse show" id="ecommerceGroup">
+            <ul class="nav flex-column">
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('supplier.index') }}">
+                        <i class="bi bi-card-image"></i>
+                        <span>Banner</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('supplier.index') }}">
+                        <i class="bi bi-ticket-perforated-fill"></i>
+                        <span>Coupon</span>
+                    </a>
+                </li>
+
+                {{-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="ordersDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-receipt"></i>
+                        <span>Orders</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="ordersDropdown">
+                        <li><a class="dropdown-item" href="#">All Orders</a></li>
+                        <li><a class="dropdown-item" href="#">Pending Orders</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#">Completed Orders</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">Cancelled Orders</a>
+                        </li>
+                    </ul>
+                </li> --}}
+
+            </ul>
+        </div>
     </div>
 </div>

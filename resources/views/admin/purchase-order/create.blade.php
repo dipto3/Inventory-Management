@@ -201,7 +201,7 @@
                     totalQuantity += quantity;
                 });
 
-                // credit_amount ইনপুট থেকে নাও
+                // credit_amount
                 const creditAmount = parseFloat($('#credit_amount_input').val()) || 0;
                 const netTotal = Math.max(totalAmount - creditAmount, 0);
 
@@ -217,7 +217,6 @@
                 $('#totalPrice').text(netTotal.toFixed(2));
                 $('#totalPriceInput').val(netTotal.toFixed(2));
 
-                // কোয়ান্টিটিও আপডেট করো
                 $('#totalQuantity').text(totalQuantity);
                 $('#totalQuantityInput').val(totalQuantity);
             }

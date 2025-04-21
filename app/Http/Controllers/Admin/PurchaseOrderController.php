@@ -70,17 +70,9 @@ class PurchaseOrderController extends Controller
                     ]);
                 }
             }
-            // if ($request->has('credit_amount') != null) {
-            //     $supplierCredit = SupplierCredit::where('supplier_id', $request->supplier)->first();
-            //     if ($supplierCredit) {
-            //         $supplierCredit->update([
-            //             'credit_amount' => $supplierCredit->credit_amount - $request->credit_used,
-            //         ]);
-            //     }
-                
-            // }
             DB::commit();
-            return redirect()->route('purchase-order.index')->with('success', 'Purchase order created successfully');
+            toastr()->addSuccess('Purchase Order Created Successfully');
+            return redirect()->route('purchase-order.index');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());

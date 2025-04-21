@@ -32,7 +32,7 @@
 
             <div class="mb-3">
                 <label>Return Date</label>
-                <input type="date" name="return_date" class="form-control" required>
+                <input type="date" name="return_date" class="form-control" value="{{ date('Y-m-d') }}" required>
             </div>
 
             <div id="purchaseItemsWrapper"></div>

@@ -14,7 +14,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $suppliers = Supplier::orderBy('id', 'desc')->get();
+        $suppliers = Supplier::with('supplierCredit')->orderBy('id', 'desc')->get();
         return view('admin.supplier.index', compact('suppliers'));
     }
 

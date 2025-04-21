@@ -10,13 +10,14 @@
         </div>
 
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="supplierTable" class="table table-hover w-100">
+            <div class="table-responsive ">
+                <table id="supplierTable" class="table table-hover w-100 ">
                     <thead>
                         <tr>
                             <th style="display:none;">ID</th>
                             <th>Name</th>
                             <th>Image</th>
+                            <th>Credit Balance</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Address</th>
@@ -29,9 +30,11 @@
                         @foreach ($suppliers as $supplier)
                             <tr id="supplier-row-{{ $supplier->id }}">
                                 <td style="display:none;">{{ $supplier->id }}</td>
-                                <td>{{ $supplier->name }} ({{ $supplier->id }}) </td>
+                                <td>{{ $supplier->name }} </td>
+
                                 <td class="image"><img style="height: 50px;width:50px;"
                                         src="{{ asset('storage/' . $supplier->image) }}" alt></td>
+                                <td>৳ {{ $supplier->supplierCredit?->credit_amount ?? 0 }} </td>
                                 <td> {{ $supplier->email }} </td>
                                 <td> {{ $supplier->phone }} </td>
                                 <td> {{ $supplier->address }} </td>

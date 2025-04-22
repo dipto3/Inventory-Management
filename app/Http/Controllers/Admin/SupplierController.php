@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -21,7 +20,8 @@ class SupplierController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {}
 
     /**
      * Store a newly created resource in storage.
@@ -29,11 +29,11 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'phone' => 'required|unique:suppliers',
-            'email' => 'required|unique:suppliers',
+            'name'    => 'required',
+            'phone'   => 'required|unique:suppliers',
+            'email'   => 'required|unique:suppliers',
             'address' => 'nullable',
-            'city' => 'required',
+            'city'    => 'required',
         ]);
         $imagePath = null;
 
@@ -41,19 +41,19 @@ class SupplierController extends Controller
             $imagePath = $request->file('image')->store('supplier_image', 'public');
         }
         $supplier = Supplier::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
+            'name'    => $request->name,
+            'phone'   => $request->phone,
+            'email'   => $request->email,
             'address' => $request->address,
-            'city' => $request->city,
-            'status' => $request->status ?? 0,
-            'image' => $imagePath,
+            'city'    => $request->city,
+            'status'  => $request->status ?? 0,
+            'image'   => $imagePath,
         ]);
 
         return response()->json([
-            'success' => true,
-            'message' => 'Supplier Added Successfully!',
-            'supplier' => $supplier
+            'success'  => true,
+            'message'  => 'Supplier Added Successfully!',
+            'supplier' => $supplier,
         ]);
     }
 
@@ -70,15 +70,14 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        $supplier = Supplier::findOrFail($id);
+        $supplier  = Supplier::findOrFail($id);
         $image_url = asset('storage/' . $supplier->image);
 
         return response()->json([
-            'supplier' => $supplier,
-            'image_url' => $image_url
+            'supplier'  => $supplier,
+            'image_url' => $image_url,
         ]);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -88,13 +87,13 @@ class SupplierController extends Controller
         $supplier_id = $request->supplier_id;
 
         $validatedData = $request->validate([
-            'name' => 'required',
-            'phone' => 'required|unique:suppliers,phone,' . $supplier_id,
-            'email' => 'required|unique:suppliers,email,' . $supplier_id,
-            'status' => 'required',
+            'name'    => 'required',
+            'phone'   => 'required|unique:suppliers,phone,' . $supplier_id,
+            'email'   => 'required|unique:suppliers,email,' . $supplier_id,
+            'status'  => 'required',
             'address' => 'nullable',
-            'city' => 'nullable',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'city'    => 'nullable',
+            'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $supplier = Supplier::findOrFail($supplier_id);
@@ -104,7 +103,7 @@ class SupplierController extends Controller
                 Storage::disk('public')->delete($supplier->image);
             }
 
-            $imagePath = $request->file('image')->store('supplier_image', 'public');
+            $imagePath              = $request->file('image')->store('supplier_image', 'public');
             $validatedData['image'] = $imagePath;
         }
 
@@ -112,7 +111,6 @@ class SupplierController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Supplier updated successfully', 'supplier' => $supplier]);
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -124,5 +122,22 @@ class SupplierController extends Controller
         }
         $supplier->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $supplier = Supplier::findOrFail($request->id);
+        $status   = $supplier->status == 0 ? 1 : 0;
+        $supplier->update(['status' => $status]);
+        if ($supplier) {
+            if ($supplier->status == 1) {
+                return response()->json(['success' => 'supplier Status Is Active']);
+            }
+            if ($supplier->status == 0) {
+                return response()->json(['success' => 'supplier Status Is Inactive']);
+            }
+        } else {
+            return response()->json(['error' => 'supplier Status Is Failed To Update']);
+        }
     }
 }

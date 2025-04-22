@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -34,15 +33,15 @@ class UnitController extends Controller
         $request->validated();
 
         $unit = Unit::create([
-            'name' => $request->name,
-            'status' => $request->status,
+            'name'       => $request->name,
+            'status'     => $request->status,
             'short_name' => $request->short_name,
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Unit Added Successfully!',
-            'unit' => $unit
+            'unit'    => $unit,
         ]);
     }
 
@@ -60,7 +59,7 @@ class UnitController extends Controller
     public function edit(Unit $unit)
     {
         return response()->json([
-            'unit' => $unit
+            'unit' => $unit,
         ]);
     }
 
@@ -70,17 +69,17 @@ class UnitController extends Controller
     public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'status' => 'required',
-            'short_name' => 'required'
+            'name'       => 'required',
+            'status'     => 'required',
+            'short_name' => 'required',
         ]);
         $unit_id = $request->unit_id;
-        $unit = Unit::findOrFail($unit_id);
+        $unit    = Unit::findOrFail($unit_id);
 
         $unit->update([
-            'name' => $validatedData['name'],
+            'name'       => $validatedData['name'],
             'short_name' => $validatedData['short_name'],
-            'status' => $validatedData['status'],
+            'status'     => $validatedData['status'],
         ]);
         return response()->json(['success' => true, 'message' => 'Unit updated successfully', 'unit' => $unit]);
     }
@@ -92,5 +91,22 @@ class UnitController extends Controller
     {
         $unit->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $unit   = Unit::findOrFail($request->id);
+        $status = $unit->status == 0 ? 1 : 0;
+        $unit->update(['status' => $status]);
+        if ($unit) {
+            if ($unit->status == 1) {
+                return response()->json(['success' => 'Unit Status Is Active']);
+            }
+            if ($unit->status == 0) {
+                return response()->json(['success' => 'Unit Status Is Inactive']);
+            }
+        } else {
+            return response()->json(['error' => 'Unit Status Is Failed To Update']);
+        }
     }
 }

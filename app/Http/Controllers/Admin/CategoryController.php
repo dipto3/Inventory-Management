@@ -125,4 +125,21 @@ class CategoryController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function changeStatus(Request $request)
+    {
+        $category = Category::findOrFail($request->id);
+        $status   = $category->status == 0 ? 1 : 0;
+        $category->update(['status' => $status]);
+        if ($category) {
+            if ($category->status == 1) {
+                return response()->json(['success' => 'category Status Is Active']);
+            }
+            if ($category->status == 0) {
+                return response()->json(['success' => 'category Status Is Inactive']);
+            }
+        } else {
+            return response()->json(['error' => 'category Status Is Failed To Update']);
+        }
+    }
 }

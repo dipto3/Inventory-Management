@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -42,29 +41,29 @@ class VariantController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 $variant = Variant::create([
-                    'name' => $request->name,
-                    'status' => $request->status
+                    'name'   => $request->name,
+                    'status' => $request->status,
                 ]);
 
                 $valuesArray = array_map('trim', explode(',', $request->input('values')));
 
                 foreach ($valuesArray as $value) {
-                    if (!empty($value)) {
+                    if (! empty($value)) {
                         VariantValue::create([
                             'variant_id' => $variant->id,
-                            'value' => $value,
+                            'value'      => $value,
                         ]);
                     }
                 }
             });
             return response()->json([
                 'success' => true,
-                'message' => 'Variant created successfully'
+                'message' => 'Variant created successfully',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
+                'message' => 'Something went wrong: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -82,9 +81,9 @@ class VariantController extends Controller
      */
     public function edit($id)
     {
-        $variant = Variant::with('variantValues')->findOrFail($id);
+        $variant      = Variant::with('variantValues')->findOrFail($id);
         $valuesString = $variant->variantValues->pluck('value')->implode(',');
-        return response()->json(['variant' => $variant,'values' => $valuesString]);
+        return response()->json(['variant' => $variant, 'values' => $valuesString]);
     }
     /**
      * Update the specified resource in storage.
@@ -93,9 +92,9 @@ class VariantController extends Controller
     {
 
         $variant_id = $request->variant_id;
-        $variant = Variant::findOrFail($variant_id);
+        $variant    = Variant::findOrFail($variant_id);
         $variant->update([
-            'name' => $request->name,
+            'name'   => $request->name,
             'status' => $request->status,
         ]);
 
@@ -104,10 +103,10 @@ class VariantController extends Controller
         $variant->variantValues()->delete();
 
         foreach ($valuesArray as $value) {
-            if (!empty($value)) {
+            if (! empty($value)) {
                 VariantValue::create([
                     'variant_id' => $variant->id,
-                    'value' => $value,
+                    'value'      => $value,
                 ]);
             }
         }
@@ -122,5 +121,22 @@ class VariantController extends Controller
 
         $variant->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $variant = Variant::findOrFail($request->id);
+        $status  = $variant->status == 0 ? 1 : 0;
+        $variant->update(['status' => $status]);
+        if ($variant) {
+            if ($variant->status == 1) {
+                return response()->json(['success' => 'variant Status Is Active']);
+            }
+            if ($variant->status == 0) {
+                return response()->json(['success' => 'variant Status Is Inactive']);
+            }
+        } else {
+            return response()->json(['error' => 'variant Status Is Failed To Update']);
+        }
     }
 }

@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BrandFormRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -40,17 +38,16 @@ class BrandController extends Controller
             $imagePath = $request->file('logo')->store('brand_logo', 'public');
         }
         $brand = Brand::create([
-            'name' => $request->name,
-            'status' => $request->status,
+            'name'        => $request->name,
+            'status'      => $request->status,
             'description' => $request->description,
-            'logo' => $imagePath,
+            'logo'        => $imagePath,
         ]);
-
 
         return response()->json([
             'success' => true,
             'message' => 'Brand Added Successfully!',
-            'brand' => $brand
+            'brand'   => $brand,
         ]);
     }
 
@@ -67,12 +64,12 @@ class BrandController extends Controller
      */
     public function edit(string $id)
     {
-        $brand = Brand::findOrFail($id);
+        $brand     = Brand::findOrFail($id);
         $image_url = asset('storage/' . $brand->logo);
 
         return response()->json([
-            'brand' => $brand,
-            'image_url' => $image_url
+            'brand'     => $brand,
+            'image_url' => $image_url,
         ]);
     }
 
@@ -82,10 +79,10 @@ class BrandController extends Controller
     public function update(Request $request, string $id)
     {
         // dd($request->all());
-        $brand_id = $request->brand_id;
+        $brand_id      = $request->brand_id;
         $validatedData = $request->validate([
-            'name' => 'required',
-            'status' => 'required',
+            'name'        => 'required',
+            'status'      => 'required',
             'description' => 'required',
 
         ]);
@@ -97,7 +94,7 @@ class BrandController extends Controller
                 Storage::disk('public')->delete($brand->image);
             }
 
-            $imagePath = $request->file('logo')->store('brand_logo', 'public');
+            $imagePath             = $request->file('logo')->store('brand_logo', 'public');
             $validatedData['logo'] = $imagePath;
         }
 
@@ -116,5 +113,22 @@ class BrandController extends Controller
         }
         $brand->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $brand  = Brand::findOrFail($request->id);
+        $status = $brand->status == 0 ? 1 : 0;
+        $brand->update(['status' => $status]);
+        if ($brand) {
+            if ($brand->status == 1) {
+                return response()->json(['success' => 'brand Status Is Active']);
+            }
+            if ($brand->status == 0) {
+                return response()->json(['success' => 'brand Status Is Inactive']);
+            }
+        } else {
+            return response()->json(['error' => 'brand Status Is Failed To Update']);
+        }
     }
 }

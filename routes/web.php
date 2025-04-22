@@ -27,13 +27,18 @@ Route::middleware('auth')->group(function () {
     Route::controller(App\Http\Controllers\Admin\CategoryController::class)->group(function () {
         Route::post('/category/update-ordering', 'updateOrdering')->name('category.updateOrdering');
     });
+    Route::post('/category-change-status', [App\Http\Controllers\Admin\CategoryController::class, 'changeStatus'])->name('category.status.change');
     Route::delete('/product/image/{id}', [App\Http\Controllers\Admin\ProductController::class, 'deleteImage'])->name('product.image.delete');
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
+    Route::post('/brand-change-status', [App\Http\Controllers\Admin\BrandController::class, 'changeStatus'])->name('brand.status.change');
     Route::resource('unit', App\Http\Controllers\Admin\UnitController::class);
+    Route::post('/unit-change-status', [App\Http\Controllers\Admin\UnitController::class, 'changeStatus'])->name('unit.status.change');
     Route::resource('variant', App\Http\Controllers\Admin\VariantController::class);
+    Route::post('/variant-change-status', [App\Http\Controllers\Admin\VariantController::class, 'changeStatus'])->name('variant.status.change');
     Route::get('admin/variants/{variant}/values', [App\Http\Controllers\Admin\VariantController::class, 'getValues']);
     Route::resource('product', App\Http\Controllers\Admin\ProductController::class);
     Route::resource('supplier', App\Http\Controllers\Admin\SupplierController::class);
+    Route::post('/supplier-change-status', [App\Http\Controllers\Admin\SupplierController::class, 'changeStatus'])->name('supplier.status.change');
     Route::get('/product-details/{productID}/{variantID}', [App\Http\Controllers\Admin\ProductController::class, 'viewDetails'])->name('view.details');
     Route::get('/expired-products', [App\Http\Controllers\Admin\ProductController::class, 'expiredProducts'])->name('expired.products');
 

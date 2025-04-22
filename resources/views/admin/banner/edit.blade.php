@@ -39,7 +39,7 @@
                             Close
                         </button>
                         <button type="submit" class="btn btn-primary update_banner">
-                            Save brand
+                            Save Banner
                         </button>
                     </div>
                 </form>

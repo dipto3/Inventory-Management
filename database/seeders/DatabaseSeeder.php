@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call(SupplierSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(ReturnReasonSeeder::class);
+        $this->call(BannerSeeder::class);
+        $this->call(CouponSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 

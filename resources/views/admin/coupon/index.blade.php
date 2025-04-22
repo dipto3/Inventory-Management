@@ -39,6 +39,9 @@
                                 </td>
                                 <td>
                                     <div class="d-flex">
+                                        <a href="{{ route('coupon.show', $coupon->id) }}" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
                                         <button class="btn btn-sm btn-info edit-coupon" data-id="{{ $coupon->id }}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>

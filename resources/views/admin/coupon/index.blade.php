@@ -27,8 +27,8 @@
                             <tr id="coupon-row-{{ $coupon->id }}">
                                 <td style="display:none;">{{ $coupon->id }}</td>
                                 <td>{{ $coupon->code }}</td>
-                                <td>{{ $coupon->start_date }}</td>
-                                <td> {{ $coupon->start_date }} </td>
+                                <td>{{ \Carbon\Carbon::parse($coupon->start_date)->format('M d, Y') }}</td>
+                                <td> {{ \Carbon\Carbon::parse($coupon->end_date)->format('M d, Y') }} </td>
 
                                 <td>
                                     @if ($coupon->status == 1)

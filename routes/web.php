@@ -58,5 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/supplier/{id}/credit', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'getSupplierCredit'])->name('get.supplier.credit');
 
     Route::resource('banner', App\Http\Controllers\Admin\BannerController::class);
+    Route::post('/banner-change-status', [App\Http\Controllers\Admin\BannerController::class, 'changeStatus'])->name('banner.status.change');
     Route::resource('coupon', App\Http\Controllers\Admin\CouponController::class);
+    Route::post('/coupon-change-status', [App\Http\Controllers\Admin\CouponController::class, 'changeStatus'])->name('coupon.status.change');
 });

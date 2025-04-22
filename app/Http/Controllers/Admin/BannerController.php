@@ -116,4 +116,21 @@ class BannerController extends Controller
         $banner->delete();
         return response()->json(['success' => true]);
     }
+
+    public function changeStatus(Request $request)
+    {
+        $banner = Banner::findOrFail($request->id);
+        $status = $banner->status == 0 ? 1 : 0;
+        $banner->update(['status' => $status]);
+        if ($banner) {
+            if ($banner->status == 1) {
+                return response()->json(['success' => 'Banner Status Is Active']);
+            }
+            if ($banner->status == 0) {
+                return response()->json(['success' => 'Banner Status Is Inactive']);
+            }
+        } else {
+            return response()->json(['error' => 'Banner Status Is Failed To Update']);
+        }
+    }
 }

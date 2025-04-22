@@ -19,6 +19,8 @@
                             <th>Start date</th>
                             <th>End date</th>
                             <th>Status</th>
+
+
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -30,12 +32,21 @@
                                 <td>{{ \Carbon\Carbon::parse($coupon->start_date)->format('M d, Y') }}</td>
                                 <td> {{ \Carbon\Carbon::parse($coupon->end_date)->format('M d, Y') }} </td>
 
-                                <td>
+                                {{-- <td>
                                     @if ($coupon->status == 1)
                                         <span class="badge bg-success">Active</span>
                                     @elseif ($coupon->status == 0)
                                         <span class="badge bg-danger">Inactive</span>
                                     @endif
+                                </td> --}}
+                                <td>
+
+                                    <label class="custom-switch">
+                                        <input data-id="{{ $coupon->id }}" class="status-toggle" type="checkbox"
+                                            data-onstyle="success" data-offstyle="danger" data-toggle="toggle"
+                                            data-on="Active" data-off="InActive" {{ $coupon->status ? 'checked' : '' }}>
+                                        <span class="slider"></span>
+                                    </label>
                                 </td>
                                 <td>
                                     <div class="d-flex">
@@ -246,6 +257,42 @@
                         }
                     });
                 }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.status-toggle').on('change', function() {
+                let id = $(this).data('id');
+                let status = $(this).is(':checked') ? 1 : 0;
+
+                $.ajax({
+                    url: '{{ route('coupon.status.change') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id,
+                        status: status
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log('Status updated to:', response.status);
+                            toastr.options = {
+                                "positionClass": "toast-bottom-center",
+                                // "closeButton": true,
+                                // "progressBar": true,
+                                "timeOut": "3000"
+                            };
+                            toastr.success("Status updated successfully!");
+                        } else {
+                            alert('Status update failed!');
+                        }
+                    },
+                    error: function() {
+                        alert('Server error!');
+                    }
+                });
             });
         });
     </script>

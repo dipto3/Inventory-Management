@@ -124,4 +124,21 @@ class CouponController extends Controller
         $coupon->delete();
         return response()->json(['success' => true]);
     }
+
+    public function changeStatus(Request $request)
+    {
+        $coupon = Coupon::findOrFail($request->id);
+        $status = $coupon->status == 0 ? 1 : 0;
+        $coupon->update(['status' => $status]);
+        if ($coupon) {
+            if ($coupon->status == 1) {
+                return response()->json(['success' => 'Coupon Status Is Active']);
+            }
+            if ($coupon->status == 0) {
+                return response()->json(['success' => 'Coupon Status Is Inactive']);
+            }
+        } else {
+            return response()->json(['error' => 'Coupon Status Is Failed To Update']);
+        }
+    }
 }

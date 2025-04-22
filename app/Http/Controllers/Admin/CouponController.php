@@ -1,8 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
@@ -12,7 +13,8 @@ class CouponController extends Controller
      */
     public function index()
     {
-        //
+        $coupons = Coupon::all();
+        return view('admin.coupon.index', compact('coupons'));
     }
 
     /**
@@ -28,7 +30,36 @@ class CouponController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'code'                    => 'required',
+            'discount_type'           => 'required',
+            'discount_value'          => 'required',
+            'minimum_order_amount'    => 'required',
+            'maximum_discount_amount' => 'nullable',
+            'start_date'              => 'required',
+            'start_time'              => 'required',
+            'end_date'                => 'required',
+            'end_time'                => 'required',
+            'usage_limit'             => 'nullable',
+        ]);
+        $coupon = Coupon::create([
+            'code'                    => $request->code,
+            'discount_type'           => $request->discount_type,
+            'discount_value'          => $request->discount_value,
+            'minimum_order_amount'    => $request->minimum_order_amount,
+            'maximum_discount_amount' => $request->maximum_discount_amount,
+            'start_date'              => Carbon::parse($request->start_date),
+            'start_time'              => Carbon::parse($request->start_time),
+            'end_date'                => Carbon::parse($request->end_date),
+            'end_time'                => Carbon::parse($request->end_time),
+            'usage_limit'             => $request->usage_limit,
+            'status'                  => $request->status,
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Coupon Added Successfully!',
+            'coupon'  => $coupon,
+        ]);
     }
 
     /**
@@ -42,9 +73,11 @@ class CouponController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Coupon $coupon)
     {
-        //
+        return response()->json([
+            'coupon' => $coupon,
+        ]);
     }
 
     /**
@@ -52,14 +85,43 @@ class CouponController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'code'                    => 'required',
+            'discount_type'           => 'required',
+            'discount_value'          => 'required',
+            'minimum_order_amount'    => 'required',
+            'maximum_discount_amount' => 'nullable',
+            'start_date'              => 'required',
+            'start_time'              => 'required',
+            'end_date'                => 'required',
+            'end_time'                => 'required',
+            'usage_limit'             => 'nullable',
+        ]);
+        $coupon_id = $request->coupon_id;
+        $coupon    = Coupon::findOrFail($coupon_id);
+
+        $coupon->update([
+            'code'                    => $request->code,
+            'discount_type'           => $request->discount_type,
+            'discount_value'          => $request->discount_value,
+            'minimum_order_amount'    => $request->minimum_order_amount,
+            'maximum_discount_amount' => $request->maximum_discount_amount,
+            'start_date'              => Carbon::parse($request->start_date),
+            'start_time'              => Carbon::parse($request->start_time),
+            'end_date'                => Carbon::parse($request->end_date),
+            'end_time'                => Carbon::parse($request->end_time),
+            'usage_limit'             => $request->usage_limit,
+            'status'                  => $request->status,
+        ]);
+        return response()->json(['success' => true, 'message' => 'Coupon updated successfully', 'coupon' => $coupon]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Coupon $coupon)
     {
-        //
+        $coupon->delete();
+        return response()->json(['success' => true]);
     }
 }

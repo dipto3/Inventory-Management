@@ -137,7 +137,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('supplier.index') }}">
+                    <a class="nav-link" href="{{ route('coupon.index') }}">
                         <i class="bi bi-ticket-perforated-fill"></i>
                         <span>Coupon</span>
                     </a>

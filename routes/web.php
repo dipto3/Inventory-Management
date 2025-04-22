@@ -56,4 +56,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('approve-purchase-return/{id}', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'approvePurchaseReturn'])->name('approve.purchase.return');
     Route::get('/supplier/{id}/credit', [App\Http\Controllers\Admin\PurchaseReturnController::class, 'getSupplierCredit'])->name('get.supplier.credit');
+
+    Route::resource('banner', App\Http\Controllers\Admin\BannerController::class);
+    Route::resource('coupon', App\Http\Controllers\Admin\CouponController::class);
 });

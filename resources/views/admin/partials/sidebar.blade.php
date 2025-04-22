@@ -130,7 +130,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('supplier.index') }}">
+                    <a class="nav-link" href="{{ route('banner.index') }}">
                         <i class="bi bi-card-image"></i>
                         <span>Banner</span>
                     </a>

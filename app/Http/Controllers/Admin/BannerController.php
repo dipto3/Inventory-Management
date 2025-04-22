@@ -1,9 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
@@ -12,7 +13,8 @@ class BannerController extends Controller
      */
     public function index()
     {
-        //
+        $banners = Banner::all();
+        return view('admin.banner.index', compact('banners'));
     }
 
     /**
@@ -28,7 +30,28 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'link'  => 'nullable',
+        ]);
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('banner_image', 'public');
+        }
+        $banner = Banner::create([
+            'title'  => $request->title,
+            'status' => $request->status,
+            'link'   => $request->link,
+            'image'  => $imagePath,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Banner Added Successfully!',
+            'banner'  => $banner,
+        ]);
     }
 
     /**
@@ -44,7 +67,13 @@ class BannerController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $banner    = Banner::findOrFail($id);
+        $image_url = asset('storage/' . $banner->image);
+
+        return response()->json([
+            'banner'    => $banner,
+            'image_url' => $image_url,
+        ]);
     }
 
     /**
@@ -52,14 +81,39 @@ class BannerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $banner_id     = $request->banner_id;
+        $validatedData = $request->validate([
+            'title'  => 'required',
+            'status' => 'required',
+            'link'   => 'nullable',
+
+        ]);
+
+        $banner = Banner::findOrFail($banner_id);
+
+        if ($request->hasFile('image')) {
+            if ($banner->image) {
+                Storage::disk('public')->delete($banner->image);
+            }
+
+            $imagePath              = $request->file('image')->store('banner_image', 'public');
+            $validatedData['image'] = $imagePath;
+        }
+
+        $banner->update($validatedData);
+
+        return response()->json(['success' => true, 'message' => 'Banner updated successfully', 'banner' => $banner]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Banner $banner)
     {
-        //
+        if ($banner->image) {
+            Storage::disk('public')->delete($banner->image);
+        }
+        $banner->delete();
+        return response()->json(['success' => true]);
     }
 }

@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//frontend-route
+Route::get('/', [App\Http\Controllers\Frontend\HomeController::class, 'home'])->name('home');
 
+//backend-route
 Route::get('/login', [App\Http\Controllers\Admin\Auth\AuthController::class, 'login'])->name('login');
 Route::post('/authenticate', [App\Http\Controllers\Admin\Auth\AuthController::class, 'authenticate'])->name('authenticate');
 

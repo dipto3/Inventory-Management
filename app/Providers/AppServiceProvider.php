@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Providers;
 
 use App\Models\Product;
@@ -22,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::preventLazyLoading(!$this->app->isProduction());
+        Model::preventLazyLoading(! $this->app->isProduction());
         Product::observe(ProductObserver::class);
     }
 }

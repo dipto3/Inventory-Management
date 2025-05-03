@@ -1,59 +1,41 @@
 @extends('frontend.layouts.master')
 @section('frontend.content')
     <!-- Hero Section -->
+    <!-- Hero Section -->
     <section class="hero-section">
         <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+                @foreach ($banners as $index => $banner)
+                    <button 
+                        type="button"
+                        data-bs-target="#heroCarousel"
+                        data-bs-slide-to="{{ $index }}"
+                        class="{{ $loop->first ? 'active' : '' }}"
+                        aria-current="{{ $loop->first ? 'true' : 'false' }}"
+                        aria-label="Slide {{ $index + 1 }}">
+                    </button>
+                @endforeach
             </div>
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="hero-slide slide-1">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="hero-content">
-                                        <h2>Summer Collection</h2>
-                                        <p>Discover our new summer collection with up to 50% off.</p>
-                                        <a href="#" class="btn btn-primary btn-lg">Shop Now</a>
+
+                @foreach ($banners as $banner)
+                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                        <img src="{{ asset('storage/' . $banner->image) }}" class="d-block w-100" alt="Home Essentials">
+                        <div class="carousel-caption">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <div class="hero-content">
+                                            <h2>{{ $banner->title }}</h2>
+                                            <p>Transform your living space with our home collection.</p>
+                                            <a href="#" class="btn btn-primary btn-lg">Discover</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="hero-slide slide-2">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6 offset-md-6">
-                                    <div class="hero-content">
-                                        <h2>Tech Gadgets</h2>
-                                        <p>Latest electronics and gadgets at unbeatable prices.</p>
-                                        <a href="#" class="btn btn-primary btn-lg">Explore</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="hero-slide slide-3">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="hero-content">
-                                        <h2>Home Essentials</h2>
-                                        <p>Transform your living space with our home collection.</p>
-                                        <a href="#" class="btn btn-primary btn-lg">Discover</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
@@ -63,6 +45,7 @@
             </button>
         </div>
     </section>
+
 
     <!-- Features Section -->
     <section class="features py-5 bg-light">
@@ -137,116 +120,25 @@
                 <div class="slider-container">
                     <div class="slider-track" id="categoryTrack">
                         <!-- Category 1: Electronics -->
+                        @foreach ($categories as $category)
+                            
+                       
                         <div class="slider-item">
                             <div class="category-circle text-center">
                                 <a href="#" class="category-circle-link">
                                     <div class="circle-img">
-                                        <img src="https://placehold.co/300x300/orange/white?text=Electronics"
-                                            alt="Electronics" class="img-fluid">
+                                        <img src=""
+                                            alt={{ $category->name }} class="img-fluid">
                                         <div class="circle-overlay">
                                             <span>Shop Now</span>
                                         </div>
                                     </div>
-                                    <h5 class="mt-3">Electronics</h5>
+                                    <h5 class="mt-3">{{ $category->name }}</h5>
                                 </a>
                             </div>
                         </div>
-
-                        <!-- Category 2: Fashion -->
-                        <div class="slider-item">
-                            <div class="category-circle text-center">
-                                <a href="#" class="category-circle-link">
-                                    <div class="circle-img">
-                                        <img src="https://placehold.co/300x300/blue/white?text=Fashion" alt="Fashion"
-                                            class="img-fluid">
-                                        <div class="circle-overlay">
-                                            <span>Shop Now</span>
-                                        </div>
-                                    </div>
-                                    <h5 class="mt-3">Fashion</h5>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Category 3: Home & Kitchen -->
-                        <div class="slider-item">
-                            <div class="category-circle text-center">
-                                <a href="#" class="category-circle-link">
-                                    <div class="circle-img">
-                                        <img src="https://placehold.co/300x300/green/white?text=Home" alt="Home & Kitchen"
-                                            class="img-fluid">
-                                        <div class="circle-overlay">
-                                            <span>Shop Now</span>
-                                        </div>
-                                    </div>
-                                    <h5 class="mt-3">Home & Kitchen</h5>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Category 4: Beauty -->
-                        <div class="slider-item">
-                            <div class="category-circle text-center">
-                                <a href="#" class="category-circle-link">
-                                    <div class="circle-img">
-                                        <img src="https://placehold.co/300x300/purple/white?text=Beauty" alt="Beauty"
-                                            class="img-fluid">
-                                        <div class="circle-overlay">
-                                            <span>Shop Now</span>
-                                        </div>
-                                    </div>
-                                    <h5 class="mt-3">Beauty</h5>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Category 5: Sports -->
-                        <div class="slider-item">
-                            <div class="category-circle text-center">
-                                <a href="#" class="category-circle-link">
-                                    <div class="circle-img">
-                                        <img src="https://placehold.co/300x300/red/white?text=Sports" alt="Sports"
-                                            class="img-fluid">
-                                        <div class="circle-overlay">
-                                            <span>Shop Now</span>
-                                        </div>
-                                    </div>
-                                    <h5 class="mt-3">Sports</h5>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Category 6: Books -->
-                        <div class="slider-item">
-                            <div class="category-circle text-center">
-                                <a href="#" class="category-circle-link">
-                                    <div class="circle-img">
-                                        <img src="https://placehold.co/300x300/teal/white?text=Books" alt="Books"
-                                            class="img-fluid">
-                                        <div class="circle-overlay">
-                                            <span>Shop Now</span>
-                                        </div>
-                                    </div>
-                                    <h5 class="mt-3">Books</h5>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Category 7: Toys -->
-                        <div class="slider-item">
-                            <div class="category-circle text-center">
-                                <a href="#" class="category-circle-link">
-                                    <div class="circle-img">
-                                        <img src="https://placehold.co/300x300/pink/white?text=Toys" alt="Toys"
-                                            class="img-fluid">
-                                        <div class="circle-overlay">
-                                            <span>Shop Now</span>
-                                        </div>
-                                    </div>
-                                    <h5 class="mt-3">Toys</h5>
-                                </a>
-                            </div>
-                        </div>
+                        @endforeach
+                       
                     </div>
                 </div>
             </div>
@@ -729,6 +621,4 @@
             </div>
         </div>
     </section>
-
-   
 @endsection

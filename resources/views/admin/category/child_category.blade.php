@@ -14,8 +14,8 @@
     {{ $value . " " . $child_category->name }}
 </option>
 
-@if ($child_category->categories)
-    @foreach ($child_category->categories as $childCategory)
+@if ($child_category->childrenCategories)
+    @foreach ($child_category->childrenCategories as $childCategory)
         @php
             $category1[] = $child_category->name;
         @endphp

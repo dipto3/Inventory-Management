@@ -3,7 +3,7 @@
     <div class="card mb-4">
         <!-- Add this button to your card header (just below the <h5> tag) -->
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">category</h5>
+            <h5 class="mb-0">Category</h5>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                 <i class="bi bi-plus-lg me-2"></i>Add category
             </button>

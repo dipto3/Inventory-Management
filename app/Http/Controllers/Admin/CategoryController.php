@@ -14,10 +14,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $allCategories = Category::with('parentCategory', 'childrenCategories')->get();
+        $allCategories = Category::with('parentCategory', 'childrenCategories.categories')->get();
         // dd($allCategories);
         $categories = Category::where('parent_id', 0)
-            ->with('childrenCategories')
+            ->with('childrenCategories.childrenCategories.childrenCategories')
             ->get();
         return view('admin.category.index', compact('categories', 'allCategories'));
     }

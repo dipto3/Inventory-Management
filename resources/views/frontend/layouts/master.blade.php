@@ -11,13 +11,9 @@
 <body>
     <!-- Top Bar -->
     @include('frontend.partials.header')
-
-   @yield('frontend.content')
-
+    @yield('frontend.content')
     <!-- Footer -->
     @include('frontend.partials.footer')
-
-
     <!-- Back to Top Button -->
     <a href="#" class="back-to-top">
         <i class="fas fa-arrow-up"></i>

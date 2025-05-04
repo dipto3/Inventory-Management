@@ -155,26 +155,26 @@ header.fixed-header .navbar {
     background-image: url("https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1600&h=500&q=80");
 }
 .carousel-caption {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  pointer-events: none; /* Prevents blocking clicks */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none; /* Prevents blocking clicks */
 }
 
 .hero-content {
-  pointer-events: all; /* Allow clicks inside hero-content */
-  max-width: 600px;
-  padding: 2rem;
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 8px;
-  backdrop-filter: blur(5px);
-  text-align: center;
-  color: white;
+    pointer-events: all; /* Allow clicks inside hero-content */
+    max-width: 600px;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    text-align: center;
+    color: white;
 }
 
 .hero-content h2 {
@@ -4898,4 +4898,7 @@ body.scrolled .sticky-wrapper .navbar {
     header {
         top: 58px; /* Same as the body padding-top */
     }
+}
+.navbar-collapse {
+    overflow-x: auto;
 }
